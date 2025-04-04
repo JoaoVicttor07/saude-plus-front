@@ -1,0 +1,54 @@
+/* Container principal */
+.signup-container {
+  max-width: 400px; /* Mesma largura da tela de login */
+  margin: 50px auto; /* Centraliza vertical e horizontalmente */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff; /* Fundo branco */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+}
+
+/* Título */
+.signup-container h1 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 22px;
+  color: #2c7a7b; /* Cor do título */
+}
+
+/* Subtítulo */
+.signup-container p {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #4a5568; /* Cor do texto */
+}
+
+/* Estilo dos grupos de formulário */
+.signup-form .form-group {
+  margin-bottom: 15px;
+}
+
+/* Estilo dos rótulos (labels) */
+.signup-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #2c7a7b; /* Cor do texto */
+}
+
+/* Estilo para as etapas do formulário */
+.form-step {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Botões das etapas */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  gap: 5px; 
+}
