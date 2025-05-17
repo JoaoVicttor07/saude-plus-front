@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import Link from '../../components/Link/Link';
@@ -18,8 +18,11 @@ function Signin() {
 
         <Button type="submit">Entrar</Button>
       </form>
+      <p className="forgot-password">
+        <Link href="/forgot-password">Esqueci minha senha</Link>
+      </p>
       <p className="register-link">
-        Não tem uma conta? <Link href="/register">Cadastre-se</Link>
+        Não tem uma conta? <Link href="/signup">Cadastre-se</Link>
       </p>
     </div>
   );

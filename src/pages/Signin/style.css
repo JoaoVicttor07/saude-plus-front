@@ -74,6 +74,11 @@ body {
     background-color: #285e61;
 }
 
+.forgot-password a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: bold;
+}
 .register-link {
     margin-top: 15px;
     font-size: 14px;
@@ -84,8 +89,4 @@ body {
     color: #2b6cb0;
     text-decoration: none;
     font-weight: bold;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
 }
