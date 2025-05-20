@@ -1,4 +1,4 @@
-import './Input.css';
+import './style.css';
 
 function Input({ type, id, placeholder, ...props }) {
   return (

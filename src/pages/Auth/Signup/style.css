@@ -1,59 +1,47 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #2c7a7b, #38b2ac);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: #ffffff;
-}
+/* src/pages/Auth/Signup/style.css */
 
-.signin-container {
-    width: 100%;
+.signup-container {
     max-width: 400px;
-    padding: 30px;
-    background-color: #ffffff;
+    margin: 64px auto;
+    padding: 32px;
+    background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     text-align: center;
     color: #2c7a7b;
 }
 
-.signin-container h1 {
+.signup-container h1 {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-.signin-container p {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: #4a5568;
-}
-
-.signin-form {
+.signup-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.signin-form label {
+.signup-form label {
     text-align: left;
     font-weight: bold;
     color: #2c7a7b;
 }
 
-.signin-form input {
+.signup-form input,
+.signup-form select {
     padding: 12px;
     border: 1px solid #cbd5e0;
     border-radius: 6px;
     font-size: 14px;
+    background: #424242;
+    color: #fff;
     transition: border-color 0.3s ease;
 }
 
-.signin-form input:focus {
+.signup-form input:focus,
+.signup-form select:focus {
     border-color: #38b2ac;
     outline: none;
     box-shadow: 0 0 5px rgba(56, 178, 172, 0.5);
@@ -74,11 +62,6 @@ body {
     background-color: #285e61;
 }
 
-.forgot-password a {
-    color: #2b6cb0;
-    text-decoration: none;
-    font-weight: bold;
-}
 .register-link {
     margin-top: 15px;
     font-size: 14px;
