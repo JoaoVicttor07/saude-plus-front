@@ -15,20 +15,20 @@ function PatientDashboard() {
 
   return (
     <div className="patient-dashboard-container">
-      <button onClick={handleLogout}>Sair</button>
-      <h2>Bem-vindo!</h2>
-      <h3>Próximos Agendamentos</h3>
-      <ul>
+      <button className="dashboard-logout-btn" onClick={handleLogout}>Sair</button>
+      <h2 className="dashboard-title">Bem-vindo!</h2>
+      <h3 className="dashboard-section-title">Próximos Agendamentos</h3>
+      <ul className="dashboard-appointments-list">
         {agendamentos.map(a => (
-          <li key={a.id}>
+          <li className="dashboard-appointment-item" key={a.id}>
             {a.data} {a.hora} - {a.medico}
           </li>
         ))}
       </ul>
-      <nav>
-        <Link to="/patient/calendar">Agendar nova consulta</Link> |{' '}
-        <Link to="/patient/appointmentsList">Ver histórico</Link> |{' '}
-        <Link to="/patient/profileEdit">Editar perfil</Link>
+      <nav className="dashboard-nav">
+        <Link className="dashboard-link" to="/patient/calendar">Agendar nova consulta</Link> |{' '}
+        <Link className="dashboard-link" to="/patient/appointmentsList">Ver histórico</Link> |{' '}
+        <Link className="dashboard-link" to="/patient/profileEdit">Editar perfil</Link>
       </nav>
     </div>
   );

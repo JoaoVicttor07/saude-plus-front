@@ -15,7 +15,7 @@ function Signin() {
     e.preventDefault();
     // Autenticação estática enquanto a api é desenvolvida
     if (email === "paciente@paciente.com") {
-      navigate("/paciente/dashboard");
+      navigate("/dashboard");
     } else if (email === "medico@medico.com") {
       navigate("/medico");
     } else {
