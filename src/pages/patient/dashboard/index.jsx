@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCalendarAlt } from "react-icons/fa";
+import Header from '../../../components/header';
 import "./style.css";
 
 function PatientDashboard() {
@@ -17,16 +18,7 @@ function PatientDashboard() {
 
   return (
     <div className="dashboard-bg">
-      <header className="dashboard-header">
-        <div className="dashboard-logo" aria-label="Saúde+">Saúde<span>+</span></div>
-        <button
-          className="dashboard-logout-btn"
-          onClick={handleLogout}
-          aria-label="Sair"
-        >
-          Sair
-        </button>
-      </header>
+      <Header />
       <main className="patient-dashboard-container" role="main">
         <h2 className="dashboard-title">Bem-vindo!</h2>
         <h3 className="dashboard-section-title">Próximos Agendamentos</h3>

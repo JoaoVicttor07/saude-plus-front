@@ -1,10 +1,9 @@
-body, .dashboard-bg {
-  overflow: hidden;
+/* body {
   background: linear-gradient(0deg, #319898 0%, #3ec6c6 100%);
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-}
+} */
 
 .dashboard-bg {
   min-height: 100vh;
@@ -12,7 +11,7 @@ body, .dashboard-bg {
   flex-direction: column;
 }
 
-.dashboard-header {
+/* .dashboard-header {
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
@@ -23,7 +22,7 @@ body, .dashboard-bg {
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  position: relative;
+
   top: 0;
   z-index: 10;
   border-radius: 0 0 18px 18px;
@@ -57,7 +56,7 @@ body, .dashboard-bg {
 }
 .dashboard-logout-btn:hover {
   background: #1a6a6a;
-}
+} */
 
 .patient-dashboard-container {
   background: #fff;
@@ -67,7 +66,6 @@ body, .dashboard-bg {
   max-height: 90vh;
   overflow-y: auto;
   width: 90vw;
-  margin: 48px auto 0 auto;
   padding: 2rem 2rem 2.5rem 2rem;
   color: #222;
   text-align: center;
