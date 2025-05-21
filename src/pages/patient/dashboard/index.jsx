@@ -1,4 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { FaCalendarAlt } from "react-icons/fa";
+import Header from '../../../components/header';
+import "./style.css";
 
 function PatientDashboard() {
   // Dados estáticos simulados
@@ -14,22 +17,40 @@ function PatientDashboard() {
   };
 
   return (
-    <div className="patient-dashboard-container">
-      <button className="dashboard-logout-btn" onClick={handleLogout}>Sair</button>
-      <h2 className="dashboard-title">Bem-vindo!</h2>
-      <h3 className="dashboard-section-title">Próximos Agendamentos</h3>
-      <ul className="dashboard-appointments-list">
-        {agendamentos.map(a => (
-          <li className="dashboard-appointment-item" key={a.id}>
-            {a.data} {a.hora} - {a.medico}
-          </li>
-        ))}
-      </ul>
-      <nav className="dashboard-nav">
-        <Link className="dashboard-link" to="/patient/calendar">Agendar nova consulta</Link> |{' '}
-        <Link className="dashboard-link" to="/patient/appointmentsList">Ver histórico</Link> |{' '}
-        <Link className="dashboard-link" to="/patient/profileEdit">Editar perfil</Link>
-      </nav>
+    <div className="dashboard-bg">
+      <Header />
+      <main className="patient-dashboard-container" role="main">
+        <h2 className="dashboard-title">Bem-vindo!</h2>
+        <h3 className="dashboard-section-title">Próximos Agendamentos</h3>
+        {agendamentos.length === 0 ? (
+          <div className="dashboard-empty">
+            <FaCalendarAlt size={48} aria-hidden="true" />
+            <p>Você ainda não tem consultas agendadas.<br />Que tal agendar a primeira agora?</p>
+          </div>
+        ) : (
+          <ul className="dashboard-appointments-list">
+            {agendamentos.map(a => (
+              <li className="dashboard-appointment-item" key={a.id}>
+                <FaCalendarAlt className="dashboard-appointment-icon" aria-hidden="true" />
+                <span>
+                  {a.data} {a.hora} - {a.medico}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="dashboard-actions">
+          <Link className="dashboard-action-btn primary" to="/calendar">
+            Agendar nova consulta
+          </Link>
+          <Link className="dashboard-action-btn secondary" to="/appointments">
+            Ver histórico
+          </Link>
+          <Link className="dashboard-action-btn secondary" to="/profile/edit">
+            Editar perfil
+          </Link>
+        </div>
+      </main>
     </div>
   );
 }

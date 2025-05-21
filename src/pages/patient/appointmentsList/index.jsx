@@ -19,8 +19,8 @@ function AppointmentsList() {
         ))}
       </ul>
       <nav>
-        <Link to="/patient/dashboard">Dashboard</Link> |{' '}
-        <Link to="/patient/calendar">Calendário</Link> |{' '}
+        <Link to="/dashboard">Dashboard</Link> |{' '}
+        <Link to="/calendar">Calendário</Link> |{' '}
         <Link to="/patient/profileView">Perfil</Link>
       </nav>
     </div>

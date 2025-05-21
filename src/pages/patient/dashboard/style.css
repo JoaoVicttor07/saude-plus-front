@@ -1,71 +1,172 @@
-body {
-  background: linear-gradient(135deg, #319898 0%, #3ec6c6 100%);
+/* body {
+  background: linear-gradient(0deg, #319898 0%, #3ec6c6 100%);
   min-height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
+} */
+
+.dashboard-bg {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.patient-dashboard-container {
-  background: rgba(255,255,255,0.07);
-  border-radius: 16px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
-  max-width: 480px;
-  margin: 60px auto;
-  padding: 40px 32px;
+/* .dashboard-header {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  height: 64px;
+  background: rgba(255,255,255,0.97);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+
+  top: 0;
+  z-index: 10;
+  border-radius: 0 0 18px 18px;
+}
+
+.dashboard-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #247575;
+  letter-spacing: 1px;
+  user-select: none;
+}
+.dashboard-logo span {
+  color: #1a6a6a;
+}
+
+.dashboard-logout-btn {
+  background: #247575;
   color: #fff;
-  text-align: center;
-}
-
-.patient-dashboard-container h2 {
-  font-size: 2.2rem;
-  margin-bottom: 16px;
-  font-weight: bold;
-}
-
-.patient-dashboard-container h3 {
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-  font-weight: bold;
-}
-
-.patient-dashboard-container ul {
-  list-style: disc inside;
-  text-align: left;
-  margin: 0 auto 24px auto;
-  padding: 0 0 0 18px;
-  color: #f0f0f0;
-}
-
-.patient-dashboard-container nav {
-  margin-top: 18px;
-}
-
-.patient-dashboard-container a {
-  color: #b3e6ff;
-  text-decoration: underline;
-  margin: 0 6px;
-  transition: color 0.2s;
-}
-
-.patient-dashboard-container a:hover {
-  color: #fff;
-}
-
-.patient-dashboard-container button {
-  background: #fff;
-  color: #319898;
   border: none;
   border-radius: 6px;
-  padding: 7px 18px;
+  padding: 8px 22px;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  margin-bottom: 18px;
   transition: background 0.2s, color 0.2s;
+  outline: 2px solid transparent;
+}
+.dashboard-logout-btn:focus {
+  outline: 2px solid #1a6a6a;
+}
+.dashboard-logout-btn:hover {
+  background: #1a6a6a;
+} */
+
+.patient-dashboard-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 90vw;
+  padding: 2rem 2rem 2.5rem 2rem;
+  color: #222;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.patient-dashboard-container button:hover {
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1a6a6a;
+}
+
+.dashboard-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #247575;
+}
+
+.dashboard-appointments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  width: 100%;
+}
+.dashboard-appointment-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+.dashboard-appointment-icon {
+  color: #319898;
+  font-size: 1.2rem;
+}
+
+.dashboard-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #247575;
+  margin-bottom: 1.5rem;
+}
+.dashboard-empty svg {
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.dashboard-action-btn {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  outline: 2px solid transparent;
+}
+.dashboard-action-btn:focus {
+  outline: 2px solid #1a6a6a;
+}
+.dashboard-action-btn.primary {
   background: #319898;
   color: #fff;
-  border: 1px solid #fff;
+  border: none;
+}
+.dashboard-action-btn.primary:hover {
+  background: #247575;
+}
+.dashboard-action-btn.secondary {
+  background: #fff;
+  color: #247575;
+  border: 2px solid #247575;
+}
+.dashboard-action-btn.secondary:hover {
+  background: #f0f8f8;
+  color: #1a6a6a;
+  border-color: #1a6a6a;
+}
+
+@media (max-width: 600px) {
+  .patient-dashboard-container {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 2rem 0.5rem;
+  }
+  .dashboard-header {
+    padding: 0 1rem;
+  }
 }
