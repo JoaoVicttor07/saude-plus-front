@@ -65,7 +65,8 @@
   max-width: 500px;
   max-height: 90vh;
   overflow-y: auto;
-  width: 90vw;
+  overflow-x: hidden;
+  width: 80vw;
   padding: 2rem 2rem 2.5rem 2rem;
   color: #222;
   text-align: center;

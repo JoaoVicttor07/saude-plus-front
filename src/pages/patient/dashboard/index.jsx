@@ -6,8 +6,8 @@ import "./style.css";
 function PatientDashboard() {
   // Dados estáticos simulados
   const agendamentos = [
-    { id: 1, data: '22/05/2025', hora: '14:00', medico: 'Dr. João Silva' },
-    { id: 2, data: '25/05/2025', hora: '09:30', medico: 'Dra. Maria Souza' },
+    { id: 1, data: '22/05/2025', hora: '14:00', medico: 'Dr. João Silva', status: 'Agendada' },
+    { id: 3, data: '28/05/2025', hora: '09:30', medico: 'Dra. Maria Souza', status: 'Agendada' },
   ];
   const navigate = useNavigate();
 
@@ -35,6 +35,9 @@ function PatientDashboard() {
                 <span>
                   {a.data} {a.hora} - {a.medico}
                 </span>
+                <Link className="dashboard-action-link" to={`/appointment/${a.id}`}>
+                  Detalhes
+                </Link>
               </li>
             ))}
           </ul>

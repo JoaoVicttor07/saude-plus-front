@@ -1,0 +1,54 @@
+@import '../dashboard/style.css';
+
+.appointment-detail-card {
+  background: #f8fefe;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.appointment-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.08rem;
+  gap: 1.2rem;
+}
+
+.appointment-detail-row .label {
+  font-weight: 600;
+  color: #247575;
+  min-width: 120px;
+  text-align: left;
+}
+
+.status-label {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.dashboard-action-btn.danger {
+  background: #ffeaea;
+  color: #b00;
+  border: 1.5px solid #b00;
+  font-weight: 600;
+}
+.dashboard-action-btn.danger:hover {
+  background: #ffcccc;
+  color: #900;
+  border-color: #900;
+}
+
+@media (max-width: 600px) {
+  .appointment-detail-card {
+    padding: 1rem 0.5rem;
+    max-width: 98vw;
+  }
+}
