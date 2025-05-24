@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaCalendarAlt } from "react-icons/fa";
 import Header from '../../../components/header';
 import "./style.css";
@@ -9,12 +9,6 @@ function PatientDashboard() {
     { id: 1, data: '22/05/2025', hora: '14:00', medico: 'Dr. João Silva', status: 'Agendada' },
     { id: 3, data: '28/05/2025', hora: '09:30', medico: 'Dra. Maria Souza', status: 'Agendada' },
   ];
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // TODO: Limpar autenticação quando houver
-    navigate('/signin');
-  };
 
   return (
     <div className="dashboard-bg">

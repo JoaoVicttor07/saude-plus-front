@@ -48,7 +48,7 @@ function Signin() {
           required
         />
 
-        <Button type="submit">Entrar</Button>
+        <Button>Entrar</Button>
       </form>
       {erro && <p style={{ color: "red" }}>{erro}</p>}
       <p className="register-link">

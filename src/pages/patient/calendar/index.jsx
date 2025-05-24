@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaHeartbeat, FaUserMd, FaCalendarAlt, FaArrowLeft, FaCheck } from 'react-icons/fa';
 import Header from '../../../components/header';
 import './style.css';
@@ -21,6 +22,7 @@ const SLOTS = {
 };
 
 function PatientCalendar() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [especialidade, setEspecialidade] = useState(null);
   const [loadingMedicos, setLoadingMedicos] = useState(false);
@@ -98,6 +100,8 @@ function PatientCalendar() {
           Selecione a especialidade e o médico, depois escolha um horário.
         </p>
 
+        
+
         {/* Etapa 1 */}
         {step === 1 && (
           <section className="calendar-step">
@@ -122,6 +126,16 @@ function PatientCalendar() {
               ))}
             </div>
           </section>
+        )}
+
+        {/* Botão voltar para dashboard na etapa 1 */}
+        {step === 1 && (
+          <button
+            className="calendar-btn secondary"
+            onClick={() => navigate('/dashboard')}
+          >
+            <FaArrowLeft /> Voltar para Dashboard
+          </button>
         )}
 
         {/* Etapa 2 */}
@@ -227,6 +241,7 @@ function PatientCalendar() {
             </div>
           </div>
         )}
+
       </main>
     </div>
   );

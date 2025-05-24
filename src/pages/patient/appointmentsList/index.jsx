@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Header from '../../../components/header';
+import Button from '../../../components/Button';
 import './style.css';
 
 function AppointmentsList() {
@@ -8,6 +9,8 @@ function AppointmentsList() {
     { id: 2, data: '10/05/2025', hora: '10:00', medico: 'Dra. Maria Souza', status: 'Realizada' },
     { id: 4, data: '01/05/2025', hora: '15:00', medico: 'Dr. João Silva', status: 'Cancelada' },
   ];
+
+  const navigate = useNavigate();
 
   // Filtra apenas as realizadas ou canceladas
   const historico = consultas.filter(
@@ -49,9 +52,18 @@ function AppointmentsList() {
           </ul>
         )}
         <div className="dashboard-actions">
-          <Link className="dashboard-action-btn secondary" to="/dashboard">
+          <Button
+            background="#fff"
+            color="#2c7a7b"
+            border="2px solid #2c7a7b"
+            borderRadius="4px"
+            height="50px"
+            hoverBackground="#f0f8f8"
+            fontWeight={600}
+            onClick={() => navigate('/dashboard')}
+          >
             Voltar ao Dashboard
-          </Link>
+          </Button>
         </div>
       </main>
     </div>

@@ -15,7 +15,10 @@ function Header() {
       <div className="main-logo" aria-label="Saúde+">
         Saúde<span>+</span>
       </div>
-      <Button className="button-small" onClick={handleLogout} aria-label="Sair">
+      <Button  
+      onClick={handleLogout}
+      width = '20%'
+      >
         Sair
       </Button>
     </header>
