@@ -1,0 +1,41 @@
+.doctor-profile-container {
+  font-family: Arial, sans-serif;
+  background-color: #f7fafc;
+  color: #2d3748;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  /* Limite de largura */
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.profile-info {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 24px 32px;
+  margin-bottom: 24px;
+  min-width: 320px;
+  max-width: 400px; /* Limite de largura */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.profile-observacao textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+  padding: 8px;
+  font-size: 15px;
+  margin-top: 4px;
+  resize: vertical;
+  box-sizing: border-box;
+}
