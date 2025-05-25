@@ -1,0 +1,171 @@
+.doctor-dashboard-container {
+  font-family: Arial, sans-serif;
+  background-color: #f7fafc;
+  color: #2d3748;
+  min-height: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+h2 {
+  color: #2c7a7b;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+h3 {
+  color: #319898;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.consultas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.consulta-item {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.consulta-item p {
+  margin: 0;
+  font-size: 16px;
+  color: #4a5568;
+}
+
+.consulta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cancelar-button {
+  background-color: #e53e3e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  transition: background-color 0.3s ease;
+}
+.cancelar-button:disabled {
+  background-color: #fbb6b6;
+  cursor: not-allowed;
+}
+
+.toggle-status-button {
+  border: none;
+  border-radius: 20px;
+  padding: 8px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 2px;
+  transition: background 0.3s, color 0.3s;
+}
+.toggle-status-button.on {
+  background: #38a169;
+  color: #fff;
+}
+.toggle-status-button.off {
+  background: #f6e05e;
+  color: #b7791f;
+}
+.toggle-status-button:disabled {
+  background: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.doctor-nav {
+  margin-top: 20px;
+}
+
+.doctor-nav a {
+  color: #2c7a7b;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 0 10px;
+}
+
+.doctor-nav a:hover {
+  text-decoration: underline;
+}
+
+.toggle-switch {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 2px;
+  transition: filter 0.2s;
+  user-select: none;
+}
+
+.toggle-switch:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.switch-track {
+  display: flex;
+  align-items: center;
+  width: 90px;
+  height: 36px;
+  background: #f6e05e;
+  border-radius: 18px;
+  position: relative;
+  transition: background 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.toggle-switch.on .switch-track {
+  background: #38a169;
+}
+
+.switch-label {
+  flex: 1;
+  text-align: center;
+  color: #b7791f;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 2;
+  transition: color 0.3s;
+}
+
+.toggle-switch.on .switch-label {
+  color: #fff;
+}
+
+.switch-knob {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  transition: left 0.3s cubic-bezier(.4,2.08,.55,.44);
+}
+
+.toggle-switch.on .switch-knob {
+  left: 56px;
+}

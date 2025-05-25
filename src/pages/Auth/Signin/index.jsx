@@ -18,6 +18,8 @@ function Signin() {
       navigate("/dashboard");
     } else if (email === "medico@medico.com") {
       navigate("/medico");
+    } else if (email === "doctor@doctor.com" && password === "1") {
+      navigate("/doctor/dashboard"); // Redireciona para o dashboard do médico
     } else {
       setErro("Usuário ou senha inválidos");
     }

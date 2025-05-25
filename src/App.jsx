@@ -5,6 +5,8 @@ import PatientDashboard from './pages/patient/dashboard';
 import AppointmentsList from './pages/patient/appointmentsList';
 import AppointmentDetail from './pages/patient/appointmentDetail';
 import Calendar from './pages/patient/calendar';
+import DoctorDashboard from './pages/doctor/dashboard';
+import DoctorProfile from "./pages/doctor/profile";
 // import ProfileEdit from './pages/patient/profileEdit';
 // import ProfileView from './pages/patient/profileView';
 
@@ -17,6 +19,8 @@ function App() {
         <Route path='/signin' element={<Signin />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/dashboard' element={<PatientDashboard />} />
+        <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+        <Route path="/doctor/profile" element={<DoctorProfile />} />
         <Route path='/appointments' element={<AppointmentsList />} />
         <Route path='/appointment/:id' element={<AppointmentDetail />} />
         <Route path='/calendar' element={<Calendar />} />
