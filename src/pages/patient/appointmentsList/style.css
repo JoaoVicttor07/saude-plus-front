@@ -19,6 +19,11 @@
   color: #b00;
 }
 
+.status-agendada {
+  background: #e6f4fa;
+  color: #1976d2;
+}
+
 .dashboard-appointments-list {
   max-height: 340px;
   overflow-y: auto;

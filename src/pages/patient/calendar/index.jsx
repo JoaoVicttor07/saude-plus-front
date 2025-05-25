@@ -1,24 +1,31 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaHeartbeat, FaUserMd, FaCalendarAlt, FaArrowLeft, FaCheck } from 'react-icons/fa';
-import Header from '../../../components/header';
-import './style.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  FaHeartbeat,
+  FaUserMd,
+  FaCalendarAlt,
+  FaArrowLeft,
+  FaCheck,
+} from "react-icons/fa";
+import Header from "../../../components/header";
+import Button from "../../../components/Button";
+import "./style.css";
 
 const ESPECIALIDADES = [
-  { id: 1, nome: 'Cardiologia', icon: <FaHeartbeat /> },
-  { id: 2, nome: 'Dermatologia', icon: <FaUserMd /> },
-  { id: 3, nome: 'Ortopedia', icon: <FaUserMd /> },
+  { id: 1, nome: "Cardiologia", icon: <FaHeartbeat /> },
+  { id: 2, nome: "Dermatologia", icon: <FaUserMd /> },
+  { id: 3, nome: "Ortopedia", icon: <FaUserMd /> },
 ];
 
 const MEDICOS = [
-  { id: 1, nome: 'Dr. João Silva', especialidade: 1, local: 'Clínica Central' },
-  { id: 2, nome: 'Dra. Maria Souza', especialidade: 2, local: 'Clínica Sul' },
-  { id: 3, nome: 'Dr. Pedro Lima', especialidade: 1, local: 'Clínica Norte' },
+  { id: 1, nome: "Dr. João Silva", especialidade: 1, local: "Clínica Central" },
+  { id: 2, nome: "Dra. Maria Souza", especialidade: 2, local: "Clínica Sul" },
+  { id: 3, nome: "Dr. Pedro Lima", especialidade: 1, local: "Clínica Norte" },
 ];
 
 const SLOTS = {
-  '2025-05-23': ['09:00', '10:00', '11:00'],
-  '2025-05-24': ['09:30', '10:30'],
+  "2025-05-23": ["09:00", "10:00", "11:00"],
+  "2025-05-24": ["09:30", "10:30"],
 };
 
 function PatientCalendar() {
@@ -28,10 +35,10 @@ function PatientCalendar() {
   const [loadingMedicos, setLoadingMedicos] = useState(false);
   const [medicos, setMedicos] = useState([]);
   const [medico, setMedico] = useState(null);
-  const [dataSelecionada, setDataSelecionada] = useState('');
-  const [horarioSelecionado, setHorarioSelecionado] = useState('');
+  const [dataSelecionada, setDataSelecionada] = useState("");
+  const [horarioSelecionado, setHorarioSelecionado] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
-  const [erro, setErro] = useState('');
+  const [erro, setErro] = useState("");
 
   // Gera datas do mês atual (simples, só para exemplo)
   const diasDoMes = Array.from({ length: 7 }, (_, i) => {
@@ -44,7 +51,7 @@ function PatientCalendar() {
     setEspecialidade(esp);
     setLoadingMedicos(true);
     setTimeout(() => {
-      setMedicos(MEDICOS.filter(m => m.especialidade === esp.id));
+      setMedicos(MEDICOS.filter((m) => m.especialidade === esp.id));
       setLoadingMedicos(false);
       setStep(2);
     }, 700);
@@ -59,20 +66,22 @@ function PatientCalendar() {
   // Passo 3: Selecionar data e horário
   const handleEscolherData = (data) => {
     setDataSelecionada(data);
-    setHorarioSelecionado('');
-    setErro('');
+    setHorarioSelecionado("");
+    setErro("");
   };
 
   const handleEscolherHorario = (hora) => {
     setHorarioSelecionado(hora);
-    setErro('');
+    setErro("");
   };
 
   const handleConfirmar = () => {
     // Simula erro se horário for 09:00
-    if (horarioSelecionado === '09:00') {
-      setErro('Desculpe, esse horário acabou de ser reservado. Por favor, escolha outro.');
-      setHorarioSelecionado('');
+    if (horarioSelecionado === "09:00") {
+      setErro(
+        "Desculpe, esse horário acabou de ser reservado. Por favor, escolha outro."
+      );
+      setHorarioSelecionado("");
       return;
     }
     setShowSuccess(true);
@@ -81,13 +90,13 @@ function PatientCalendar() {
   const handleVoltar = () => {
     if (step === 3) {
       setStep(2);
-      setDataSelecionada('');
-      setHorarioSelecionado('');
-      setErro('');
+      setDataSelecionada("");
+      setHorarioSelecionado("");
+      setErro("");
     } else if (step === 2) {
       setStep(1);
       setMedico(null);
-      setErro('');
+      setErro("");
     }
   };
 
@@ -100,28 +109,30 @@ function PatientCalendar() {
           Selecione a especialidade e o médico, depois escolha um horário.
         </p>
 
-        
-
         {/* Etapa 1 */}
         {step === 1 && (
           <section className="calendar-step">
             <h3>1. Selecione a especialidade desejada</h3>
             <div className="calendar-especialidades">
-              {ESPECIALIDADES.map(esp => (
+              {ESPECIALIDADES.map((esp) => (
                 <button
                   key={esp.id}
-                  className={`calendar-chip${especialidade?.id === esp.id ? ' selected' : ''}`}
+                  className={`calendar-chip${
+                    especialidade?.id === esp.id ? " selected" : ""
+                  }`}
                   onClick={() => handleEscolherEspecialidade(esp)}
                   disabled={loadingMedicos}
                   aria-label={esp.nome}
                 >
                   {esp.icon} {esp.nome}
                   {especialidade?.id === esp.id && loadingMedicos && (
-                    <span className="calendar-loading">Carregando médicos...</span>
+                    <span className="calendar-loading">
+                      Carregando médicos...
+                    </span>
                   )}
-                  {especialidade?.id === esp.id && !loadingMedicos && step > 1 && (
-                    <FaCheck className="calendar-check" />
-                  )}
+                  {especialidade?.id === esp.id &&
+                    !loadingMedicos &&
+                    step > 1 && <FaCheck className="calendar-check" />}
                 </button>
               ))}
             </div>
@@ -130,12 +141,19 @@ function PatientCalendar() {
 
         {/* Botão voltar para dashboard na etapa 1 */}
         {step === 1 && (
-          <button
-            className="calendar-btn secondary"
-            onClick={() => navigate('/dashboard')}
+          <Button
+            background="#fff"
+            color="#2c7a7b"
+            fontWeight={600}
+            hoverBackground="#f0f8f8"
+            height="50px"
+            width="50%"
+            border="2px solid #2c7a7b"
+            onClick={() => navigate("/dashboard")}
+            style={{ marginTop: "16px" }}
           >
             <FaArrowLeft /> Voltar para Dashboard
-          </button>
+          </Button>
         )}
 
         {/* Etapa 2 */}
@@ -147,22 +165,33 @@ function PatientCalendar() {
               {!loadingMedicos && medicos.length === 0 && (
                 <span>Nenhum médico disponível para esta especialidade.</span>
               )}
-              {!loadingMedicos && medicos.map(m => (
-                <button
-                  key={m.id}
-                  className={`calendar-medico-card${medico?.id === m.id ? ' selected' : ''}`}
-                  onClick={() => handleEscolherMedico(m)}
-                  disabled={loadingMedicos}
-                  aria-label={m.nome}
-                >
-                  <FaUserMd className="calendar-medico-avatar" />
-                  <div>
-                    <div className="calendar-medico-nome">{m.nome}</div>
-                    <div className="calendar-medico-info">{ESPECIALIDADES.find(e => e.id === m.especialidade)?.nome} • {m.local}</div>
-                  </div>
-                  {medico?.id === m.id && step > 2 && <FaCheck className="calendar-check" />}
-                </button>
-              ))}
+              {!loadingMedicos &&
+                medicos.map((m) => (
+                  <button
+                    key={m.id}
+                    className={`calendar-medico-card${
+                      medico?.id === m.id ? " selected" : ""
+                    }`}
+                    onClick={() => handleEscolherMedico(m)}
+                    disabled={loadingMedicos}
+                    aria-label={m.nome}
+                  >
+                    <FaUserMd className="calendar-medico-avatar" />
+                    <div>
+                      <div className="calendar-medico-nome">{m.nome}</div>
+                      <div className="calendar-medico-info">
+                        {
+                          ESPECIALIDADES.find((e) => e.id === m.especialidade)
+                            ?.nome
+                        }{" "}
+                        • {m.local}
+                      </div>
+                    </div>
+                    {medico?.id === m.id && step > 2 && (
+                      <FaCheck className="calendar-check" />
+                    )}
+                  </button>
+                ))}
             </div>
           </section>
         )}
@@ -172,10 +201,12 @@ function PatientCalendar() {
           <section className="calendar-step">
             <h3>3. Escolha data e horário disponíveis</h3>
             <div className="calendar-dias">
-              {diasDoMes.map(data => (
+              {diasDoMes.map((data) => (
                 <button
                   key={data}
-                  className={`calendar-dia-btn${dataSelecionada === data ? ' selected' : ''}`}
+                  className={`calendar-dia-btn${
+                    dataSelecionada === data ? " selected" : ""
+                  }`}
                   onClick={() => handleEscolherData(data)}
                   disabled={!SLOTS[data]}
                 >
@@ -186,10 +217,12 @@ function PatientCalendar() {
             {dataSelecionada && (
               <div className="calendar-horarios">
                 {SLOTS[dataSelecionada] && SLOTS[dataSelecionada].length > 0 ? (
-                  SLOTS[dataSelecionada].map(hora => (
+                  SLOTS[dataSelecionada].map((hora) => (
                     <button
                       key={hora}
-                      className={`calendar-horario-btn${horarioSelecionado === hora ? ' selected' : ''}`}
+                      className={`calendar-horario-btn${
+                        horarioSelecionado === hora ? " selected" : ""
+                      }`}
                       onClick={() => handleEscolherHorario(hora)}
                     >
                       {hora}
@@ -211,18 +244,29 @@ function PatientCalendar() {
         {/* Botões de ação */}
         <div className="calendar-actions">
           {step > 1 && (
-            <button className="calendar-btn secondary" onClick={handleVoltar}>
+            <Button
+              background="#fff"
+              color="#2c7a7b"
+              fontWeight={600}
+              hoverBackground="#f0f8f8"
+              height="45px"
+              width="25%"
+              border="2px solid #2c7a7b"
+              onClick={handleVoltar}
+            >
               <FaArrowLeft /> Voltar
-            </button>
+            </Button>
           )}
           {step === 3 && (
-            <button
-              className="calendar-btn primary"
+            <Button
+              fontWeight={600}
+              height="45px"
+              width='50%'
               onClick={handleConfirmar}
               disabled={!horarioSelecionado}
             >
               Confirmar Agendamento
-            </button>
+            </Button>
           )}
         </div>
 
@@ -232,16 +276,20 @@ function PatientCalendar() {
             <div className="calendar-modal-content">
               <h3>Consulta Agendada!</h3>
               <p>
-                Sua consulta foi marcada para <b>{new Date(dataSelecionada).toLocaleDateString()}</b> às <b>{horarioSelecionado}</b> com <b>{medico.nome}</b>.<br />
+                Sua consulta foi marcada para{" "}
+                <b>{new Date(dataSelecionada).toLocaleDateString()}</b> às{" "}
+                <b>{horarioSelecionado}</b> com <b>{medico.nome}</b>.<br />
                 Um e-mail de confirmação foi enviado.
               </p>
-              <button className="calendar-btn primary" onClick={() => window.location.href = '/dashboard'}>
+              <Button
+                width="40%"
+                onClick={() => (window.location.href = "/dashboard")}
+              >
                 Voltar ao Dashboard
-              </button>
+              </Button>
             </div>
           </div>
         )}
-
       </main>
     </div>
   );

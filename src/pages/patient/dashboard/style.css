@@ -1,62 +1,9 @@
-/* body {
-  background: linear-gradient(0deg, #319898 0%, #3ec6c6 100%);
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-} */
-
 .dashboard-bg {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* .dashboard-header {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  height: 64px;
-  background: rgba(255,255,255,0.97);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-
-  top: 0;
-  z-index: 10;
-  border-radius: 0 0 18px 18px;
-}
-
-.dashboard-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #247575;
-  letter-spacing: 1px;
-  user-select: none;
-}
-.dashboard-logo span {
-  color: #1a6a6a;
-}
-
-.dashboard-logout-btn {
-  background: #247575;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 22px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  outline: 2px solid transparent;
-}
-.dashboard-logout-btn:focus {
-  outline: 2px solid #1a6a6a;
-}
-.dashboard-logout-btn:hover {
-  background: #1a6a6a;
-} */
 
 .patient-dashboard-container {
   background: #fff;

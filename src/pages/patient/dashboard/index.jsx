@@ -1,14 +1,29 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarAlt } from "react-icons/fa";
-import Header from '../../../components/header';
+import Header from "../../../components/header";
+import Button from "../../../components/Button";
 import "./style.css";
 
 function PatientDashboard() {
   // Dados estáticos simulados
   const agendamentos = [
-    { id: 1, data: '22/05/2025', hora: '14:00', medico: 'Dr. João Silva', status: 'Agendada' },
-    { id: 3, data: '28/05/2025', hora: '09:30', medico: 'Dra. Maria Souza', status: 'Agendada' },
+    {
+      id: 1,
+      data: "22/05/2025",
+      hora: "14:00",
+      medico: "Dr. João Silva",
+      status: "Agendada",
+    },
+    {
+      id: 3,
+      data: "28/05/2025",
+      hora: "09:30",
+      medico: "Dra. Maria Souza",
+      status: "Agendada",
+    },
   ];
+
+  const navigate = useNavigate();
 
   return (
     <div className="dashboard-bg">
@@ -19,17 +34,27 @@ function PatientDashboard() {
         {agendamentos.length === 0 ? (
           <div className="dashboard-empty">
             <FaCalendarAlt size={48} aria-hidden="true" />
-            <p>Você ainda não tem consultas agendadas.<br />Que tal agendar a primeira agora?</p>
+            <p>
+              Você ainda não tem consultas agendadas.
+              <br />
+              Que tal agendar a primeira agora?
+            </p>
           </div>
         ) : (
           <ul className="dashboard-appointments-list">
-            {agendamentos.map(a => (
+            {agendamentos.map((a) => (
               <li className="dashboard-appointment-item" key={a.id}>
-                <FaCalendarAlt className="dashboard-appointment-icon" aria-hidden="true" />
+                <FaCalendarAlt
+                  className="dashboard-appointment-icon"
+                  aria-hidden="true"
+                />
                 <span>
                   {a.data} {a.hora} - {a.medico}
                 </span>
-                <Link className="dashboard-action-link" to={`/appointment/${a.id}`}>
+                <Link
+                  className="dashboard-action-link"
+                  to={`/appointment/${a.id}`}
+                >
                   Detalhes
                 </Link>
               </li>
@@ -37,15 +62,37 @@ function PatientDashboard() {
           </ul>
         )}
         <div className="dashboard-actions">
-          <Link className="dashboard-action-btn primary" to="/calendar">
-            Agendar nova consulta
-          </Link>
-          <Link className="dashboard-action-btn secondary" to="/appointments">
+          <Button
+            height="55px"
+            fontWeight={600}
+            onClick={() => navigate("/calendar")}
+          >
+            Agendar Consulta
+          </Button>
+
+          <Button
+            background="#fff"
+            color="#2c7a7b"
+            fontWeight={600}
+            hoverBackground="#f0f8f8"
+            border="2px solid #2c7a7b"
+            height="55px"
+            onClick={() => navigate("/appointments")}
+          >
             Ver histórico
-          </Link>
-          <Link className="dashboard-action-btn secondary" to="/profile/edit">
-            Editar perfil
-          </Link>
+          </Button>
+
+          <Button
+            background="#fff"
+            color="#2c7a7b"
+            fontWeight={600}
+            hoverBackground="#f0f8f8"
+            border="2px solid #2c7a7b"
+            height="55px"
+            onClick={() => navigate("/profile/edit")}
+          >
+            Ver perfil
+          </Button>
         </div>
       </main>
     </div>

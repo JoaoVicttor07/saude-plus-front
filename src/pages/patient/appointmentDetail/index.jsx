@@ -1,20 +1,58 @@
-import { Link, useParams } from 'react-router-dom';
-import Header from '../../../components/header';
-import './style.css';
-import { useState } from 'react';
+import { Link, useParams, useNavigate } from "react-router-dom";
+import Header from "../../../components/header";
+import Button from "../../../components/Button";
+import "./style.css";
+import { useState } from "react";
 
 // Simulação de dados (substitua por busca da API futuramente)
 const CONSULTAS = [
-  { id: 1, data: '22/05/2025', hora: '14:00', medico: 'Dr. João Silva', especialidade: 'Cardiologia', local: 'Clínica Central', status: 'Agendada', observacao: '' },
-  { id: 2, data: '10/05/2025', hora: '10:00', medico: 'Dra. Maria Souza', especialidade: 'Dermatologia', local: 'Clínica Sul', status: 'Realizada', observacao: 'Paciente apresentou melhora.' },
-  { id: 3, data: '28/05/2025', hora: '09:30', medico: 'Dra. Maria Souza', especialidade: 'Dermatologia', local: 'Clínica Sul', status: 'Agendada', observacao: '' },
-  { id: 4, data: '01/05/2025', hora: '15:00', medico: 'Dr. João Silva', especialidade: 'Cardiologia', local: 'Clínica Central', status: 'Cancelada', observacao: 'Consulta cancelada pelo paciente.' },
+  {
+    id: 1,
+    data: "22/05/2025",
+    hora: "14:00",
+    medico: "Dr. João Silva",
+    especialidade: "Cardiologia",
+    local: "Clínica Central",
+    status: "Agendada",
+    observacao: "",
+  },
+  {
+    id: 2,
+    data: "10/05/2025",
+    hora: "10:00",
+    medico: "Dra. Maria Souza",
+    especialidade: "Dermatologia",
+    local: "Clínica Sul",
+    status: "Realizada",
+    observacao: "Paciente apresentou melhora.",
+  },
+  {
+    id: 3,
+    data: "28/05/2025",
+    hora: "09:30",
+    medico: "Dra. Maria Souza",
+    especialidade: "Dermatologia",
+    local: "Clínica Sul",
+    status: "Agendada",
+    observacao: "",
+  },
+  {
+    id: 4,
+    data: "01/05/2025",
+    hora: "15:00",
+    medico: "Dr. João Silva",
+    especialidade: "Cardiologia",
+    local: "Clínica Central",
+    status: "Cancelada",
+    observacao: "Consulta cancelada pelo paciente.",
+  },
 ];
 
 function AppointmentDetail() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [cancelada, setCancelada] = useState(false);
-  const consulta = CONSULTAS.find(c => String(c.id) === String(id));
+  const consulta = CONSULTAS.find((c) => String(c.id) === String(id));
 
   if (!consulta) {
     return (
@@ -41,7 +79,7 @@ function AppointmentDetail() {
   };
 
   // Determina se pode cancelar: status agendada e não já cancelada
-  const podeCancelar = consulta.status === 'Agendada' && !cancelada;
+  const podeCancelar = consulta.status === "Agendada" && !cancelada;
 
   return (
     <div className="dashboard-bg">
@@ -71,37 +109,53 @@ function AppointmentDetail() {
           </div>
           <div className="appointment-detail-row">
             <span className="label">Status:</span>
-            <span className={`status-label ${
-              cancelada || consulta.status === 'Cancelada'
-                ? 'status-cancelada'
-                : consulta.status === 'Realizada'
-                ? 'status-realizada'
-                : consulta.status === 'Agendada'
-                ? 'status-agendada'
-                : ''
-            }`}>{cancelada ? 'Cancelada' : consulta.status}</span>
-          </div>
-          <div className="appointment-detail-row">
-            <span className="label">Observações:</span>
-            <span>{consulta.observacao || '-'}</span>
+            <span
+              className={`status-label ${
+                cancelada || consulta.status === "Cancelada"
+                  ? "status-cancelada"
+                  : consulta.status === "Realizada"
+                  ? "status-realizada"
+                  : consulta.status === "Agendada"
+                  ? "status-agendada"
+                  : ""
+              }`}
+            >
+              {cancelada ? "Cancelada" : consulta.status}
+            </span>
           </div>
         </div>
         <div className="dashboard-actions">
           {podeCancelar && (
-            <button
-              className="dashboard-action-btn danger"
+            <Button
+              color="#b00"
+              fontWeight={600}
+              hoverBackground="#ffcccc"
+              hoverColor="#900"
+              background="#ffeaea"
+              border="1px solid #b00"
+              height="45px"
               onClick={handleCancelar}
-              style={{ marginBottom: 16 }}
+              style={{ marginBottom: "15px" }}
             >
               Cancelar consulta
-            </button>
+            </Button>
           )}
-          <Link
-            className="dashboard-action-btn secondary"
-            to={consulta.status === 'Agendada' ? "/dashboard" : "/appointments"}
+
+          <Button
+            background="#fff"
+            color="#2c7a7b"
+            fontWeight={600}
+            hoverBackground="#F0F8F8"
+            border="2px solid #2c7a7b"
+            height="45px"
+            onClick={() =>
+              navigate(
+                consulta.status === "Agendada" ? "/dashboard" : "/appointments"
+              )
+            }
           >
             Voltar
-          </Link>
+          </Button>
         </div>
         {cancelada && (
           <div className="dashboard-empty" style={{ marginTop: 16 }}>
