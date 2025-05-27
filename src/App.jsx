@@ -7,8 +7,8 @@ import AppointmentDetail from './pages/patient/appointmentDetail';
 import Calendar from './pages/patient/calendar';
 import DoctorDashboard from './pages/doctor/dashboard';
 import DoctorProfile from "./pages/doctor/profile";
-// import ProfileEdit from './pages/patient/profileEdit';
-// import ProfileView from './pages/patient/profileView';
+import ProfileEdit from './pages/patient/profileEdit';
+import ProfileView from './pages/patient/profileView';
 
 
 function App() {
@@ -24,8 +24,8 @@ function App() {
         <Route path='/appointments' element={<AppointmentsList />} />
         <Route path='/appointment/:id' element={<AppointmentDetail />} />
         <Route path='/calendar' element={<Calendar />} />
-        {/* <Route path='/profile/edit' element={<ProfileEdit />} />
-        <Route path='/profile' element={<ProfileView />} /> */}
+        <Route path='/profile/edit' element={<ProfileEdit />} />
+        <Route path='/profile' element={<ProfileView />} />
       </Routes>
     </Router>
   );

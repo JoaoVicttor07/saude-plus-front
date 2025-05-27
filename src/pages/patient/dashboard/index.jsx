@@ -89,7 +89,7 @@ function PatientDashboard() {
             hoverBackground="#f0f8f8"
             border="2px solid #2c7a7b"
             height="55px"
-            onClick={() => navigate("/profile/edit")}
+            onClick={() => navigate("/profile")}
           >
             Ver perfil
           </Button>

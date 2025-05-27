@@ -1,0 +1,36 @@
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto 2rem auto;
+}
+
+.profile-form label {
+  font-weight: 600;
+  color: #247575;
+  margin-bottom: 0.2rem;
+}
+
+.profile-form input {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #b2dfdb;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #222;
+  background: #f8fefe;
+  transition: border 0.2s;
+}
+
+.profile-form input:focus {
+  border-color: #2c7a7b;
+  outline: none;
+}
+
+.profile-form input:disabled {
+  background: #f1f5f9;
+  color: #888;
+  cursor: not-allowed;
+}
