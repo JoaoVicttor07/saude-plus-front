@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
+import Modal from "../../../components/modalConfirmation";
 import "./style.css";
 
 const ESPECIALIDADES = [
@@ -261,7 +262,7 @@ function PatientCalendar() {
             <Button
               fontWeight={600}
               height="45px"
-              width='50%'
+              width="50%"
               onClick={handleConfirmar}
               disabled={!horarioSelecionado}
             >
@@ -270,26 +271,22 @@ function PatientCalendar() {
           )}
         </div>
 
-        {/* Modal de sucesso */}
-        {showSuccess && (
-          <div className="calendar-modal">
-            <div className="calendar-modal-content">
-              <h3>Consulta Agendada!</h3>
-              <p>
-                Sua consulta foi marcada para{" "}
-                <b>{new Date(dataSelecionada).toLocaleDateString()}</b> às{" "}
-                <b>{horarioSelecionado}</b> com <b>{medico.nome}</b>.<br />
-                Um e-mail de confirmação foi enviado.
-              </p>
-              <Button
-                width="40%"
-                onClick={() => (window.location.href = "/dashboard")}
-              >
-                Voltar ao Dashboard
-              </Button>
-            </div>
-          </div>
+        {showSuccess && medico && (
+          <Modal
+            open={showSuccess}
+            title="Consulta Agendada!"
+            onClose={() => navigate("/dashboard")}
+            buttonText="Voltar ao Dashboard"
+          >
+            <p>
+              Sua consulta foi marcada para{" "}
+              <b>{new Date(dataSelecionada).toLocaleDateString()}</b> às{" "}
+              <b>{horarioSelecionado}</b> com <b>{medico.nome}</b>.<br />
+              Um e-mail de confirmação foi enviado.
+            </p>
+          </Modal>
         )}
+        
       </main>
     </div>
   );

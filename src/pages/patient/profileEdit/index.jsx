@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
+import Modal from "../../../components/modalConfirmation";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaPhone, FaIdCard } from "react-icons/fa";
@@ -17,6 +18,7 @@ const usuarioFake = {
 function ProfileEdit() {
   const navigate = useNavigate();
   const [form, setForm] = useState(usuarioFake);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,9 +26,13 @@ function ProfileEdit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Perfil atualizado com sucesso!");
-    navigate("/profile");
+    setModalOpen(true);
   };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    navigate('/profile');
+  }
 
   return (
     <div className="profile-edit-bg">
@@ -124,6 +130,14 @@ function ProfileEdit() {
             </Button>
           </div>
         </form>
+        <Modal
+        open={modalOpen}
+        title="Perfil atualizado!"
+        onClose={handleModalClose}
+        buttonText="OK"
+        >
+          Suas informações foram atualizadas com sucesso.
+          </Modal>
       </main>
     </div>
   );
