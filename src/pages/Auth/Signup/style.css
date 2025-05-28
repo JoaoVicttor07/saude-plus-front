@@ -1,7 +1,14 @@
-/* src/pages/Auth/Signup/style.css */
+.mainContainer {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .signup-container {
     width: 100%;
+    max-width: 400px;
     padding: 32px;
     background-color: #fff;
     border-radius: 12px;
