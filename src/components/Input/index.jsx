@@ -8,10 +8,20 @@ function Input({
   value,
   onChange,
   disabled,
+  width,
+  maxWidth,
+  minWidth,
   style = {},
   className = "",
   ...props
 }) {
+  const customStyle = {
+    width,
+    maxWidth,
+    minWidth,
+    ...style,
+  };
+
   return (
     <input
       type={type}
@@ -22,7 +32,7 @@ function Input({
       onChange={onChange}
       disabled={disabled}
       className={`custom-input ${className}`}
-      style={style}
+      style={customStyle}
       {...props}
     />
   );

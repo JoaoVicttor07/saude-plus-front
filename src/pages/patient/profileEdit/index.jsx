@@ -4,6 +4,7 @@ import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
+import { FaUser, FaEnvelope, FaPhone, FaIdCard } from "react-icons/fa";
 
 // Simulação de dados iniciais
 const usuarioFake = {
@@ -23,20 +24,21 @@ function ProfileEdit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aqui você faria a chamada para salvar as alterações
     alert("Perfil atualizado com sucesso!");
     navigate("/profile");
   };
 
   return (
-    <div className="dashboard-bg">
+    <div className="profile-edit-bg">
       <Header />
-      <main className="patient-dashboard-container" role="main">
-        <h2 className="dashboard-title">Editar Perfil</h2>
-        <form className="profile-form" onSubmit={handleSubmit}>
-          <div className="profile-row">
-            <div className="profile-col">
-              <label htmlFor="nome">Nome</label>
+      <main className="profile-edit-container" role="main">
+        <h2 className="profile-edit-title">Editar Perfil</h2>
+        <form className="profile-edit-form" onSubmit={handleSubmit}>
+          <div className="profile-edit-grid">
+            <div className="profile-edit-field">
+              <label htmlFor="nome">
+                <FaUser className="profile-edit-icon" /> Nome
+              </label>
               <Input
                 type="text"
                 id="nome"
@@ -44,10 +46,13 @@ function ProfileEdit() {
                 value={form.nome}
                 onChange={handleChange}
                 required
+                width="85%"
               />
             </div>
-            <div className="profile-col">
-              <label htmlFor="email">Email</label>
+            <div className="profile-edit-field">
+              <label htmlFor="email">
+                <FaEnvelope className="profile-edit-icon" /> Email
+              </label>
               <Input
                 type="email"
                 id="email"
@@ -55,12 +60,13 @@ function ProfileEdit() {
                 value={form.email}
                 onChange={handleChange}
                 required
+                width="85%"
               />
             </div>
-          </div>
-          <div className="profile-row">
-            <div className="profile-col">
-              <label htmlFor="telefone">Telefone</label>
+            <div className="profile-edit-field">
+              <label htmlFor="telefone">
+                <FaPhone className="profile-edit-icon" /> Telefone
+              </label>
               <Input
                 type="text"
                 id="telefone"
@@ -68,21 +74,25 @@ function ProfileEdit() {
                 value={form.telefone}
                 onChange={handleChange}
                 required
+                width="85%"
               />
             </div>
-            <div className="profile-col">
-              <label htmlFor="cpf">CPF</label>
+            <div className="profile-edit-field">
+              <label htmlFor="cpf">
+                <FaIdCard className="profile-edit-icon" /> CPF
+              </label>
               <Input
                 type="text"
                 id="cpf"
                 name="cpf"
                 value={form.cpf}
                 disabled
+                width="85%"
                 style={{ background: "#f1f5f9", color: "#888" }}
               />
             </div>
           </div>
-          <div className="dashboard-actions">
+          <div className="profile-edit-actions">
             <Button
               background="#2c7a7b"
               color="#fff"
@@ -91,11 +101,12 @@ function ProfileEdit() {
               border="none"
               borderRadius="6px"
               height="45px"
+              width="100%"
               type="submit"
+              style={{ minWidth: 140 }}
             >
               Salvar
             </Button>
-
             <Button
               background="#fff"
               color="#2c7a7b"
@@ -104,9 +115,10 @@ function ProfileEdit() {
               border="2px solid #2c7a7b"
               borderRadius="6px"
               height="45px"
+              width="100%"
               type="button"
               onClick={() => navigate("/profile")}
-              style={{ marginTop: "10px" }}
+              style={{ minWidth: 140 }}
             >
               Cancelar
             </Button>

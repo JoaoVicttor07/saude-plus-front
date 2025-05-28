@@ -1,62 +1,9 @@
-/* body {
-  background: linear-gradient(135deg, #319898 0%, #3ec6c6 100%);
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-} */
-
 .calendar-bg {
-    
-}
-
-/* .calendar-header {
-    width: 100%;
-    max-width: 540px;
-    margin: 0 auto;
-    height: 64px;
-    background: rgba(255,255,255,0.97);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    
-    border-radius: 0 0 18px 18px;
-    margin-bottom: 32px;
+    flex-direction: column;
 }
 
-.calendar-logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #247575;
-    letter-spacing: 1px;
-    user-select: none;
-}
-
-.calendar-logo span {
-    color: #1a6a6a;
-}
-
-.calendar-logout-btn {
-    background: #247575;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 22px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-    outline: 2px solid transparent;
-}
-
-.calendar-logout-btn:focus {
-    outline: 2px solid #1a6a6a;
-}
-
-.calendar-logout-btn:hover {
-    background: #1a6a6a;
-} */
 
 .calendar-container {
     background: #fff;
@@ -65,7 +12,7 @@
     max-width: 500px;
     width: 90vw;
     padding: 2.5rem 2rem 2.5rem 2rem;
-    margin: 100px auto;
+    margin: auto;
     color: #222;
     text-align: center;
     display: flex;
