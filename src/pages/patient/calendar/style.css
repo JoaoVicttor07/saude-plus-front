@@ -6,10 +6,7 @@
 } */
 
 .calendar-bg {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    
 }
 
 /* .calendar-header {
@@ -67,8 +64,8 @@
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.10);
     max-width: 500px;
     width: 90vw;
-    margin: 0 auto 32px auto;
     padding: 2.5rem 2rem 2.5rem 2rem;
+    margin: 100px auto;
     color: #222;
     text-align: center;
     display: flex;

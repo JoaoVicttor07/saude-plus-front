@@ -26,36 +26,42 @@ function Signin() {
   };
 
   return (
-    <div className="signin-container">
-      <h1>Bem-vindo ao Saúde+</h1>
-      <p>Faça login para acessar sua conta</p>
-      <form className="signin-form" onSubmit={handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <Input
-          type="email"
-          id="email"
-          placeholder="Digite seu email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+    <div className="main-container">
+      <div className="signin-container">
+        <h1>Bem-vindo ao Saúde+</h1>
+        <p>Faça login para acessar sua conta</p>
+        <form className="signin-form" onSubmit={handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <Input
+            type="email"
+            id="email"
+            placeholder="Digite seu email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <label htmlFor="password">Senha</label>
-        <Input
-          type="password"
-          id="password"
-          placeholder="Digite sua senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <label htmlFor="password">Senha</label>
+          <Input
+            type="password"
+            id="password"
+            placeholder="Digite sua senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <Button>Entrar</Button>
-      </form>
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
-      <p className="register-link">
-        Não tem uma conta? <Link href="/signup">Cadastre-se</Link>
-      </p>
+          <Button
+            style={{ marginTop: '10px' }}
+          >
+            Entrar
+          </Button>
+        </form>
+        {erro && <p style={{ color: "red" }}>{erro}</p>}
+        <p className="register-link">
+          Não tem uma conta? <Link href="/signup">Cadastre-se</Link>
+        </p>
+      </div>
     </div>
   );
 }

@@ -34,46 +34,54 @@ function ProfileEdit() {
       <main className="patient-dashboard-container" role="main">
         <h2 className="dashboard-title">Editar Perfil</h2>
         <form className="profile-form" onSubmit={handleSubmit}>
-          <label htmlFor="nome">Nome</label>
-          <Input
-            type="text"
-            id="nome"
-            name="nome"
-            value={form.nome}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="email">Email</label>
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="telefone">Telefone</label>
-          <Input
-            type="text"
-            id="telefone"
-            name="telefone"
-            value={form.telefone}
-            onChange={handleChange}
-            required
-          />
-
-          <label htmlFor="cpf">CPF</label>
-          <Input
-            type="text"
-            id="cpf"
-            name="cpf"
-            value={form.cpf}
-            disabled
-            style={{ background: "#f1f5f9", color: "#888" }}
-          />
-
+          <div className="profile-row">
+            <div className="profile-col">
+              <label htmlFor="nome">Nome</label>
+              <Input
+                type="text"
+                id="nome"
+                name="nome"
+                value={form.nome}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="profile-col">
+              <label htmlFor="email">Email</label>
+              <Input
+                type="email"
+                id="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="profile-row">
+            <div className="profile-col">
+              <label htmlFor="telefone">Telefone</label>
+              <Input
+                type="text"
+                id="telefone"
+                name="telefone"
+                value={form.telefone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="profile-col">
+              <label htmlFor="cpf">CPF</label>
+              <Input
+                type="text"
+                id="cpf"
+                name="cpf"
+                value={form.cpf}
+                disabled
+                style={{ background: "#f1f5f9", color: "#888" }}
+              />
+            </div>
+          </div>
           <div className="dashboard-actions">
             <Button
               background="#2c7a7b"
@@ -98,7 +106,7 @@ function ProfileEdit() {
               height="45px"
               type="button"
               onClick={() => navigate("/profile")}
-              style={{marginTop: '10px'}}
+              style={{ marginTop: "10px" }}
             >
               Cancelar
             </Button>

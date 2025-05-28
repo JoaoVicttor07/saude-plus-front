@@ -1,14 +1,18 @@
 body {
   background: linear-gradient(135deg, #2c7a7b, #38b2ac);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
   color: #ffffff;
 }
 
+.main-container {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .signin-container {
-    height: 100hv;
     width: 100%;
     max-width: 400px;
     padding: 30px;

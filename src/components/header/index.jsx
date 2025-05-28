@@ -15,9 +15,13 @@ function Header() {
       <div className="main-logo" aria-label="Saúde+">
         Saúde<span>+</span>
       </div>
-      <Button  
+      <Button
+      background="#fff"
+      color="#2c7a7b"
+      hoverBackground="#f0f8f8"
+      fontWeight={600}
       onClick={handleLogout}
-      width = '20%'
+      width = '10%'
       >
         Sair
       </Button>

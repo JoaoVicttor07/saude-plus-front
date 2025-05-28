@@ -1,10 +1,22 @@
 .profile-form {
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 2rem auto;
+}
+
+.profile-row {
+  display: flex;
   gap: 1rem;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto 2rem auto;
+}
+
+.profile-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-form label {
@@ -33,4 +45,16 @@
   background: #f1f5f9;
   color: #888;
   cursor: not-allowed;
+}
+
+/* Responsivo para telas pequenas */
+@media (max-width: 700px) {
+  .profile-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .profile-form {
+    max-width: 98vw;
+    padding: 0 0.5rem;
+  }
 }
