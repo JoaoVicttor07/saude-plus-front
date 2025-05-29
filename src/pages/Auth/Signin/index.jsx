@@ -16,8 +16,8 @@ function Signin() {
     // Autenticação estática enquanto a api é desenvolvida
     if (email === "paciente@paciente.com") {
       navigate("/dashboard");
-    } else if (email === "medico@medico.com") {
-      navigate("/medico");
+    } else if (email === "admin@admin.com" && password === "1") {
+      navigate("/admin/dashboard");
     } else if (email === "doctor@doctor.com" && password === "1") {
       navigate("/doctor/dashboard"); // Redireciona para o dashboard do médico
     } else {
