@@ -15,41 +15,48 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard-bg">
       <Header />
-      <div className="admin-dashboard-content">
-        <div className="admin-dashboard-top">
-          <h2 className="admin-dashboard-title">Painel do Administrador</h2>
-        </div>
-        <div className="admin-dashboard-layout">
-          <div className="admin-dashboard-cards">
-            {resumo.map((item) => (
-              <div className="admin-dashboard-card" key={item.label} style={{ borderTop: `4px solid ${item.color}` }}>
-                <div className="admin-dashboard-card-icon" style={{ color: item.color }}>{item.icon}</div>
-                <div className="admin-dashboard-card-value">{item.value}</div>
-                <div className="admin-dashboard-card-label">{item.label}</div>
-                <Button
-                  background="#fff"
-                  color={item.color}
-                  fontWeight={600}
-                  hoverBackground="#f0f8f8"
-                  height="36px"
-                  width="100%"
-                  border={`1.5px solid ${item.color}`}
-                  style={{ marginTop: "10px" }}
-                  onClick={() => window.location.href = item.link}
-                >
-                  Ver {item.label.toLowerCase()}
-                </Button>
+      <main className="admin-dashboard-main">
+        <h2 className="admin-dashboard-title">Painel do Administrador</h2>
+        <div className="admin-dashboard-cards">
+          {resumo.map((item) => (
+            <div
+              className="admin-dashboard-card"
+              key={item.label}
+              style={{
+                borderTop: `4px solid ${item.color}`,
+                background: "linear-gradient(135deg, #f9fafb 80%, #e6f4f1 100%)"
+              }}
+            >
+              <div className="admin-dashboard-card-icon" style={{ color: item.color }}>
+                {item.icon}
               </div>
-            ))}
-          </div>
-          <div className="admin-dashboard-actions">
-            <h4>Ações Rápidas</h4>
+              <div className="admin-dashboard-card-value">{item.value}</div>
+              <div className="admin-dashboard-card-label">{item.label}</div>
+              <Button
+                background="#fff"
+                color={item.color}
+                fontWeight={600}
+                hoverBackground="#f0f8f8"
+                height="36px"
+                width="100%"
+                border={`1.5px solid ${item.color}`}
+                style={{ marginTop: "10px", transition: "background 0.2s, color 0.2s" }}
+                onClick={() => window.location.href = item.link}
+              >
+                Ver {item.label.toLowerCase()}
+              </Button>
+            </div>
+          ))}
+        </div>
+        <div className="admin-dashboard-actions-horizontal">
+          <h4>Ações Rápidas</h4>
+          <div className="admin-dashboard-actions-btns">
             <Button
               background="#2c7a7b"
               color="#fff"
               fontWeight={600}
-              width="100%"
-              style={{ marginBottom: "10px" }}
+              width="180px"
+              style={{ marginRight: "12px" }}
               onClick={() => window.location.href = "/admin/patients"}
             >
               <FaPlus /> Novo Paciente
@@ -58,8 +65,8 @@ function AdminDashboard() {
               background="#319898"
               color="#fff"
               fontWeight={600}
-              width="100%"
-              style={{ marginBottom: "10px" }}
+              width="180px"
+              style={{ marginRight: "12px" }}
               onClick={() => window.location.href = "/admin/doctors"}
             >
               <FaPlus /> Novo Médico
@@ -68,14 +75,17 @@ function AdminDashboard() {
               background="#38a169"
               color="#fff"
               fontWeight={600}
-              width="100%"
+              width="180px"
               onClick={() => window.location.href = "/admin/appointments/create"}
             >
               <FaPlus /> Nova Consulta
             </Button>
           </div>
         </div>
-      </div>
+      </main>
+      <footer className="admin-dashboard-footer">
+        <span>Saúde+ &copy; 2025 &middot; v1.0</span>
+      </footer>
     </div>
   );
 }
