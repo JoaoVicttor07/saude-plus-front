@@ -1,4 +1,5 @@
 import { FaUser, FaUserMd, FaClipboardList, FaCheckCircle, FaTimesCircle, FaPlus } from "react-icons/fa";
+import {useNavigate} from 'react-router-dom'
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import "./style.css";
@@ -12,6 +13,8 @@ const resumo = [
 ];
 
 function AdminDashboard() {
+  const navigate = useNavigate();
+
   return (
     <div className="admin-dashboard-bg">
       <Header />
@@ -48,39 +51,16 @@ function AdminDashboard() {
             </div>
           ))}
         </div>
-        <div className="admin-dashboard-actions-horizontal">
-          <h4>Ações Rápidas</h4>
-          <div className="admin-dashboard-actions-btns">
-            <Button
-              background="#2c7a7b"
-              color="#fff"
-              fontWeight={600}
-              width="180px"
-              style={{ marginRight: "12px" }}
-              onClick={() => window.location.href = "/admin/patients"}
-            >
-              <FaPlus /> Novo Paciente
-            </Button>
-            <Button
-              background="#319898"
-              color="#fff"
-              fontWeight={600}
-              width="180px"
-              style={{ marginRight: "12px" }}
-              onClick={() => window.location.href = "/admin/doctors"}
-            >
-              <FaPlus /> Novo Médico
-            </Button>
-            <Button
-              background="#38a169"
-              color="#fff"
-              fontWeight={600}
-              width="180px"
-              onClick={() => window.location.href = "/admin/appointments/create"}
-            >
-              <FaPlus /> Nova Consulta
-            </Button>
-          </div>
+        <div className="admin-dashboard-single-action">
+          <Button
+            background="#38a169"
+            color="#fff"
+            fontWeight={700}
+            style={{ minWidth: 220, fontSize: "1.1rem" }}
+            onClick={() => navigate("/admin/appointments/create")}
+          >
+            <FaPlus /> Nova Consulta (Encaixe)
+          </Button>
         </div>
       </main>
       <footer className="admin-dashboard-footer">
