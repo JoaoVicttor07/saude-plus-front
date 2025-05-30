@@ -3,6 +3,7 @@ import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import Modal from "../../../components/modalConfirmation";
+import Footer from "../../../components/footer"
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaPhone, FaIdCard } from "react-icons/fa";
@@ -139,6 +140,7 @@ function ProfileEdit() {
           Suas informações foram atualizadas com sucesso.
           </Modal>
       </main>
+      <Footer/>
     </div>
   );
 }

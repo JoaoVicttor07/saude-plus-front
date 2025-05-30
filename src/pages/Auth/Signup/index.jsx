@@ -2,6 +2,7 @@ import { useState } from "react";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import Link from "../../../components/Link";
+import Footer from "../../../components/footer"
 import "./style.css";
 
 function Signup() {
@@ -186,6 +187,7 @@ function Signup() {
           Já tem uma conta? <Link href="/signin">Entrar</Link>
         </p>
       </div>
+      <Footer/>
     </div>
   );
 }

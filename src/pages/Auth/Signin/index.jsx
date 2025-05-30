@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import Link from "../../../components/Link";
+import Footer from "../../../components/footer"
 import "./style.css";
 
 function Signin() {
@@ -62,6 +63,7 @@ function Signin() {
           Não tem uma conta? <Link href="/signup">Cadastre-se</Link>
         </p>
       </div>
+      <Footer />
     </div>
   );
 }

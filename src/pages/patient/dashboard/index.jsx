@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarAlt } from "react-icons/fa";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
+import Footer from "../../../components/footer"
 import "./style.css";
 
 function PatientDashboard() {
@@ -95,6 +96,7 @@ function PatientDashboard() {
           </Button>
         </div>
       </main>
+      <Footer/>
     </div>
   );
 }

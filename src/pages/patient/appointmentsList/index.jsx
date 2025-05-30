@@ -1,6 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import Header from '../../../components/header';
 import Button from '../../../components/Button';
+import Footer from "../../../components/footer"
 import './style.css';
 
 function AppointmentsList() {
@@ -66,6 +67,7 @@ function AppointmentsList() {
           </Button>
         </div>
       </main>
+      <Footer/>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
+import Footer from "../../../components/footer"
 import "./style.css";
 import { useState } from "react";
 
@@ -163,6 +164,7 @@ function AppointmentDetail() {
           </div>
         )}
       </main>
+      <Footer/>
     </div>
   );
 }

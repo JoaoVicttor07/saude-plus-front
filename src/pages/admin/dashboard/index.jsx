@@ -1,15 +1,53 @@
-import { FaUser, FaUserMd, FaClipboardList, FaCheckCircle, FaTimesCircle, FaPlus } from "react-icons/fa";
-import {useNavigate} from 'react-router-dom'
+import {
+  FaUser,
+  FaUserMd,
+  FaClipboardList,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaPlus,
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
+import Footer from "../../../components/footer";
 import "./style.css";
 
 const resumo = [
-  { label: "Pacientes", value: 128, icon: <FaUser />, color: "#2c7a7b", link: "/admin/patients" },
-  { label: "Médicos", value: 17, icon: <FaUserMd />, color: "#319898", link: "/admin/doctors" },
-  { label: "Pendentes", value: 9, icon: <FaClipboardList />, color: "#f6ad55", link: "/admin/appointments?status=pendente" },
-  { label: "Realizadas", value: 45, icon: <FaCheckCircle />, color: "#38a169", link: "/admin/appointments?status=realizada" },
-  { label: "Canceladas", value: 3, icon: <FaTimesCircle />, color: "#e53e3e", link: "/admin/appointments?status=cancelada" },
+  {
+    label: "Pacientes",
+    value: 128,
+    icon: <FaUser />,
+    color: "#2c7a7b",
+    link: "/admin/patients",
+  },
+  {
+    label: "Médicos",
+    value: 17,
+    icon: <FaUserMd />,
+    color: "#319898",
+    link: "/admin/doctors",
+  },
+  {
+    label: "Pendentes",
+    value: 9,
+    icon: <FaClipboardList />,
+    color: "#f6ad55",
+    link: "/admin/appointments?status=pendente",
+  },
+  {
+    label: "Realizadas",
+    value: 45,
+    icon: <FaCheckCircle />,
+    color: "#38a169",
+    link: "/admin/appointments?status=realizada",
+  },
+  {
+    label: "Canceladas",
+    value: 3,
+    icon: <FaTimesCircle />,
+    color: "#e53e3e",
+    link: "/admin/appointments?status=cancelada",
+  },
 ];
 
 function AdminDashboard() {
@@ -27,10 +65,14 @@ function AdminDashboard() {
               key={item.label}
               style={{
                 borderTop: `4px solid ${item.color}`,
-                background: "linear-gradient(135deg, #f9fafb 80%, #e6f4f1 100%)"
+                background:
+                  "linear-gradient(135deg, #f9fafb 80%, #e6f4f1 100%)",
               }}
             >
-              <div className="admin-dashboard-card-icon" style={{ color: item.color }}>
+              <div
+                className="admin-dashboard-card-icon"
+                style={{ color: item.color }}
+              >
                 {item.icon}
               </div>
               <div className="admin-dashboard-card-value">{item.value}</div>
@@ -43,8 +85,11 @@ function AdminDashboard() {
                 height="36px"
                 width="100%"
                 border={`1.5px solid ${item.color}`}
-                style={{ marginTop: "10px", transition: "background 0.2s, color 0.2s" }}
-                onClick={() => window.location.href = item.link}
+                style={{
+                  marginTop: "10px",
+                  transition: "background 0.2s, color 0.2s",
+                }}
+                onClick={() => (window.location.href = item.link)}
               >
                 Ver {item.label.toLowerCase()}
               </Button>
@@ -63,9 +108,7 @@ function AdminDashboard() {
           </Button>
         </div>
       </main>
-      <footer className="admin-dashboard-footer">
-        <span>Saúde+ &copy; 2025 &middot; v1.0</span>
-      </footer>
+      <Footer />
     </div>
   );
 }

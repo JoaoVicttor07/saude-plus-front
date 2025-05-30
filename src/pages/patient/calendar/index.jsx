@@ -10,6 +10,7 @@ import {
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Modal from "../../../components/modalConfirmation";
+import Footer from "../../../components/footer"
 import "./style.css";
 
 const ESPECIALIDADES = [
@@ -288,6 +289,7 @@ function PatientCalendar() {
         )}
         
       </main>
+      <Footer/>
     </div>
   );
 }

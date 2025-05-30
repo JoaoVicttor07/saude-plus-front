@@ -1,5 +1,6 @@
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
+import Footer from "../../../components/footer"
 import "./style.css";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaPhone, FaIdCard } from "react-icons/fa";
@@ -78,6 +79,7 @@ function ProfileView() {
           </Button>
         </div>
       </main>
+      <Footer/>
     </div>
   );
 }
