@@ -17,8 +17,10 @@ function Header() {
       </div>
       <Button
       background="#fff"
-      color="#2c7a7b"
-      hoverBackground="#f0f8f8"
+      color="#247575"
+      hoverBackground="#e6f4f4"
+      border="1px solid #247575"
+      borderRadius="7px"
       fontWeight={600}
       onClick={handleLogout}
       width = '10%'

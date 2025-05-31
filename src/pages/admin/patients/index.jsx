@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
+import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
 
 import "./style.css";
@@ -33,8 +34,6 @@ const pacientesMock = [
     telefone: "(21) 99876-5432",
     status: "Ativo",
   },
-  
-  // ...adicione mais pacientes se quiser
 ];
 
 function mascararCPF(cpf) {
@@ -63,12 +62,17 @@ function AdminPatients() {
       <main className="admin-patients-main">
         <div className="admin-patients-header">
           <h2>Pacientes Cadastrados</h2>
-          <button
-            className="admin-patients-back-btn"
-            onClick={() => navigate("/admin/dashboard")}
+
+          <Button
+          background="#fff"
+          color="#247575"
+          hoverBackground="#e6f4f4"
+          fontWeight={600}
+          border="2px solid #247575"
+          borderRadius="7px"
+          onClick={() => navigate(-1)}
           >
-            Voltar ao Dashboard
-          </button>
+            Voltar ao Dashboard</Button>
         </div>
         <div className="admin-patients-filters-row">
           <div className="admin-patients-search">
@@ -118,12 +122,24 @@ function AdminPatients() {
                     <td>{p.telefone}</td>
                     <td>{p.status}</td>
                     <td>
-                      <button
+                      <Button
+                      background="#fff"
+                      color="#247575"
+                      fontWeight={600}
+                      border="2px solid #247575"
+                      fontSize="14px"
+                      height="33px"
+                      borderRadius="7px"
+                      hoverBackground="#247575"
+                      hoverColor="#fff"
+                      >
+                        Ver Detalhes</Button>
+                      {/* <button
                         className="detalhes-btn"
                         onClick={() => navigate(`/admin/patients/${p.id}`)}
                       >
                         Ver Detalhes
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 ))

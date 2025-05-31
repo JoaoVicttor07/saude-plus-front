@@ -37,6 +37,7 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
+
 .admin-patients-back-btn:hover {
   background: #247575;
   color: #fff;
@@ -59,6 +60,7 @@
   font-size: 1.1rem;
   width: 320px;
 }
+
 .admin-patients-search input {
   border: none;
   outline: none;
@@ -84,6 +86,41 @@
   box-shadow: 0 2px 16px rgba(44, 122, 123, 0.07);
   padding: 0;
   overflow-x: auto;
+  max-height: 48vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0);
+}
+
+/* ====== Estilos para navegadores WebKit (Chrome, Edge, Safari) ====== */
+.admin-patients-table-container::-webkit-scrollbar {
+  width: 8px;
+  /* largura da barra vertical */
+  height: 8px;
+  /* altura da barra horizontal (caso tenha) */
+}
+
+.admin-patients-table-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  /* cinza claríssimo */
+  border-radius: 4px;
+}
+
+
+.admin-patients-table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+
+.admin-patients-table-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.admin-patients-table-container::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .admin-patients-table {
@@ -109,17 +146,19 @@
 }
 
 .admin-patients-table td {
-    color: #247575;
+  color: #247575;
 }
 
 .linha-par {
   background: #fff;
   transition: background 0.2s;
 }
+
 .linha-impar {
   background: #f5f7fa;
   transition: background 0.2s;
 }
+
 .admin-patients-table tr:hover {
   background: #e6f4f1;
 }
@@ -134,6 +173,7 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
+
 .detalhes-btn:hover {
   background: #247575;
   color: #fff;

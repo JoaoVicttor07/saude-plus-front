@@ -96,16 +96,29 @@ function AdminDashboard() {
             </div>
           ))}
         </div>
-        <div className="admin-dashboard-single-action">
-          <Button
-            background="#38a169"
-            color="#fff"
-            fontWeight={700}
-            style={{ minWidth: 220, fontSize: "1.1rem" }}
-            onClick={() => navigate("/admin/appointments/create")}
-          >
-            <FaPlus /> Nova Consulta (Encaixe)
-          </Button>
+        <div className="admin-dashboard-actions-horizontal">
+          <h4>Ações rápidas</h4>
+          <div className="admin-dashboard-actions-btns">
+
+            <Button
+              background="#319898"
+              color="#fff"
+              fontWeight={600}
+              onClick={() => navigate("admin/doctors/create")}
+            >
+              + Novo Médico
+
+            </Button>
+            <Button
+              background="#38a169"
+              color="#fff"
+              fontWeight={700}
+              style={{ minWidth: 220, fontSize: "1.1rem" }}
+              onClick={() => navigate("/admin/appointments/create")}
+            >
+              <FaPlus /> Nova Consulta (Encaixe)
+            </Button>
+          </div>
         </div>
       </main>
       <Footer />
