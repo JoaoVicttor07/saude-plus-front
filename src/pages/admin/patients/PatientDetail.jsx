@@ -1,63 +1,51 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
-import Footer from "../../../components/footer";
 import Button from "../../../components/Button";
+import Footer from "../../../components/footer";
 import "./PatientDetail.css";
 
 // Mock de dados do paciente
-const pacienteMock = {
+const paciente = {
   id: 1,
   nome: "Ana Paula Souza",
   cpf: "123.456.789-00",
   email: "ana@email.com",
   telefone: "(11) 91234-5678",
-  endereco: "Rua das Flores, 123, Centro, 12345-678, São Paulo, SP",
-  sexo: "Feminino",
-  dataCadastro: "2023-04-15",
   status: "Ativo",
+  dataCadastro: "2023-04-15",
+  totalConsultas: 3,
 };
 
 // Mock de consultas
-const consultasPendentes = [
+const consultas = [
   {
     id: 1,
     data: "10/06/2025",
     horario: "14:00",
     medico: "Dr. João Almeida",
-    especialidade: "Cardiologia",
-    local: "Clínica Central - Sala 2",
+    status: "Agendada",
   },
-];
-const consultasRealizadas = [
   {
     id: 2,
     data: "01/05/2025",
     horario: "09:30",
     medico: "Dra. Maria Oliveira",
-    especialidade: "Dermatologia",
-    local: "Clínica Central - Sala 1",
+    status: "Cancelada",
   },
   {
     id: 3,
     data: "15/03/2025",
     horario: "11:00",
     medico: "Dr. Pedro Santos",
-    especialidade: "Clínico Geral",
-    local: "Clínica Central - Sala 3",
+    status: "Realizada",
   },
 ];
-const consultasCanceladas = [
-  {
-    id: 4,
-    data: "20/04/2025",
-    horario: "16:00",
-    medico: "Dr. João Almeida",
-    especialidade: "Cardiologia",
-    local: "Clínica Central - Sala 2",
-    motivo: "Paciente indisposto",
-    quemCancelou: "Paciente",
-  },
+
+const statusAbas = [
+  { key: "Agendada", label: "Agendadas" },
+  { key: "Realizada", label: "Realizadas" },
+  { key: "Cancelada", label: "Canceladas" },
 ];
 
 function mascararCPF(cpf) {
@@ -70,321 +58,228 @@ function formatarData(dataISO) {
   return `${dia}/${mes}/${ano}`;
 }
 
-function PatientDetail() {
+export default function PatientDetail() {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const [aba, setAba] = useState("pendentes");
+  const [aba, setAba] = useState("Agendada");
 
-  // Aqui você buscaria os dados reais pelo id
-
-  // Abas de histórico
-  const abas = [
-    { key: "pendentes", label: "Pendentes", total: consultasPendentes.length },
-    { key: "realizadas", label: "Realizadas", total: consultasRealizadas.length },
-    { key: "canceladas", label: "Canceladas", total: consultasCanceladas.length },
-  ];
+  const consultasFiltradas = consultas.filter((c) => c.status === aba);
 
   return (
-    <div className="admin-patient-detail-bg">
+    <div className="patient-detail-wf-bg">
       <Header />
-      <main className="admin-patient-detail-main">
+      <main className="patient-detail-wf-main">
         {/* Cabeçalho */}
-        <div className="admin-patient-detail-header">
-          <div>
-            <h2 className="admin-patient-detail-title">Detalhes do Paciente</h2>
-            <div className="admin-patient-detail-nome">{pacienteMock.nome}</div>
+        <div className="patient-detail-wf-header">
+          <h1 className="patient-detail-wf-title">Detalhes do Paciente</h1>
+          <Button
+            background="#fff"
+            color="#247575"
+            border="2px solid #247575"
+            borderRadius="7px"
+            fontWeight={600}
+            fontSize="1rem"
+            hoverBackground="#e6f4f1"
+            onClick={() => navigate(-1)}
+            style={{ marginRight: 16 }}
+          >
+            Voltar à lista de pacientes
+          </Button>
+        </div>
+
+        {/* Identificação */}
+        <div className="patient-detail-wf-identificacao">
+          <span className="patient-detail-wf-nome">{paciente.nome}</span>
+          <span
+            className={`patient-detail-wf-status ${
+              paciente.status === "Ativo" ? "ativo" : "inativo"
+            }`}
+          >
+            {paciente.status}
+          </span>
+        </div>
+        <div className="patient-detail-wf-cadastrado">
+          Cadastrado desde: {formatarData(paciente.dataCadastro)}
+        </div>
+
+        {/* Card de informações básicas */}
+        <div className="patient-detail-wf-card">
+          <div className="patient-detail-wf-avatar">
+            <span
+              className="material-icons"
+              style={{ fontSize: 48, color: "#b2b2b2" }}
+            >
+              person
+            </span>
           </div>
-          <div className="admin-patient-detail-actions">
-            <Button
-              background="#fff"
-              color="#2c7a7b"
-              border="2px solid #2c7a7b"
-              borderRadius="7px"
-              fontWeight={600}
-              hoverBackground="#e6f4f1"
-              onClick={() => navigate("/admin/patients")}
-            >
-              Voltar à lista de pacientes
-            </Button>
-            {/* <Button
-              background="#fff"
-              color="#2c7a7b"
-              border="2px solid #2c7a7b"
-              borderRadius="7px"
-              fontWeight={600}
-              hoverBackground="#e6f4f1"
-              onClick={() => alert("Agendar Consulta")}
-            >
-              Agendar Consulta
-            </Button> */}
+          <div className="patient-detail-wf-info-list">
+            <div>
+              <span className="label">Nome:</span> {paciente.nome}
+            </div>
+            <div>
+              <span className="label">CPF:</span> {mascararCPF(paciente.cpf)}
+            </div>
+            <div>
+              <span className="label">E-mail:</span> {paciente.email}
+            </div>
+            <div>
+              <span className="label">Telefone:</span> {paciente.telefone}
+            </div>
           </div>
         </div>
 
-        {/* Card de dados pessoais */}
-        <div className="admin-patient-detail-card">
-          <div className="admin-patient-detail-card-row">
-            <div>
-              <span className="label">Nome:</span>
-              <span className="label-text">{pacienteMock.nome}</span>
+        {/* Blocos de resumo e ações */}
+        <div className="patient-detail-wf-resumo-acoes">
+          <div className="patient-detail-wf-resumo">
+            <div className="patient-detail-wf-resumo-bloco">
+              <div className="resumo-label">Status</div>
+              <div className="resumo-valor">{paciente.status}</div>
             </div>
-            <div>
-              <span className="label">CPF:</span>
-              <span className="label-text">{mascararCPF(pacienteMock.cpf)}</span>
-            </div>
-          </div>
-          <div className="admin-patient-detail-card-row">
-            <div>
-              <span className="label">E-mail:</span>
-              <span className="label-text">{pacienteMock.email}</span>
-            </div>
-            <div>
-              <span className="label">Telefone:</span>
-              <span className="label-text">{pacienteMock.telefone}</span>
-            </div>
-          </div>
-          <div className="admin-patient-detail-card-row">
-            <div>
-              <span className="label">Sexo:</span>
-              <span className="label-text">{pacienteMock.sexo}</span>
-            </div>
-            <div>
-              <span className="label">Status:</span>
-              <span className="label-text">{pacienteMock.status}</span>
-            </div>
-          </div>
-          <div className="admin-patient-detail-card-row">
-            <div style={{ flex: 1 }}>
-              <span className="label">Endereço:</span>
-              <span className="label-text">{pacienteMock.endereco}</span>
-            </div>
-          </div>
-          {/* {pacienteMock.alergias && (
-            <div className="admin-patient-detail-card-row">
-              <div style={{ flex: 1 }}>
-                <span className="label">Alergias/Condições:</span>
-                <span>{pacienteMock.alergias}</span>
+            <div className="patient-detail-wf-resumo-bloco">
+              <div className="resumo-label">Data de Cadastro</div>
+              <div className="resumo-valor">
+                {formatarData(paciente.dataCadastro)}
               </div>
             </div>
-          )} */}
-          <div className="admin-patient-detail-cadastro">
-            Paciente cadastrado em: {formatarData(pacienteMock.dataCadastro)}
+            {/* <div className="patient-detail-wf-resumo-bloco">
+              <div className="resumo-label">Total de Consultas</div>
+              <div className="resumo-valor">{paciente.totalConsultas}</div>
+            </div> */}
+          </div>
+          <div className="patient-detail-wf-acoes">
+            <Button
+              background="#fff"
+              color="#247575"
+              border="2px solid #247575"
+              borderRadius="7px"
+              fontWeight={600}
+              hoverBackground="#e6f4f1"
+              onClick={() => alert("Agendar Nova Consulta")}
+            >
+              Agendar Nova Consulta
+            </Button>
+            <Button
+              background="#fff"
+              color="#247575"
+              border="2px solid #247575"
+              borderRadius="7px"
+              fontWeight={600}
+              fontSize="1rem"
+              hoverBackground="#e6f4f1"
+              onClick={() => alert("Desativar/Ativar Paciente")}
+            >
+              {paciente.status === "Ativo"
+                ? "Desativar Paciente"
+                : "Ativar Paciente"}
+            </Button>
           </div>
         </div>
 
-        {/* Abas de histórico */}
-        <div className="admin-patient-detail-tabs">
-          {abas.map((tab) => (
-            <button
-              key={tab.key}
-              className={`tab-btn${aba === tab.key ? " active" : ""}`}
-              onClick={() => setAba(tab.key)}
-            >
-              {tab.label}
-              <span className="tab-count">{tab.total}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Conteúdo das abas */}
-        <div className="admin-patient-detail-tab-content">
-          {aba === "pendentes" && (
-            <div className="admin-patient-detail-table-block">
-              <div className="table-title">Consultas Pendentes</div>
-              {consultasPendentes.length === 0 ? (
-                <div className="table-empty">Este paciente não possui consultas agendadas.</div>
-              ) : (
-                <div className="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Médico</th>
-                        <th>Especialidade</th>
-                        <th>Local</th>
-                        <th>Ação</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {consultasPendentes.map((c, idx) => (
-                        <tr key={c.id} className={idx % 2 === 0 ? "linha-par" : "linha-impar"}>
-                          <td>{c.data}</td>
-                          <td>{c.horario}</td>
-                          <td>{c.medico}</td>
-                          <td>{c.especialidade}</td>
-                          <td>{c.local}</td>
-                          <td>
-                            <Button
-                              background="#fff"
-                              color="#2c7a7b"
-                              border="1.5px solid #2c7a7b"
-                              fontWeight={600}
-                              fontSize="14px"
-                              height="30px"
-                              borderRadius="7px"
-                              hoverBackground="#2c7a7b"
-                              hoverColor="#fff"
-                              onClick={() => navigate(`/admin/appointments/${c.id}`)}
-                            >
-                              Ver Detalhes
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
-          {aba === "realizadas" && (
-            <div className="admin-patient-detail-table-block">
-              <div className="table-title">Consultas Realizadas</div>
-              {consultasRealizadas.length === 0 ? (
-                <div className="table-empty">Nenhuma consulta realizada.</div>
-              ) : (
-                <div className="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Médico</th>
-                        <th>Especialidade</th>
-                        <th>Local</th>
-                        <th>Ação</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {consultasRealizadas.map((c, idx) => (
-                        <tr key={c.id} className={idx % 2 === 0 ? "linha-par" : "linha-impar"}>
-                          <td>{c.data}</td>
-                          <td>{c.horario}</td>
-                          <td>{c.medico}</td>
-                          <td>{c.especialidade}</td>
-                          <td>{c.local}</td>
-                          <td>
-                            <Button
-                              background="#fff"
-                              color="#2c7a7b"
-                              border="1.5px solid #2c7a7b"
-                              fontWeight={600}
-                              fontSize="14px"
-                              height="30px"
-                              borderRadius="7px"
-                              hoverBackground="#2c7a7b"
-                              hoverColor="#fff"
-                              onClick={() => navigate(`/admin/appointments/${c.id}`)}
-                            >
-                              Ver Detalhes
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
-          {aba === "canceladas" && (
-            <div className="admin-patient-detail-table-block">
-              <div className="table-title">Consultas Canceladas</div>
-              {consultasCanceladas.length === 0 ? (
-                <div className="table-empty">Nenhuma consulta cancelada.</div>
-              ) : (
-                <div className="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Médico</th>
-                        <th>Especialidade</th>
-                        <th>Local</th>
-                        <th>Motivo</th>
-                        <th>Cancelador</th>
-                        <th>Ação</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {consultasCanceladas.map((c, idx) => (
-                        <tr key={c.id} className={idx % 2 === 0 ? "linha-par" : "linha-impar"}>
-                          <td>{c.data}</td>
-                          <td>{c.horario}</td>
-                          <td>{c.medico}</td>
-                          <td>{c.especialidade}</td>
-                          <td>{c.local}</td>
-                          <td>{c.motivo || "Cancelada"}</td>
-                          <td>{c.quemCancelou}</td>
-                          <td>
-                            <Button
-                              background="#fff"
-                              color="#2c7a7b"
-                              border="1.5px solid #2c7a7b"
-                              fontWeight={600}
-                              fontSize="14px"
-                              height="30px"
-                              borderRadius="7px"
-                              hoverBackground="#2c7a7b"
-                              hoverColor="#fff"
-                              onClick={() => navigate(`/admin/appointments/${c.id}`)}
-                            >
-                              Ver Detalhes
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Ações rápidas */}
-        <div className="admin-patient-detail-actions-quick">
-          <Button
-            background="#fff"
-            color="#2c7a7b"
-            border="2px solid #2c7a7b"
-            borderRadius="7px"
-            fontWeight={600}
-            hoverBackground="#e6f4f1"
-            onClick={() => alert("Agendar Nova Consulta")}
-          >
-            Agendar Nova Consulta
-          </Button>
-          <Button
-            background="#fff"
-            color="#2c7a7b"
-            border="2px solid #2c7a7b"
-            borderRadius="7px"
-            fontWeight={600}
-            hoverBackground="#e6f4f1"
-            disabled={consultasPendentes.length === 0}
-            onClick={() => alert("Cancelar Consulta Pendente")}
-          >
-            Cancelar Consulta Pendente
-          </Button>
-          <Button
-            background="#fff"
-            color="#2c7a7b"
-            border="2px solid #2c7a7b"
-            borderRadius="7px"
-            fontWeight={600}
-            hoverBackground="#e6f4f1"
-            disabled={consultasPendentes.length === 0}
-            onClick={() => alert("Remarcar Consulta")}
-          >
-            Remarcar Consulta
-          </Button>
+        {/* Histórico de Consultas */}
+        <div className="patient-detail-wf-historico">
+          <h2 className="patient-detail-wf-historico-title">
+            Histórico de Consultas
+          </h2>
+          <div className="patient-detail-wf-abas">
+            {statusAbas.map((tab) => (
+              <button
+                key={tab.key}
+                className={`patient-detail-wf-aba${
+                  aba === tab.key ? " active" : ""
+                }`}
+                onClick={() => setAba(tab.key)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <div className="patient-detail-wf-tabela-container">
+            <table className="patient-detail-wf-tabela">
+              <thead>
+                <tr>
+                  <th>Data da Consulta</th>
+                  <th>Horário</th>
+                  <th>Médico</th>
+                  <th>Status</th>
+                  <th style={{ textAlign: "right" }}>Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {consultasFiltradas.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="patient-detail-wf-tabela-vazia">
+                      Nenhuma consulta encontrada.
+                    </td>
+                  </tr>
+                ) : (
+                  consultasFiltradas.map((c, idx) => (
+                    <tr
+                      key={c.id}
+                      className={idx % 2 === 0 ? "linha-par" : "linha-impar"}
+                    >
+                      <td>{c.data}</td>
+                      <td>{c.horario}</td>
+                      <td>{c.medico}</td>
+                      <td>
+                        <span
+                          className={`patient-detail-wf-status-badge ${c.status.toLowerCase()}`}
+                        >
+                          {c.status}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: "right" }}>
+                        {c.status === "Agendada" && (
+                          <Button
+                            background="#fff"
+                            color="#247575"
+                            border="2px solid #247575"
+                            borderRadius="7px"
+                            fontWeight={600}
+                            fontSize="1rem"
+                            hoverBackground="#fbe9e7"
+                            hoverColor="#d32f2f"
+                            onClick={() => alert("Cancelar consulta")}
+                          >
+                            Cancelar
+                          </Button>
+                        )}
+                        {c.status === "Realizada" && (
+                          <Button
+                            background="#fff"
+                            color="#247575"
+                            border="2px solid #247575"
+                            borderRadius="7px"
+                            fontWeight={600}
+                            fontSize="1rem"
+                            hoverBackground="#e6f4f4"
+                            onClick={() => alert("Ver detalhes da consulta")}
+                          >
+                            Ver Detalhes
+                          </Button>
+                        )}
+                        {c.status === "Cancelada" && (
+                          <Button
+                            background="#fff"
+                            color="#247575"
+                            border="2px solid #247575"
+                            borderRadius="7px"
+                            fontWeight={600}
+                            fontSize="1rem"
+                            hoverBackground="#e6f4f4"
+                            onClick={() => alert("Ver detalhes da consulta")}
+                          >
+                            Ver Detalhes
+                          </Button>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
       <Footer />
     </div>
   );
 }
-
-export default PatientDetail;
