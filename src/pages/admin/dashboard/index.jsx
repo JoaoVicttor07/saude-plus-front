@@ -15,7 +15,7 @@ import "./style.css";
 const resumo = [
   {
     label: "Pacientes",
-    value: 128,
+    value: 3,
     icon: <FaUser />,
     color: "#2c7a7b",
     link: "/admin/patients",

@@ -17,8 +17,8 @@ import DoctorProfile from "./pages/doctor/profile";
 // Admin
 import AdminDashboard from './pages/admin/dashboard';
 import AdminPatients from './pages/admin/patients';
-// import AdminPatientDetail from './pages/admin/patients/PatientDetail';
-// import AdminDoctors from './pages/admin/doctors';
+import AdminPatientDetail from './pages/admin/patients/PatientDetail';
+import AdminDoctors from './pages/admin/doctors';
 // import AdminDoctorDetail from './pages/admin/doctors/DoctorDetail';
 // import AdminAppointments from './pages/admin/appointments';
 // import AdminAppointmentDetail from './pages/admin/appointments/AppointmentDetail';
@@ -48,9 +48,9 @@ function App() {
         {/* Rotas Admin */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/patients" element={<AdminPatients />} />
-        {/* <Route path="/admin/patients/:id" element={<AdminPatientDetail />} /> */}
-        {/* <Route path="/admin/doctors" element={<AdminDoctors />} />
-        <Route path="/admin/doctors/:id" element={<AdminDoctorDetail />} />
+        <Route path="/admin/patients/:id" element={<AdminPatientDetail />} />
+        <Route path="/admin/doctors" element={<AdminDoctors />} />
+        {/* <Route path="/admin/doctors/:id" element={<AdminDoctorDetail />} />
         <Route path="/admin/appointments" element={<AdminAppointments />} />
         <Route path="/admin/appointments/:id" element={<AdminAppointmentDetail />} />
         <Route path="/admin/appointments/create" element={<AdminAppointmentCreate />} /> */}

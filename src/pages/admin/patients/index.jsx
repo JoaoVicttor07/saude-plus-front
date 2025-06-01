@@ -25,7 +25,6 @@ const pacientesMock = [
     telefone: "(21) 99876-5432",
     status: "Ativo",
   },
-
   {
     id: 3,
     nome: "Carlos Silva",
@@ -64,30 +63,31 @@ function AdminPatients() {
           <h2>Pacientes Cadastrados</h2>
 
           <Button
-          background="#fff"
-          color="#247575"
-          hoverBackground="#e6f4f4"
-          fontWeight={600}
-          border="2px solid #247575"
-          borderRadius="7px"
-          onClick={() => navigate(-1)}
+            background="#fff"
+            color="#247575"
+            hoverBackground="#e6f4f1"
+            fontWeight={600}
+            border="2px solid #247575"
+            borderRadius="7px"
+            onClick={() => navigate(-1)}
           >
-            Voltar ao Dashboard</Button>
+            Voltar ao Dashboard
+          </Button>
         </div>
         <div className="admin-patients-filters-row">
           <div className="admin-patients-search">
-            <FaSearch />
+            <FaSearch color="#247575" />
             <input
               type="text"
               placeholder="Buscar"
               value={busca}
-              onChange={e => setBusca(e.target.value)}
+              onChange={(e) => setBusca(e.target.value)}
             />
           </div>
           <select
             className="admin-patients-filter"
             value={filtro}
-            onChange={e => setFiltro(e.target.value)}
+            onChange={(e) => setFiltro(e.target.value)}
           >
             <option value="">Filtrar</option>
             <option value="ativo">Ativo</option>
@@ -109,13 +109,19 @@ function AdminPatients() {
             <tbody>
               {pacientesFiltrados.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: "center", color: "#888" }}>
+                  <td
+                    colSpan={6}
+                    style={{ textAlign: "center", color: "#888" }}
+                  >
                     Nenhum paciente encontrado.
                   </td>
                 </tr>
               ) : (
                 pacientesFiltrados.map((p, idx) => (
-                  <tr key={p.id} className={idx % 2 === 0 ? "linha-par" : "linha-impar"}>
+                  <tr
+                    key={p.id}
+                    className={idx % 2 === 0 ? "linha-par" : "linha-impar"}
+                  >
                     <td>{p.nome}</td>
                     <td>{mascararCPF(p.cpf)}</td>
                     <td>{p.email}</td>
@@ -123,23 +129,19 @@ function AdminPatients() {
                     <td>{p.status}</td>
                     <td>
                       <Button
-                      background="#fff"
-                      color="#247575"
-                      fontWeight={600}
-                      border="2px solid #247575"
-                      fontSize="14px"
-                      height="33px"
-                      borderRadius="7px"
-                      hoverBackground="#247575"
-                      hoverColor="#fff"
-                      >
-                        Ver Detalhes</Button>
-                      {/* <button
-                        className="detalhes-btn"
+                        background="#fff"
+                        color="#247575"
+                        fontWeight={600}
+                        border="2px solid #247575"
+                        fontSize="14px"
+                        height="33px"
+                        borderRadius="7px"
+                        hoverBackground="#247575"
+                        hoverColor="#fff"
                         onClick={() => navigate(`/admin/patients/${p.id}`)}
                       >
                         Ver Detalhes
-                      </button> */}
+                      </Button>
                     </td>
                   </tr>
                 ))
