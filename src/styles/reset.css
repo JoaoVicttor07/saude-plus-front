@@ -18,6 +18,6 @@ body {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(135deg, #2c7a7b, #38b2ac);
   /* background: linear-gradient(135deg, #2CA6A4, #E7F9F8); */
-  height: 100vh;
+  /* height: 100vh; */
   color: #ffffff;
 }

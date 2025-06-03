@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {FaUser} from "react-icons/fa"
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
@@ -12,7 +13,7 @@ const paciente = {
   cpf: "123.456.789-00",
   email: "ana@email.com",
   telefone: "(11) 91234-5678",
-  status: "Ativo",
+  status: "Inativo",
   dataCadastro: "2023-04-15",
   totalConsultas: 3,
 };
@@ -24,6 +25,13 @@ const consultas = [
     data: "10/06/2025",
     horario: "14:00",
     medico: "Dr. João Almeida",
+    status: "Agendada",
+  },
+  {
+    id: 123,
+    data: "10/06/2025",
+    horario: "14:00",
+    medico: "Dr. teste",
     status: "Agendada",
   },
   {
@@ -104,12 +112,13 @@ export default function PatientDetail() {
         {/* Card de informações básicas */}
         <div className="patient-detail-wf-card">
           <div className="patient-detail-wf-avatar">
-            <span
+            <FaUser />
+            {/* <span
               className="material-icons"
               style={{ fontSize: 48, color: "#b2b2b2" }}
             >
               person
-            </span>
+            </span> */}
           </div>
           <div className="patient-detail-wf-info-list">
             <div>
@@ -130,16 +139,16 @@ export default function PatientDetail() {
         {/* Blocos de resumo e ações */}
         <div className="patient-detail-wf-resumo-acoes">
           <div className="patient-detail-wf-resumo">
-            <div className="patient-detail-wf-resumo-bloco">
+            {/* <div className="patient-detail-wf-resumo-bloco">
               <div className="resumo-label">Status</div>
               <div className="resumo-valor">{paciente.status}</div>
-            </div>
-            <div className="patient-detail-wf-resumo-bloco">
+            </div> */}
+            {/* <div className="patient-detail-wf-resumo-bloco">
               <div className="resumo-label">Data de Cadastro</div>
               <div className="resumo-valor">
                 {formatarData(paciente.dataCadastro)}
               </div>
-            </div>
+            </div> */}
             {/* <div className="patient-detail-wf-resumo-bloco">
               <div className="resumo-label">Total de Consultas</div>
               <div className="resumo-valor">{paciente.totalConsultas}</div>
@@ -151,6 +160,7 @@ export default function PatientDetail() {
               color="#247575"
               border="2px solid #247575"
               borderRadius="7px"
+              
               fontWeight={600}
               hoverBackground="#e6f4f1"
               onClick={() => alert("Agendar Nova Consulta")}
