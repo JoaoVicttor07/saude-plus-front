@@ -1,6 +1,5 @@
 .admin-dashboard-bg {
   min-height: 100vh;
-  background: #2c7a7b;
   display: flex;
   flex-direction: column;
 }

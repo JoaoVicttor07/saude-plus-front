@@ -1,9 +1,7 @@
-.footer {
-  width: 100%;
+.footer-component {
+  margin-top: 20px;
   text-align: center;
-  color: #e6f4f1;
-  font-size: 1rem;
-  padding: 18px 0 10px 0;
-  letter-spacing: 0.5px;
-  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 500;
 }
