@@ -4,18 +4,11 @@ function Button({
   children,
   width,
   height,
-  fontSize = "1rem",
+  fontSize,
   fontWeight,
-  color,
-  background = "#2c7a7b",
-  border = "none",
-  borderRadius = "0.5rem",
-  hoverBackground = "#285e61",
-  hoverColor,
-  disabledBackground = "#b2dfdb",
-  disabledColor = "#fff", 
   style = {},
   disabled,
+  className = "",
   ...props
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -31,31 +24,19 @@ function Button({
     height,
     fontSize,
     fontWeight,
-    color: isBtnDisabled
-      ? disabledColor
-      : isHovered && hoverColor
-      ? hoverColor
-      : color,
-    background: isBtnDisabled
-      ? disabledBackground
-      : isHovered && hoverBackground
-      ? hoverBackground
-      : background,
-    border,
-    borderRadius,
-    padding: "0.75rem 1.5rem",
     cursor: isBtnDisabled ? "not-allowed" : "pointer",
-    opacity: isBtnDisabled ? 0.6 : 1,
-    transition: "background 0.2s, color 0.2s, opacity 0.2s, box-shadow 0.2s, transform 0.2s",
-    boxShadow: isHovered
-      ? "0 4 px 16 px 0 rgba(44,122,123, 0.15)"
+    opacity: isBtnDisabled ? 0.7 : 1,
+    // Efeitos visuais leves, não sobrescrevendo cor/background do CSS
+    boxShadow: isHovered && !isBtnDisabled
+      ? "0 4px 16px 0 rgba(44,122,123, 0.15)"
       : "none",
-    transform: isHovered ? "translateY(-2px)" : "none",
+    transform: isHovered && !isBtnDisabled ? "translateY(-2px)" : "none",
     ...style,
   };
 
   return (
     <button
+      className={className}
       style={customStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
