@@ -47,6 +47,7 @@ const appointmentsData = [
 ]
 
 export default function PatientDetailsPage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Agendadas")
 
   const handleCancelAppointment = (id) => {
@@ -61,13 +62,6 @@ export default function PatientDetailsPage() {
     alert("Ativar Paciente")
   }
 
-  const handleGoBack = () => {
-    alert("Voltar à lista de pacientes")
-  }
-
-  const handleExit = () => {
-    alert("Sair")
-  }
 
   // NOVO: Badge dinâmico para status do paciente
   const statusBadgeClass =
@@ -105,6 +99,7 @@ export default function PatientDetailsPage() {
             color="#374151"
             fontWeight={600}
             hoverBackground="#e6f4f1"
+            onClick={() => navigate(-1)}
           >
             Voltar à lista de pacientes
           </Button>
@@ -160,7 +155,7 @@ export default function PatientDetailsPage() {
 
           <Button
             background="#fff"
-            color="#126964"
+            color="#374151"
             hoverBackground="#e6f4f1"
             fontWeight="bold"
             onClick={handleActivatePatient}

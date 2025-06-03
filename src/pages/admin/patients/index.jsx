@@ -64,11 +64,9 @@ function AdminPatients() {
 
           <Button
             background="#fff"
-            color="#247575"
+            color="#374151"
             hoverBackground="#e6f4f1"
             fontWeight={600}
-            border="2px solid #247575"
-            borderRadius="7px"
             onClick={() => navigate(-1)}
           >
             Voltar ao Dashboard
