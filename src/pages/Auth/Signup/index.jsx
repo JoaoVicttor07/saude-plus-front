@@ -402,9 +402,9 @@ const RegistrationForm = () => {
                   {errors.password}
                 </span>
               )}
-              <small id="password-help" className="form-help">
+              {/* <small id="password-help" className="form-help">
                 Mínimo 8 caracteres, incluindo maiúscula, minúscula e número
-              </small>
+              </small> */}
             </div>
 
             {/* Confirm Password Field */}
