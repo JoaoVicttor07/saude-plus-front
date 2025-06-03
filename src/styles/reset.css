@@ -1,5 +1,5 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
@@ -11,13 +11,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #2c7a7b, #38b2ac);
-  /* background: linear-gradient(135deg, #2CA6A4, #E7F9F8); */
-  /* height: 100vh; */
-  color: #ffffff;
+}
+
+body {
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: rgb(13 148 136);
 }

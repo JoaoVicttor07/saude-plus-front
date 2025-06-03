@@ -1,25 +1,21 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {FaUser} from "react-icons/fa"
-import Header from "../../../components/header";
-import Button from "../../../components/Button";
-import Footer from "../../../components/footer";
-import "./PatientDetail.css";
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { FaUser } from "react-icons/fa"
+import Button from "../../../components/Button"
+import Header from "../../../components/header"
+import Footer from "../../../components/footer"
+import "./PatientDetail.css"
 
-// Mock de dados do paciente
-const paciente = {
-  id: 1,
+const patientData = {
   nome: "Ana Paula Souza",
   cpf: "123.456.789-00",
   email: "ana@email.com",
   telefone: "(11) 91234-5678",
   status: "Inativo",
-  dataCadastro: "2023-04-15",
-  totalConsultas: 3,
-};
+  dataCadastro: "25/04/2023",
+}
 
-// Mock de consultas
-const consultas = [
+const appointmentsData = [
   {
     id: 1,
     data: "10/06/2025",
@@ -28,268 +24,179 @@ const consultas = [
     status: "Agendada",
   },
   {
-    id: 123,
+    id: 2,
     data: "10/06/2025",
     horario: "14:00",
     medico: "Dr. teste",
     status: "Agendada",
   },
-  {
-    id: 2,
-    data: "01/05/2025",
-    horario: "09:30",
-    medico: "Dra. Maria Oliveira",
-    status: "Cancelada",
-  },
-  {
-    id: 3,
-    data: "15/03/2025",
-    horario: "11:00",
-    medico: "Dr. Pedro Santos",
-    status: "Realizada",
-  },
-];
+]
 
-const statusAbas = [
-  { key: "Agendada", label: "Agendadas" },
-  { key: "Realizada", label: "Realizadas" },
-  { key: "Cancelada", label: "Canceladas" },
-];
+export default function PatientDetailsPage() {
+  const [activeTab, setActiveTab] = useState("Agendadas")
 
-function mascararCPF(cpf) {
-  return cpf.replace(/^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})$/, "$1.$2.$3-$4");
-}
+  const handleCancelAppointment = (id) => {
+    alert(`Cancelar consulta ${id}`)
+  }
 
-function formatarData(dataISO) {
-  if (!dataISO) return "";
-  const [ano, mes, dia] = dataISO.split("-");
-  return `${dia}/${mes}/${ano}`;
-}
+  const handleScheduleAppointment = () => {
+    alert("Agendar Nova Consulta")
+  }
 
-export default function PatientDetail() {
-  const navigate = useNavigate();
-  const [aba, setAba] = useState("Agendada");
+  const handleActivatePatient = () => {
+    alert("Ativar Paciente")
+  }
 
-  const consultasFiltradas = consultas.filter((c) => c.status === aba);
+  const handleGoBack = () => {
+    alert("Voltar à lista de pacientes")
+  }
+
+  const handleExit = () => {
+    alert("Sair")
+  }
 
   return (
-    <div className="patient-detail-wf-bg">
+    <div className="patient-details-container">
+      {/* Header */}
       <Header />
-      <main className="patient-detail-wf-main">
-        {/* Cabeçalho */}
-        <div className="patient-detail-wf-header">
-          <h1 className="patient-detail-wf-title">Detalhes do Paciente</h1>
+
+      {/* Main Content */}
+      <main className="main-content">
+        {/* Page Title and Back Button */}
+        <div className="page-header">
+          <h2 className="page-title">Detalhes do Paciente</h2>
           <Button
             background="#fff"
-            color="#247575"
-            border="2px solid #247575"
-            borderRadius="7px"
+            color="#374151"
             fontWeight={600}
-            fontSize="1rem"
             hoverBackground="#e6f4f1"
-            onClick={() => navigate(-1)}
-            style={{ marginRight: 16 }}
           >
+            Voltar à lista de pacientes</Button>
+          {/* <button className="back-button" onClick={handleGoBack}>
             Voltar à lista de pacientes
-          </Button>
+          </button> */}
         </div>
 
-        {/* Identificação */}
-        <div className="patient-detail-wf-identificacao">
-          <span className="patient-detail-wf-nome">{paciente.nome}</span>
-          <span
-            className={`patient-detail-wf-status ${
-              paciente.status === "Ativo" ? "ativo" : "inativo"
-            }`}
+        {/* Patient Name and Status */}
+        <div className="patient-header">
+          <div className="patient-name-card">
+            <span className="patient-name">{patientData.nome}</span>
+          </div>
+          <div className="status-badge status-inactive">{patientData.status}</div>
+        </div>
+
+        {/* Registration Date */}
+        <p className="registration-date">Cadastrado desde: {patientData.dataCadastro}</p>
+
+        {/* Patient Info Card */}
+        <div className="patient-info-card">
+          <div className="avatar-container">
+            <div className="avatar">
+              <FaUser className="avatar-icon" />
+            </div>
+          </div>
+          <div className="patient-info-grid">
+            <div className="info-item">
+              <span className="info-label">Nome:</span>
+              <span className="info-value">{patientData.nome}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">CPF:</span>
+              <span className="info-value">{patientData.cpf}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">E-mail:</span>
+              <span className="info-value">{patientData.email}</span>
+            </div>
+            <div className="info-item">
+              <span className="info-label">Telefone:</span>
+              <span className="info-value">{patientData.telefone}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="action-buttons">
+          <Button
+            background="#126964"
+            fontWeight="bold"
           >
-            {paciente.status}
-          </span>
-        </div>
-        <div className="patient-detail-wf-cadastrado">
-          Cadastrado desde: {formatarData(paciente.dataCadastro)}
+            Agendar Nova Consulta</Button>
+
+          <Button
+          background="#fff"
+          color="#126964"
+          hoverBackground="#e6f4f1"
+          fontWeight="bold"
+          >
+            Ativar Paciente</Button>
+          {/* <button className="btn btn-secondary" onClick={handleActivatePatient}>
+            Ativar Paciente
+          </button> */}
         </div>
 
-        {/* Card de informações básicas */}
-        <div className="patient-detail-wf-card">
-          <div className="patient-detail-wf-avatar">
-            <FaUser />
-            {/* <span
-              className="material-icons"
-              style={{ fontSize: 48, color: "#b2b2b2" }}
-            >
-              person
-            </span> */}
-          </div>
-          <div className="patient-detail-wf-info-list">
-            <div>
-              <span className="label">Nome:</span> {paciente.nome}
-            </div>
-            <div>
-              <span className="label">CPF:</span> {mascararCPF(paciente.cpf)}
-            </div>
-            <div>
-              <span className="label">E-mail:</span> {paciente.email}
-            </div>
-            <div>
-              <span className="label">Telefone:</span> {paciente.telefone}
-            </div>
-          </div>
-        </div>
+        {/* Appointment History */}
+        <div className="appointment-history">
+          <h3 className="section-title">Histórico de Consultas</h3>
 
-        {/* Blocos de resumo e ações */}
-        <div className="patient-detail-wf-resumo-acoes">
-          <div className="patient-detail-wf-resumo">
-            {/* <div className="patient-detail-wf-resumo-bloco">
-              <div className="resumo-label">Status</div>
-              <div className="resumo-valor">{paciente.status}</div>
-            </div> */}
-            {/* <div className="patient-detail-wf-resumo-bloco">
-              <div className="resumo-label">Data de Cadastro</div>
-              <div className="resumo-valor">
-                {formatarData(paciente.dataCadastro)}
-              </div>
-            </div> */}
-            {/* <div className="patient-detail-wf-resumo-bloco">
-              <div className="resumo-label">Total de Consultas</div>
-              <div className="resumo-valor">{paciente.totalConsultas}</div>
-            </div> */}
-          </div>
-          <div className="patient-detail-wf-acoes">
-            <Button
-              background="#fff"
-              color="#247575"
-              border="2px solid #247575"
-              borderRadius="7px"
-              
-              fontWeight={600}
-              hoverBackground="#e6f4f1"
-              onClick={() => alert("Agendar Nova Consulta")}
-            >
-              Agendar Nova Consulta
-            </Button>
-            <Button
-              background="#fff"
-              color="#247575"
-              border="2px solid #247575"
-              borderRadius="7px"
-              fontWeight={600}
-              fontSize="1rem"
-              hoverBackground="#e6f4f1"
-              onClick={() => alert("Desativar/Ativar Paciente")}
-            >
-              {paciente.status === "Ativo"
-                ? "Desativar Paciente"
-                : "Ativar Paciente"}
-            </Button>
-          </div>
-        </div>
-
-        {/* Histórico de Consultas */}
-        <div className="patient-detail-wf-historico">
-          <h2 className="patient-detail-wf-historico-title">
-            Histórico de Consultas
-          </h2>
-          <div className="patient-detail-wf-abas">
-            {statusAbas.map((tab) => (
+          {/* Tabs */}
+          <div className="tabs-container">
+            <div className="tabs">
               <button
-                key={tab.key}
-                className={`patient-detail-wf-aba${
-                  aba === tab.key ? " active" : ""
-                }`}
-                onClick={() => setAba(tab.key)}
+                className={`tab ${activeTab === "Agendadas" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("Agendadas")}
               >
-                {tab.label}
+                Agendadas
               </button>
-            ))}
-          </div>
-          <div className="patient-detail-wf-tabela-container">
-            <table className="patient-detail-wf-tabela">
-              <thead>
-                <tr>
-                  <th>Data da Consulta</th>
-                  <th>Horário</th>
-                  <th>Médico</th>
-                  <th>Status</th>
-                  <th style={{ textAlign: "right" }}>Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {consultasFiltradas.length === 0 ? (
+              <button
+                className={`tab ${activeTab === "Realizadas" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("Realizadas")}
+              >
+                Realizadas
+              </button>
+              <button
+                className={`tab ${activeTab === "Canceladas" ? "tab-active" : ""}`}
+                onClick={() => setActiveTab("Canceladas")}
+              >
+                Canceladas
+              </button>
+            </div>
+
+            {/* Table */}
+            <div className="table-container">
+              <table className="appointments-table">
+                <thead>
                   <tr>
-                    <td colSpan={5} className="patient-detail-wf-tabela-vazia">
-                      Nenhuma consulta encontrada.
-                    </td>
+                    <th>Data da Consulta</th>
+                    <th>Horário</th>
+                    <th>Médico</th>
+                    <th>Status</th>
+                    <th>Ação</th>
                   </tr>
-                ) : (
-                  consultasFiltradas.map((c, idx) => (
-                    <tr
-                      key={c.id}
-                      className={idx % 2 === 0 ? "linha-par" : "linha-impar"}
-                    >
-                      <td>{c.data}</td>
-                      <td>{c.horario}</td>
-                      <td>{c.medico}</td>
+                </thead>
+                <tbody>
+                  {appointmentsData.map((appointment) => (
+                    <tr key={appointment.id}>
+                      <td>{appointment.data}</td>
+                      <td>{appointment.horario}</td>
+                      <td>{appointment.medico}</td>
                       <td>
-                        <span
-                          className={`patient-detail-wf-status-badge ${c.status.toLowerCase()}`}
-                        >
-                          {c.status}
-                        </span>
+                        <span className="status-badge-table status-scheduled">{appointment.status}</span>
                       </td>
-                      <td style={{ textAlign: "right" }}>
-                        {c.status === "Agendada" && (
-                          <Button
-                            background="#fff"
-                            color="#247575"
-                            border="2px solid #247575"
-                            borderRadius="7px"
-                            fontWeight={600}
-                            fontSize="1rem"
-                            hoverBackground="#fbe9e7"
-                            hoverColor="#d32f2f"
-                            onClick={() => alert("Cancelar consulta")}
-                          >
-                            Cancelar
-                          </Button>
-                        )}
-                        {c.status === "Realizada" && (
-                          <Button
-                            background="#fff"
-                            color="#247575"
-                            border="2px solid #247575"
-                            borderRadius="7px"
-                            fontWeight={600}
-                            fontSize="1rem"
-                            hoverBackground="#e6f4f4"
-                            onClick={() => alert("Ver detalhes da consulta")}
-                          >
-                            Ver Detalhes
-                          </Button>
-                        )}
-                        {c.status === "Cancelada" && (
-                          <Button
-                            background="#fff"
-                            color="#247575"
-                            border="2px solid #247575"
-                            borderRadius="7px"
-                            fontWeight={600}
-                            fontSize="1rem"
-                            hoverBackground="#e6f4f4"
-                            onClick={() => alert("Ver detalhes da consulta")}
-                          >
-                            Ver Detalhes
-                          </Button>
-                        )}
+                      <td>
+                        <button className="btn btn-cancel" onClick={() => handleCancelAppointment(appointment.id)}>
+                          Cancelar
+                        </button>
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </main>
       <Footer />
     </div>
-  );
+  )
 }

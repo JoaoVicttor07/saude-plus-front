@@ -3,13 +3,13 @@ import { useState } from "react";
 function Button({
   children,
   width,
-  height = "40px",
+  height,
   fontSize = "1rem",
   fontWeight,
   color,
   background = "#2c7a7b",
   border = "none",
-  borderRadius = "4px",
+  borderRadius = "0.5rem",
   hoverBackground = "#285e61",
   hoverColor,
   disabledBackground = "#b2dfdb",
@@ -43,10 +43,14 @@ function Button({
       : background,
     border,
     borderRadius,
-    padding: "10px",
+    padding: "0.75rem 1.5rem",
     cursor: isBtnDisabled ? "not-allowed" : "pointer",
     opacity: isBtnDisabled ? 0.6 : 1,
-    transition: "background 0.2s, color 0.2s, opacity 0.2s",
+    transition: "background 0.2s, color 0.2s, opacity 0.2s, box-shadow 0.2s, transform 0.2s",
+    boxShadow: isHovered
+      ? "0 4 px 16 px 0 rgba(44,122,123, 0.15)"
+      : "none",
+    transform: isHovered ? "translateY(-2px)" : "none",
     ...style,
   };
 

@@ -17,13 +17,11 @@ function Header() {
       </div>
       <Button
       background="#fff"
-      color="#247575"
+      color="#222"
       hoverBackground="#e6f4f1"
       border="1px solid #247575"
-      borderRadius="7px"
-      fontWeight={600}
       onClick={handleLogout}
-      width = '10%'
+      width = '6%'
       >
         Sair
       </Button>
