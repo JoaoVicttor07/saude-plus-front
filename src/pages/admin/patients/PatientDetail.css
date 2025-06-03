@@ -113,6 +113,10 @@
   color: #dc2626;
 }
 
+.status-active {
+  background: #bbf7d0;
+  color: #15803d;
+}
 /* Registration date */
 .registration-date {
   color: white;
@@ -316,6 +320,16 @@
 .status-scheduled {
   background: #dbeafe;
   color: #1d4ed8;
+}
+
+.status-done {
+  background: #bbf7d0;
+  color: #15803d;
+}
+
+.status-canceled {
+  background: #fecaca;
+  color: #dc2626;
 }
 
 /* Responsive design */

@@ -11,7 +11,7 @@ const patientData = {
   cpf: "123.456.789-00",
   email: "ana@email.com",
   telefone: "(11) 91234-5678",
-  status: "Inativo",
+  status: "Ativo",
   dataCadastro: "25/04/2023",
 }
 
@@ -29,6 +29,20 @@ const appointmentsData = [
     horario: "14:00",
     medico: "Dr. teste",
     status: "Agendada",
+  },
+  {
+    id: 3,
+    data: "09/06/2025",
+    horario: "10:00",
+    medico: "Dr. Maria",
+    status: "Realizada",
+  },
+  {
+    id: 4,
+    data: "08/06/2025",
+    horario: "09:00",
+    medico: "Dr. Pedro",
+    status: "Cancelada",
   },
 ]
 
@@ -55,6 +69,27 @@ export default function PatientDetailsPage() {
     alert("Sair")
   }
 
+  // NOVO: Badge dinâmico para status do paciente
+  const statusBadgeClass =
+    "status-badge " +
+    (patientData.status === "Ativo" ? "status-active" : "status-inactive")
+
+  // NOVO: Filtragem das consultas por aba
+  const filteredAppointments = appointmentsData.filter((appointment) => {
+    if (activeTab === "Agendadas") return appointment.status === "Agendada"
+    if (activeTab === "Realizadas") return appointment.status === "Realizada"
+    if (activeTab === "Canceladas") return appointment.status === "Cancelada"
+    return true
+  })
+
+  // NOVO: Badge de status da consulta (opcional, para customizar cor)
+  const getStatusBadgeClass = (status) => {
+    if (status === "Agendada") return "status-badge-table status-scheduled"
+    if (status === "Realizada") return "status-badge-table status-done"
+    if (status === "Cancelada") return "status-badge-table status-canceled"
+    return "status-badge-table"
+  }
+
   return (
     <div className="patient-details-container">
       {/* Header */}
@@ -71,10 +106,8 @@ export default function PatientDetailsPage() {
             fontWeight={600}
             hoverBackground="#e6f4f1"
           >
-            Voltar à lista de pacientes</Button>
-          {/* <button className="back-button" onClick={handleGoBack}>
             Voltar à lista de pacientes
-          </button> */}
+          </Button>
         </div>
 
         {/* Patient Name and Status */}
@@ -82,7 +115,7 @@ export default function PatientDetailsPage() {
           <div className="patient-name-card">
             <span className="patient-name">{patientData.nome}</span>
           </div>
-          <div className="status-badge status-inactive">{patientData.status}</div>
+          <div className={statusBadgeClass}>{patientData.status}</div>
         </div>
 
         {/* Registration Date */}
@@ -120,19 +153,20 @@ export default function PatientDetailsPage() {
           <Button
             background="#126964"
             fontWeight="bold"
+            onClick={handleScheduleAppointment}
           >
-            Agendar Nova Consulta</Button>
+            Agendar Nova Consulta
+          </Button>
 
           <Button
-          background="#fff"
-          color="#126964"
-          hoverBackground="#e6f4f1"
-          fontWeight="bold"
+            background="#fff"
+            color="#126964"
+            hoverBackground="#e6f4f1"
+            fontWeight="bold"
+            onClick={handleActivatePatient}
           >
-            Ativar Paciente</Button>
-          {/* <button className="btn btn-secondary" onClick={handleActivatePatient}>
             Ativar Paciente
-          </button> */}
+          </Button>
         </div>
 
         {/* Appointment History */}
@@ -175,21 +209,36 @@ export default function PatientDetailsPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {appointmentsData.map((appointment) => (
-                    <tr key={appointment.id}>
-                      <td>{appointment.data}</td>
-                      <td>{appointment.horario}</td>
-                      <td>{appointment.medico}</td>
-                      <td>
-                        <span className="status-badge-table status-scheduled">{appointment.status}</span>
-                      </td>
-                      <td>
-                        <button className="btn btn-cancel" onClick={() => handleCancelAppointment(appointment.id)}>
-                          Cancelar
-                        </button>
+                  {filteredAppointments.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} style={{ textAlign: "center", color: "#888" }}>
+                        Nenhuma consulta encontrada.
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    filteredAppointments.map((appointment) => (
+                      <tr key={appointment.id}>
+                        <td>{appointment.data}</td>
+                        <td>{appointment.horario}</td>
+                        <td>{appointment.medico}</td>
+                        <td>
+                          <span className={getStatusBadgeClass(appointment.status)}>
+                            {appointment.status}
+                          </span>
+                        </td>
+                        <td>
+                          {activeTab === "Agendadas" && (
+                            <button
+                              className="btn btn-cancel"
+                              onClick={() => handleCancelAppointment(appointment.id)}
+                            >
+                              Cancelar
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
