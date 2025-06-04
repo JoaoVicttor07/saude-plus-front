@@ -22,7 +22,7 @@ const resumo = [
   },
   {
     label: "Médicos",
-    value: 17,
+    value: 3,
     icon: <FaUserMd />,
     color: "#319898",
     link: "/admin/doctors",
@@ -36,7 +36,7 @@ const resumo = [
   },
   {
     label: "Realizadas",
-    value: 45,
+    value: 6,
     icon: <FaCheckCircle />,
     color: "#38a169",
     link: "/admin/appointments?status=realizada",

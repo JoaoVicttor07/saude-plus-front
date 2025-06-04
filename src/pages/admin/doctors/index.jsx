@@ -12,7 +12,7 @@ const medicosMock = [
     id: 1,
     nome: "Dr. João Almeida",
     crm: "123456-SP",
-    email: "joao.almeida@email.com",
+    especialidade: "Cardiologia",
     telefone: "(11) 91234-5678",
     status: "Ativo",
   },
@@ -20,7 +20,7 @@ const medicosMock = [
     id: 2,
     nome: "Dra. Maria Oliveira",
     crm: "654321-RJ",
-    email: "maria.oliveira@email.com",
+    especialidade: "Pediatria",
     telefone: "(21) 99876-5432",
     status: "Ativo",
   },
@@ -28,7 +28,7 @@ const medicosMock = [
     id: 3,
     nome: "Dr. Pedro Santos",
     crm: "789123-MG",
-    email: "pedro.santos@email.com",
+    especialidade: "Ortopedia",
     telefone: "(31) 98888-1234",
     status: "Inativo",
   },
@@ -40,18 +40,18 @@ function AdminDoctors() {
   const [filtro, setFiltro] = useState("");
 
   const medicosFiltrados = medicosMock.filter((m) => {
-    const termo = busca.toLowerCase();
-    const statusOk = filtro ? m.status.toLowerCase() === filtro : true;
-    return (
-      statusOk &&
-      (
-        m.nome.toLowerCase().includes(termo) ||
-        m.crm.toLowerCase().includes(termo) ||
-        m.email.toLowerCase().includes(termo) ||
-        m.telefone.includes(termo)
-      )
-    );
-  });
+  const termo = busca.toLowerCase();
+  const statusOk = filtro ? m.status.toLowerCase() === filtro : true;
+  // Busca por nome, crm, especialidade ou telefone
+  const nomeOk = m.nome.toLowerCase().includes(termo);
+  const crmOk = m.crm.toLowerCase().includes(termo);
+  const especialidadeOk = m.especialidade.toLowerCase().includes(termo);
+  const telefoneOk = m.telefone.toLowerCase().includes(termo);
+  return (
+    statusOk &&
+    (nomeOk || crmOk || especialidadeOk || telefoneOk)
+  );
+});
 
   return (
     <div className="admin-patients-bg">
@@ -97,7 +97,7 @@ function AdminDoctors() {
               <tr>
                 <th>Nome Completo</th>
                 <th>CRM</th>
-                <th>E-mail</th>
+                <th>Especialidade</th>
                 <th>Telefone</th>
                 <th>Status</th>
                 <th>Ações</th>
@@ -115,7 +115,7 @@ function AdminDoctors() {
                   <tr key={m.id} className={idx % 2 === 0 ? "linha-par" : "linha-impar"}>
                     <td>{m.nome}</td>
                     <td>{m.crm}</td>
-                    <td>{m.email}</td>
+                    <td>{m.especialidade}</td>
                     <td>{m.telefone}</td>
                     <td>{m.status}</td>
                     <td>
