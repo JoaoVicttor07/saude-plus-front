@@ -19,7 +19,6 @@ function Header() {
       background="#fff"
       color="#222"
       hoverBackground="#e6f4f1"
-      border="1px solid #247575"
       onClick={handleLogout}
       width = '6%'
       >

@@ -184,8 +184,57 @@
 .action-buttons {
   display: flex;
   gap: 1rem;
-  justify-content: center;;
+  justify-content: center;
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(55, 65, 81, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15);
+  padding: 32px 28px 24px 28px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  animation: fadeInModal 0.25s;
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.modal-content h3 {
+  margin-bottom: 12px;
+  color: #059669;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.modal-content p {
+  color: #374151;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
 
 .btn {
   padding: 0.75rem 1.5rem;
@@ -314,7 +363,7 @@
 .status-badge-table {
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
-  font-size: 0.80rem;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 

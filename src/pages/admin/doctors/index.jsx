@@ -61,11 +61,11 @@ function AdminDoctors() {
           <h2>Médicos Cadastrados</h2>
           <Button
             background="#fff"
-            color="#247575"
+            color="#374151"
+            height="30px"
+            width="200px"
             hoverBackground="#e6f4f1"
             fontWeight={600}
-            border="2px solid #247575"
-            borderRadius="7px"
             onClick={() => navigate(-1)}
           >
             Voltar ao Dashboard
@@ -126,6 +126,7 @@ function AdminDoctors() {
                         border="2px solid #247575"
                         fontSize="14px"
                         height="33px"
+                        width="100%"
                         borderRadius="7px"
                         hoverBackground="#247575"
                         hoverColor="#fff"

@@ -1,19 +1,19 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { FaUser } from "react-icons/fa"
-import Button from "../../../components/Button"
-import Header from "../../../components/header"
-import Footer from "../../../components/footer"
-import "./PatientDetail.css"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import Button from "../../../components/Button";
+import Header from "../../../components/header";
+import Footer from "../../../components/footer";
+import "./PatientDetail.css";
 
 const patientData = {
   nome: "Ana Paula Souza",
   cpf: "123.456.789-00",
   email: "ana@email.com",
   telefone: "(11) 91234-5678",
-  status: "Ativo",
+  status: "Inativo",
   dataCadastro: "25/04/2023",
-}
+};
 
 const appointmentsData = [
   {
@@ -44,45 +44,66 @@ const appointmentsData = [
     medico: "Dr. Pedro",
     status: "Cancelada",
   },
-]
+];
 
 export default function PatientDetailsPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("Agendadas")
+  const [activeTab, setActiveTab] = useState("Agendadas");
+  const [patientStatus, setPatientStatus] = useState(patientData.status);
+
+  const [showModal, setShowModal] = useState(false);
+  const [pendingAction, setPendingAction] = useState(null);
+
+  const handleTogglePatientStatus = () => {
+    setPendingAction(patientStatus === "Ativo" ? "desativar" : "ativar");
+    setShowModal(true);
+  };
+
+  const handleConfirmAction = () => {
+    if (pendingAction === "desativar") {
+      setPatientStatus("Inativo");
+      alert("Paciente desativado!");
+    } else {
+      setPatientStatus("Ativo");
+      alert("Paciente ativado!");
+    }
+    setShowModal(false);
+    setPendingAction(null);
+  };
+
+  const handleCancelAction = () => {
+    setShowModal(false);
+    setPendingAction(null);
+  };
 
   const handleCancelAppointment = (id) => {
-    alert(`Cancelar consulta ${id}`)
-  }
+    alert(`Cancelar consulta ${id}`);
+  };
 
   const handleScheduleAppointment = () => {
-    alert("Agendar Nova Consulta")
-  }
-
-  const handleActivatePatient = () => {
-    alert("Ativar Paciente")
-  }
-
+    alert("Agendar Nova Consulta");
+  };
 
   // NOVO: Badge dinâmico para status do paciente
   const statusBadgeClass =
     "status-badge " +
-    (patientData.status === "Ativo" ? "status-active" : "status-inactive")
+    (patientStatus === "Ativo" ? "status-active" : "status-inactive");
 
   // NOVO: Filtragem das consultas por aba
   const filteredAppointments = appointmentsData.filter((appointment) => {
-    if (activeTab === "Agendadas") return appointment.status === "Agendada"
-    if (activeTab === "Realizadas") return appointment.status === "Realizada"
-    if (activeTab === "Canceladas") return appointment.status === "Cancelada"
-    return true
-  })
+    if (activeTab === "Agendadas") return appointment.status === "Agendada";
+    if (activeTab === "Realizadas") return appointment.status === "Realizada";
+    if (activeTab === "Canceladas") return appointment.status === "Cancelada";
+    return true;
+  });
 
   // NOVO: Badge de status da consulta (opcional, para customizar cor)
   const getStatusBadgeClass = (status) => {
-    if (status === "Agendada") return "status-badge-table status-scheduled"
-    if (status === "Realizada") return "status-badge-table status-done"
-    if (status === "Cancelada") return "status-badge-table status-canceled"
-    return "status-badge-table"
-  }
+    if (status === "Agendada") return "status-badge-table status-scheduled";
+    if (status === "Realizada") return "status-badge-table status-done";
+    if (status === "Cancelada") return "status-badge-table status-canceled";
+    return "status-badge-table";
+  };
 
   return (
     <div className="patient-details-container">
@@ -98,6 +119,8 @@ export default function PatientDetailsPage() {
             background="#fff"
             color="#374151"
             fontWeight={600}
+            height="30px"
+            width="200px"
             hoverBackground="#e6f4f1"
             onClick={() => navigate(-1)}
           >
@@ -114,7 +137,9 @@ export default function PatientDetailsPage() {
         </div>
 
         {/* Registration Date */}
-        <p className="registration-date">Cadastrado desde: {patientData.dataCadastro}</p>
+        <p className="registration-date">
+          Cadastrado desde: {patientData.dataCadastro}
+        </p>
 
         {/* Patient Info Card */}
         <div className="patient-info-card">
@@ -148,6 +173,8 @@ export default function PatientDetailsPage() {
           <Button
             background="#126964"
             fontWeight="bold"
+            height="35px"
+            width="200px"
             onClick={handleScheduleAppointment}
           >
             Agendar Nova Consulta
@@ -158,11 +185,55 @@ export default function PatientDetailsPage() {
             color="#374151"
             hoverBackground="#e6f4f1"
             fontWeight="bold"
-            onClick={handleActivatePatient}
+            height="35px"
+            width="150px"
+            onClick={handleTogglePatientStatus}
           >
-            Ativar Paciente
+            {patientStatus === "Ativo"
+              ? "Desativar Paciente"
+              : "Ativar Paciente"}
           </Button>
         </div>
+
+        {showModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>
+                {pendingAction === "desativar"
+                  ? "Desativar paciente"
+                  : "Ativar paciente"}
+              </h3>
+              <p>
+                {pendingAction === "desativar"
+                  ? "Tem certeza que deseja desativar este paciente? Ele não poderá acessar o sistema até ser reativado."
+                  : "Tem certeza que deseja ativar este paciente? Ele poderá acessar o sistema normalmente."}
+              </p>
+              <div className="modal-actions">
+                <Button
+                  background="#10b981"
+                  color="#fff"
+                  fontWeight="bold"
+                  height="38px"
+                  width="120px"
+                  onClick={handleConfirmAction}
+                >
+                  Confirmar
+                </Button>
+                <Button
+                  background="#f3f4f6"
+                  color="#374151"
+                  fontWeight="bold"
+                  height="38px"
+                  width="120px"
+                  hoverBackground="#e5e7eb"
+                  onClick={handleCancelAction}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Appointment History */}
         <div className="appointment-history">
@@ -172,19 +243,25 @@ export default function PatientDetailsPage() {
           <div className="tabs-container">
             <div className="tabs">
               <button
-                className={`tab ${activeTab === "Agendadas" ? "tab-active" : ""}`}
+                className={`tab ${
+                  activeTab === "Agendadas" ? "tab-active" : ""
+                }`}
                 onClick={() => setActiveTab("Agendadas")}
               >
                 Agendadas
               </button>
               <button
-                className={`tab ${activeTab === "Realizadas" ? "tab-active" : ""}`}
+                className={`tab ${
+                  activeTab === "Realizadas" ? "tab-active" : ""
+                }`}
                 onClick={() => setActiveTab("Realizadas")}
               >
                 Realizadas
               </button>
               <button
-                className={`tab ${activeTab === "Canceladas" ? "tab-active" : ""}`}
+                className={`tab ${
+                  activeTab === "Canceladas" ? "tab-active" : ""
+                }`}
                 onClick={() => setActiveTab("Canceladas")}
               >
                 Canceladas
@@ -206,7 +283,10 @@ export default function PatientDetailsPage() {
                 <tbody>
                   {filteredAppointments.length === 0 ? (
                     <tr>
-                      <td colSpan={5} style={{ textAlign: "center", color: "#888" }}>
+                      <td
+                        colSpan={5}
+                        style={{ textAlign: "center", color: "#888" }}
+                      >
                         Nenhuma consulta encontrada.
                       </td>
                     </tr>
@@ -217,7 +297,9 @@ export default function PatientDetailsPage() {
                         <td>{appointment.horario}</td>
                         <td>{appointment.medico}</td>
                         <td>
-                          <span className={getStatusBadgeClass(appointment.status)}>
+                          <span
+                            className={getStatusBadgeClass(appointment.status)}
+                          >
                             {appointment.status}
                           </span>
                         </td>
@@ -225,7 +307,9 @@ export default function PatientDetailsPage() {
                           {activeTab === "Agendadas" && (
                             <button
                               className="btn btn-cancel"
-                              onClick={() => handleCancelAppointment(appointment.id)}
+                              onClick={() =>
+                                handleCancelAppointment(appointment.id)
+                              }
                             >
                               Cancelar
                             </button>
@@ -242,5 +326,5 @@ export default function PatientDetailsPage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

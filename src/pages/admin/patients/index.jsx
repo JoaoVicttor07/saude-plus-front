@@ -31,7 +31,7 @@ const pacientesMock = [
     cpf: "987.456.321-00",
     email: "carlos@email.com",
     telefone: "(21) 99876-5432",
-    status: "Ativo",
+    status: "Inativo",
   },
 ];
 
@@ -47,11 +47,13 @@ function AdminPatients() {
 
   const pacientesFiltrados = pacientesMock.filter((p) => {
     const termo = busca.toLowerCase();
+    const statusOK = filtro ? p.status.toLowerCase() === filtro : true;
     return (
-      p.nome.toLowerCase().includes(termo) ||
-      p.cpf.includes(termo) ||
-      p.email.toLowerCase().includes(termo) ||
-      p.telefone.includes(termo)
+      statusOK &&
+      (p.nome.toLowerCase().includes(termo) ||
+        p.cpf.includes(termo) ||
+        p.email.toLowerCase().includes(termo) ||
+        p.telefone.includes(termo))
     );
   });
 
