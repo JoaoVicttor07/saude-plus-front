@@ -6,6 +6,14 @@ function Button({
   height,
   fontSize,
   fontWeight,
+  color,
+  background,
+  hoverBackground,
+  hoverColor,
+  disabledBackground,
+  disabledColor,
+  border,
+  borderRadius,
   style = {},
   disabled,
   className = "",
@@ -24,13 +32,25 @@ function Button({
     height,
     fontSize,
     fontWeight,
+    color: isBtnDisabled
+      ? disabledColor || "#fff"
+      : isHovered && hoverColor
+      ? hoverColor
+      : color,
+    background: isBtnDisabled
+      ? disabledBackground || "#b2dfdb"
+      : isHovered && hoverBackground
+      ? hoverBackground
+      : background,
+    border: border || "none",
+    borderRadius: borderRadius || "8px",
     cursor: isBtnDisabled ? "not-allowed" : "pointer",
     opacity: isBtnDisabled ? 0.7 : 1,
-    // Efeitos visuais leves, não sobrescrevendo cor/background do CSS
     boxShadow: isHovered && !isBtnDisabled
       ? "0 4px 16px 0 rgba(44,122,123, 0.15)"
       : "none",
     transform: isHovered && !isBtnDisabled ? "translateY(-2px)" : "none",
+    transition: "all 0.2s",
     ...style,
   };
 

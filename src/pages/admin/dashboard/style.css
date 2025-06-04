@@ -43,7 +43,7 @@
 }
 .admin-dashboard-card:hover {
   box-shadow: 0 8px 32px rgba(44, 122, 123, 0.18);
-  transform: scale(1.025);
+  /* transform: scale(.010); */
   border-top: 4px solid #247575 !important;
 }
 

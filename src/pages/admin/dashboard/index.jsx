@@ -103,7 +103,9 @@ function AdminDashboard() {
             <Button
               background="#319898"
               color="#fff"
+              height="40px"
               fontWeight={600}
+              width="150px"
               onClick={() => navigate("admin/doctors/create")}
             >
               + Novo Médico
@@ -113,7 +115,7 @@ function AdminDashboard() {
               background="#38a169"
               color="#fff"
               fontWeight={700}
-              style={{ minWidth: 220, fontSize: "1.1rem" }}
+              width="200px"
               onClick={() => navigate("/admin/appointments/create")}
             >
               <FaPlus /> Nova Consulta (Encaixe)

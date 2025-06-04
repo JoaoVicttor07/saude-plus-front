@@ -65,6 +65,8 @@ function AdminPatients() {
           <Button
             background="#fff"
             color="#374151"
+            height="30px"
+            width="200px"
             hoverBackground="#e6f4f1"
             fontWeight={600}
             onClick={() => navigate(-1)}
@@ -133,6 +135,7 @@ function AdminPatients() {
                         border="2px solid #247575"
                         fontSize="14px"
                         height="33px"
+                        width="100%"
                         borderRadius="7px"
                         hoverBackground="#247575"
                         hoverColor="#fff"
