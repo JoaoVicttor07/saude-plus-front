@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
+import { ArrowLeft, Eye } from "lucide-react";
 
 import "./style.css";
 
@@ -31,7 +32,7 @@ const pacientesMock = [
     cpf: "987.456.321-00",
     email: "carlos@email.com",
     telefone: "(21) 99876-5432",
-    status: "Ativo",
+    status: "Inativo",
   },
 ];
 
@@ -47,11 +48,13 @@ function AdminPatients() {
 
   const pacientesFiltrados = pacientesMock.filter((p) => {
     const termo = busca.toLowerCase();
+    const statusOK = filtro ? p.status.toLowerCase() === filtro : true;
     return (
-      p.nome.toLowerCase().includes(termo) ||
-      p.cpf.includes(termo) ||
-      p.email.toLowerCase().includes(termo) ||
-      p.telefone.includes(termo)
+      statusOK &&
+      (p.nome.toLowerCase().includes(termo) ||
+        p.cpf.includes(termo) ||
+        p.email.toLowerCase().includes(termo) ||
+        p.telefone.includes(termo))
     );
   });
 
@@ -60,13 +63,17 @@ function AdminPatients() {
       <Header />
       <main className="admin-patients-main">
         <div className="admin-patients-header">
-          <h2>Pacientes Cadastrados</h2>
+          <h2 className="admin-patient-header-title">Pacientes Cadastrados</h2>
 
           <Button
             background="#fff"
             color="#374151"
-            hoverBackground="#e6f4f1"
-            fontWeight={600}
+            height="35px"
+            width="180px"
+            borderRadius="0.375rem"
+            hoverBackground="#f8f9fa"
+            fontWeight="600"
+            icon={<ArrowLeft size={15}/>}
             onClick={() => navigate(-1)}
           >
             Voltar ao Dashboard
@@ -87,7 +94,7 @@ function AdminPatients() {
             value={filtro}
             onChange={(e) => setFiltro(e.target.value)}
           >
-            <option value="">Filtrar</option>
+            <option value="">Todos</option>
             <option value="ativo">Ativo</option>
             <option value="inativo">Inativo</option>
           </select>
@@ -128,14 +135,14 @@ function AdminPatients() {
                     <td>
                       <Button
                         background="#fff"
-                        color="#247575"
-                        fontWeight={600}
-                        border="2px solid #247575"
-                        fontSize="14px"
-                        height="33px"
+                        color="#4ecdc4"
+                        fontSize="0.90rem"
+                        border="1px solid #4ecdc4"
+                        width="100%"
                         borderRadius="7px"
-                        hoverBackground="#247575"
-                        hoverColor="#fff"
+                        hoverBackground="#e6f9f8"
+                        icon={<Eye size={15}/>}
+                        style={{padding: "0.4rem 0"}}
                         onClick={() => navigate(`/admin/patients/${p.id}`)}
                       >
                         Ver Detalhes

@@ -39,11 +39,10 @@
   background: #f9fafb;
   box-shadow: 0 4px 24px rgba(44, 122, 123, 0.1);
   transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
-  cursor: pointer;
 }
 .admin-dashboard-card:hover {
   box-shadow: 0 8px 32px rgba(44, 122, 123, 0.18);
-  transform: scale(1.025);
+  transform: scale(1.020);
   border-top: 4px solid #247575 !important;
 }
 

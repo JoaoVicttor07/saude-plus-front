@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Footer from "../../../components/footer"
+import {FaEye, FaEyeSlash} from "react-icons/fa"
 import "./style.css"
 
 const RegistrationForm = () => {
@@ -377,8 +378,9 @@ const RegistrationForm = () => {
                   className="password-toggle"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  tabIndex={0}
                 >
-                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                  {showPassword ? <FaEye/> : <FaEyeSlash />}
                 </button>
               </div>
               {formData.password && (
