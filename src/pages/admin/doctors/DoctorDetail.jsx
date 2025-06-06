@@ -1,336 +1,312 @@
-import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowLeft,
+  Calendar,
+  Phone,
+  MapPin,
+  User,
+  CreditCard,
+  Stethoscope,
+  Eye,
+  RotateCcw,
+  X,
+} from "lucide-react";
 import Header from "../../../components/header";
-import Footer from "../../../components/footer";
 import Button from "../../../components/Button";
+import Footer from "../../../components/footer";
 import "./DoctorDetail.css";
 
-// Mock de médicos
-const medicosMock = [
+const mockDoctor = {
+  id: "1",
+  name: "Dr. João Almeida",
+  crm: "123456-SP",
+  specialty: "Cardiologia",
+  phone: "(11) 91234-5678",
+  address: "Não sei o que vai ser aqui, 123 - Cafundó do Judas/BA",
+  status: "Inactive",
+  registrationDate: "10/01/2024",
+};
+
+const mockAppointments = [
   {
-    id: 1,
-    nome: "Dr. João Almeida",
-    crm: "123456-SP",
-    especialidade: "Cardiologia",
-    telefone: "(11) 91234-5678",
-    endereco: "Rua das Flores, 123 - São Paulo/SP",
-    status: "Ativo",
-    dataCadastro: "10/01/2024",
+    id: "1",
+    date: "12/06/2025",
+    time: "14:00",
+    patient: "Ana Paula Souza",
+    location: "Clínica Central",
+    status: "pending",
   },
   {
-    id: 2,
-    nome: "Dra. Maria Oliveira",
-    crm: "654321-RJ",
-    especialidade: "Pediatria",
-    telefone: "(21) 99876-5432",
-    endereco: "Av. Brasil, 456 - Rio de Janeiro/RJ",
-    status: "Ativo",
-    dataCadastro: "15/02/2024",
+    id: "2",
+    date: "11/06/2025",
+    time: "10:30",
+    patient: "Carlos Silva",
+    location: "Clínica Norte",
+    status: "completed",
   },
   {
-    id: 3,
-    nome: "Dr. Pedro Santos",
-    crm: "789123-MG",
-    especialidade: "Ortopedia",
-    telefone: "(31) 98888-1234",
-    endereco: "Rua Minas, 789 - Belo Horizonte/MG",
-    status: "Inativo",
-    dataCadastro: "20/03/2024",
+    id: "3",
+    date: "10/06/2025",
+    time: "16:00",
+    patient: "Maria Santos",
+    location: "Clínica Sul",
+    status: "cancelled",
   },
 ];
 
-// Mock de consultas
-const consultasMock = [
-  {
-    id: 1,
-    medicoId: 1,
-    data: "12/06/2025",
-    horario: "14:00",
-    paciente: "Ana Paula Souza",
-    localidade: "Clínica Central",
-    status: "Pendente",
-  },
-  {
-    id: 2,
-    medicoId: 1,
-    data: "10/06/2025",
-    horario: "09:00",
-    paciente: "Carlos Silva",
-    localidade: "Clínica Central",
-    status: "Realizada",
-  },
-  {
-    id: 3,
-    medicoId: 1,
-    data: "09/06/2025",
-    horario: "11:00",
-    paciente: "Maria Clara",
-    localidade: "Clínica Central",
-    status: "Cancelada",
-  },
-  {
-    id: 4,
-    medicoId: 2,
-    data: "15/06/2025",
-    horario: "10:00",
-    paciente: "João Pedro",
-    localidade: "Clínica Zona Sul",
-    status: "Pendente",
-  },
-];
-
-export default function DoctorDetail() {
-  const { id } = useParams();
+export default function DoctorDetails() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("Pendentes");
+  const [activeTab, setActiveTab] = useState("pending");
 
-  const medico = medicosMock.find((m) => m.id === Number(id));
-  if (!medico) {
-    return (
-      <div className="doctor-detail-bg">
-        <Header />
-        <main className="doctor-detail-main">
-          <h2>Médico não encontrado.</h2>
-          <Button onClick={() => navigate(-1)}>Voltar</Button>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  // Filtra consultas deste médico e da aba ativa
-  const consultasFiltradas = consultasMock.filter(
-    (c) =>
-      c.medicoId === medico.id &&
-      ((activeTab === "Pendentes" && c.status === "Pendente") ||
-        (activeTab === "Realizadas" && c.status === "Realizada") ||
-        (activeTab === "Canceladas" && c.status === "Cancelada"))
+  const pendingAppointments = mockAppointments.filter(
+    (apt) => apt.status === "pending"
+  );
+  const completedAppointments = mockAppointments.filter(
+    (apt) => apt.status === "completed"
+  );
+  const cancelledAppointments = mockAppointments.filter(
+    (apt) => apt.status === "cancelled"
   );
 
-  // Badge de status do médico
-  const statusBadgeClass =
-    "doctor-status-badge " +
-    (medico.status === "Ativo" ? "doctor-status-active" : "doctor-status-inactive");
+  const getStatusBadge = (status) => {
+    const className =
+      status === "active"
+        ? "status-badge status-active"
+        : "status-badge status-inactive";
+    const text = status === "active" ? "Ativo" : "Inativo";
+    return <span className={className}>{text}</span>;
+  };
 
-  // Handlers de ação (exemplo)
-  const handleAgendarConsulta = () => alert("Agendar nova consulta para " + medico.nome);
-  const handleCancelarConsulta = (id) => alert("Cancelar consulta " + id);
-  const handleRemarcarConsulta = (id) => alert("Remarcar consulta " + id);
-  const handleVerDetalhesConsulta = (id) => alert("Ver detalhes da consulta " + id);
+  const AppointmentTable = ({ appointments }) => (
+    <div className="table-container">
+      <table className="appointments-table">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Paciente</th>
+            <th>Localidade</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {appointments.map((appointment) => (
+            <tr key={appointment.id}>
+              <td>{appointment.date}</td>
+              <td>{appointment.time}</td>
+              <td>{appointment.patient}</td>
+              <td>{appointment.location}</td>
+              <td>
+                <div className="action-buttons">
+                  <Button
+                  background="#fff"
+                  hoverBackground="#e6f9f8"
+                  color="#4ecdc4"
+                  border="1px solid #4ecdc4"
+                  fontSize="0.75rem"
+                  icon={<Eye size={15}/>}
+                  style={{padding: "0.5rem 1rem"}}
+                  >
+                    Ver detalhes
+                    </Button>
+                  {appointment.status === "pending" && (
+                    <>
+                      <Button
+                      background="#ffc107"
+                      fontSize="0.75rem"
+                      hoverBackground="#e8a800"
+                      icon={<RotateCcw size={15}/>}
+                      style={{padding: "0.5rem 1rem"}}
+                      >
+                        Remarcar
+                      </Button>
+
+                      <Button
+                      background="#dc3545"
+                      hoverBackground="#c82333"
+                      fontSize="0.75rem"
+                      icon={<X size={15}/>}
+                      style={{padding: "0.5rem 1rem"}}
+                      >
+                        Cancelar
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
-    <div className="doctor-detail-bg">
+    <div className="doctor-details-container">
+      {/* Header */}
       <Header />
-      <main className="doctor-detail-main">
-        {/* Cabeçalho */}
-        <div className="doctor-detail-header">
-          <div>
-            <h2>Detalhes do Médico</h2>
-            <span className="doctor-detail-nome">{medico.nome}</span>
-          </div>
-          <div className="doctor-detail-header-actions">
-            <Button
-              background="#fff"
-              color="#374151"
-              fontWeight={600}
-              height="32px"
-              width="160px"
-              hoverBackground="#e6f4f1"
-              onClick={() => navigate(-1)}
-            >
-              Voltar à Lista
-            </Button>
-            <Button
-              background="#14b8a6"
-              color="#fff"
-              fontWeight={600}
-              height="32px"
-              width="180px"
-              hoverBackground="#0e9488"
-              onClick={handleAgendarConsulta}
-            >
-              Agendar Consulta
-            </Button>
-          </div>
+
+      <div className="main--content">
+        {/* Page Title and Doctor Name */}
+        <div className="page-title">
+          <h2 className="subtitle">Detalhes do médico</h2>
+          <h3 className="doctor-name">{mockDoctor.name}</h3>
         </div>
 
-        {/* Card de Dados do Médico */}
-        <div className="doctor-detail-card">
-          <div className="doctor-detail-grid">
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">Nome:</span>
-              <span className="doctor-detail-value">{medico.nome}</span>
-            </div>
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">CRM:</span>
-              <span className="doctor-detail-value">{medico.crm}</span>
-            </div>
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">Especialidade:</span>
-              <span className="doctor-detail-value">{medico.especialidade}</span>
-            </div>
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">Telefone:</span>
-              <span className="doctor-detail-value">{medico.telefone}</span>
-            </div>
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">Endereço:</span>
-              <span className="doctor-detail-value">{medico.endereco}</span>
-            </div>
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">Status:</span>
-              <span className={statusBadgeClass}>{medico.status}</span>
-            </div>
-            <div className="doctor-detail-item">
-              <span className="doctor-detail-label">Data de Cadastro:</span>
-              <span className="doctor-detail-value">{medico.dataCadastro}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Abas de Consultas */}
-        <div className="doctor-detail-tabs-container">
-          <div className="doctor-detail-tabs">
-            <button
-              className={`doctor-detail-tab ${activeTab === "Pendentes" ? "doctor-detail-tab-active" : ""}`}
-              onClick={() => setActiveTab("Pendentes")}
-            >
-              Pendentes
-            </button>
-            <button
-              className={`doctor-detail-tab ${activeTab === "Realizadas" ? "doctor-detail-tab-active" : ""}`}
-              onClick={() => setActiveTab("Realizadas")}
-            >
-              Realizadas
-            </button>
-            <button
-              className={`doctor-detail-tab ${activeTab === "Canceladas" ? "doctor-detail-tab-active" : ""}`}
-              onClick={() => setActiveTab("Canceladas")}
-            >
-              Canceladas
-            </button>
-          </div>
-
-          {/* Tabela de Consultas */}
-          <div className="doctor-detail-table-container">
-            <table className="doctor-detail-table">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Horário</th>
-                  <th>Paciente</th>
-                  <th>Localidade</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
-              <tbody>
-                {consultasFiltradas.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} style={{ textAlign: "center", color: "#888" }}>
-                      Nenhuma consulta encontrada.
-                    </td>
-                  </tr>
-                ) : (
-                  consultasFiltradas.map((c) => (
-                    <tr key={c.id}>
-                      <td>{c.data}</td>
-                      <td>{c.horario}</td>
-                      <td>{c.paciente}</td>
-                      <td>{c.localidade}</td>
-                      <td>
-                        <Button
-                          background="#fff"
-                          color="#247575"
-                          fontWeight={600}
-                          border="2px solid #247575"
-                          fontSize="14px"
-                          height="33px"
-                          width="110px"
-                          borderRadius="7px"
-                          hoverBackground="#247575"
-                          hoverColor="#fff"
-                          onClick={() => handleVerDetalhesConsulta(c.id)}
-                        >
-                          Ver Detalhes
-                        </Button>
-                        {activeTab === "Pendentes" && (
-                          <>
-                            <Button
-                              background="#fff"
-                              color="#eab308"
-                              border="2px solid #eab308"
-                              fontWeight={600}
-                              fontSize="14px"
-                              height="33px"
-                              width="110px"
-                              borderRadius="7px"
-                              hoverBackground="#eab308"
-                              hoverColor="#fff"
-                              style={{ marginLeft: 8 }}
-                              onClick={() => handleRemarcarConsulta(c.id)}
-                            >
-                              Remarcar
-                            </Button>
-                            <Button
-                              background="#fff"
-                              color="#ef4444"
-                              border="2px solid #ef4444"
-                              fontWeight={600}
-                              fontSize="14px"
-                              height="33px"
-                              width="110px"
-                              borderRadius="7px"
-                              hoverBackground="#ef4444"
-                              hoverColor="#fff"
-                              style={{ marginLeft: 8 }}
-                              onClick={() => handleCancelarConsulta(c.id)}
-                            >
-                              Cancelar
-                            </Button>
-                          </>
-                        )}
-                        {activeTab === "Canceladas" && (
-                          <Button
-                            background="#fff"
-                            color="#14b8a6"
-                            border="2px solid #14b8a6"
-                            fontWeight={600}
-                            fontSize="14px"
-                            height="33px"
-                            width="110px"
-                            borderRadius="7px"
-                            hoverBackground="#14b8a6"
-                            hoverColor="#fff"
-                            style={{ marginLeft: 8 }}
-                            onClick={() => handleRemarcarConsulta(c.id)}
-                          >
-                            Reagendar
-                          </Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Botão fixo de agendar nova consulta */}
-        <div className="doctor-detail-bottom-action">
+        {/* Action Buttons */}
+        <div className="action-section">
           <Button
-            background="#14b8a6"
-            color="#fff"
-            fontWeight={600}
-            height="38px"
-            width="220px"
-            hoverBackground="#0e9488"
-            onClick={handleAgendarConsulta}
+            background="#fff"
+            color="#374151"
+            fontWeight="600"
+            width="150px"
+            height="45px"
+            borderRadius="0.375rem"
+            hoverBackground="#f8f9fa"
+            icon={<ArrowLeft size={15} />}
+            onClick={() => navigate(-1)}
           >
-            Agendar Nova Consulta
+            Voltar à Lista
+          </Button>
+
+          <Button
+            background="#3b9b96"
+            fontWeight={600}
+            width="180px"
+            hoverBackground="#2d7a75"
+            borderRadius="0.375rem"
+            icon={<Calendar size={15} />}
+          >
+            Agendar Consulta
           </Button>
         </div>
-      </main>
+
+        {/* Doctor Details Card */}
+        <div className="card">
+          <div className="card-content">
+            <div className="doctor-info-grid">
+              <div className="info-column">
+                <div className="info-item">
+                  <label className="info-label">Nome:</label>
+                  <p className="info-value">
+                    <User className="info-icon" />
+                    {mockDoctor.name}
+                  </p>
+                </div>
+                <div className="info-item">
+                  <label className="info-label">Telefone:</label>
+                  <p className="info-value">
+                    <Phone className="info-icon" />
+                    {mockDoctor.phone}
+                  </p>
+                </div>
+                <div className="info-item">
+                  <label className="info-label">Data de Cadastro:</label>
+                  <p className="info-value">
+                    <Calendar className="info-icon" />
+                    {mockDoctor.registrationDate}
+                  </p>
+                </div>
+              </div>
+
+              <div className="info-column">
+                <div className="info-item">
+                  <label className="info-label">CRM:</label>
+                  <p className="info-value">
+                    <CreditCard className="info-icon" />
+                    {mockDoctor.crm}
+                  </p>
+                </div>
+                <div className="info-item">
+                  <label className="info-label">Endereço:</label>
+                  <p className="info-value">
+                    <MapPin className="info-icon" />
+                    {mockDoctor.address}
+                  </p>
+                </div>
+              </div>
+
+              <div className="info-column">
+                <div className="info-item">
+                  <label className="info-label">Especialidade:</label>
+                  <p className="info-value">
+                    <Stethoscope className="info-icon" />
+                    {mockDoctor.specialty}
+                  </p>
+                </div>
+                <div className="info-item">
+                  <label className="info-label">Status:</label>
+                  <div className="status-container">
+                    {getStatusBadge(mockDoctor.status)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Appointments Section */}
+        <div className="card">
+          <div className="tabsContainer">
+            <div className="tabs-header">
+              <button
+                className={`tab-button ${
+                  activeTab === "pending" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("pending")}
+              >
+                Pendentes
+              </button>
+              <button
+                className={`tab-button ${
+                  activeTab === "completed" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("completed")}
+              >
+                Realizadas
+              </button>
+              <button
+                className={`tab-button ${
+                  activeTab === "cancelled" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("cancelled")}
+              >
+                Canceladas
+              </button>
+            </div>
+
+            <div className="tab-content">
+              {activeTab === "pending" && (
+                <AppointmentTable appointments={pendingAppointments} />
+              )}
+              {activeTab === "completed" && (
+                <AppointmentTable appointments={completedAppointments} />
+              )}
+              {activeTab === "cancelled" && (
+                <AppointmentTable appointments={cancelledAppointments} />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Schedule New Appointment Button */}
+        <div className="schedule-section">
+          <Button
+            background="#3b9b96"
+            fontWeight={600}
+            fontSize="1.1rem"
+            hoverBackground="#2d7a75"
+            borderRadius="0.375rem"
+            icon={<Calendar size={15} />}
+            style={{ padding: "1rem 2.5rem" }}
+          >
+            Agendar Consulta
+          </Button>
+        </div>
+      </div>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

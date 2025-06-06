@@ -5,13 +5,14 @@ import Button from "../../../components/Button";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 import "./PatientDetail.css";
+import { ArrowLeft, Calendar, UserX, UserCheck } from "lucide-react";
 
 const patientData = {
   nome: "Ana Paula Souza",
   cpf: "123.456.789-00",
   email: "ana@email.com",
   telefone: "(11) 91234-5678",
-  status: "Inativo",
+  status: "Ativo",
   dataCadastro: "25/04/2023",
 };
 
@@ -53,6 +54,7 @@ export default function PatientDetailsPage() {
 
   const [showModal, setShowModal] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+  const statusToggleIcon = patientStatus === "Ativo" ? <UserX /> : <UserCheck />;
 
   const handleTogglePatientStatus = () => {
     setPendingAction(patientStatus === "Ativo" ? "desativar" : "ativar");
@@ -62,10 +64,10 @@ export default function PatientDetailsPage() {
   const handleConfirmAction = () => {
     if (pendingAction === "desativar") {
       setPatientStatus("Inativo");
-      alert("Paciente desativado!");
+      // alert("Paciente desativado!");
     } else {
       setPatientStatus("Ativo");
-      alert("Paciente ativado!");
+      // alert("Paciente ativado!");
     }
     setShowModal(false);
     setPendingAction(null);
@@ -118,10 +120,12 @@ export default function PatientDetailsPage() {
           <Button
             background="#fff"
             color="#374151"
-            fontWeight={600}
-            height="30px"
-            width="200px"
-            hoverBackground="#e6f4f1"
+            fontWeight="600"
+            height="35px"
+            width="210px"
+            hoverBackground="#f8f9fa"
+            borderRadius="0.375rem"
+            icon={<ArrowLeft size={15}/>}
             onClick={() => navigate(-1)}
           >
             Voltar à lista de pacientes
@@ -133,7 +137,7 @@ export default function PatientDetailsPage() {
           <div className="patient-name-card">
             <span className="patient-name">{patientData.nome}</span>
           </div>
-          <div className={statusBadgeClass}>{patientData.status}</div>
+          <div className={statusBadgeClass}>{patientStatus}</div>
         </div>
 
         {/* Registration Date */}
@@ -171,13 +175,15 @@ export default function PatientDetailsPage() {
         {/* Action Buttons */}
         <div className="action-buttons">
           <Button
-            background="#126964"
-            fontWeight="bold"
-            height="35px"
-            width="200px"
+            background="#3b9b96"
+            hoverBackground="#2d7a75"
+            fontWeight={600}
+            borderRadius="0.375rem"
+            style={{padding: "0.90rem 2rem"}}
+            icon={<Calendar size={15} />}
             onClick={handleScheduleAppointment}
           >
-            Agendar Nova Consulta
+            Agendar Consulta
           </Button>
 
           <Button
@@ -185,8 +191,8 @@ export default function PatientDetailsPage() {
             color="#374151"
             hoverBackground="#e6f4f1"
             fontWeight="bold"
-            height="35px"
-            width="150px"
+            icon={statusToggleIcon}
+            style={{padding: "0.90rem 2rem"}}
             onClick={handleTogglePatientStatus}
           >
             {patientStatus === "Ativo"

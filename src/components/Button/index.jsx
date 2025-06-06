@@ -17,6 +17,8 @@ function Button({
   style = {},
   disabled,
   className = "",
+  icon,
+  iconPosition = "left",
   ...props
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -47,7 +49,7 @@ function Button({
     cursor: isBtnDisabled ? "not-allowed" : "pointer",
     opacity: isBtnDisabled ? 0.7 : 1,
     boxShadow: isHovered && !isBtnDisabled
-      ? "0 4px 16px 0 rgba(44,122,123, 0.15)"
+      ? "0 4px 8px rgba(44,122,123, 0.15)"
       : "none",
     transform: isHovered && !isBtnDisabled ? "translateY(-2px)" : "none",
     transition: "all 0.2s",
@@ -63,7 +65,9 @@ function Button({
       disabled={isBtnDisabled}
       {...props}
     >
+      {icon && iconPosition === "left" && icon}
       {children}
+      {icon && iconPosition === "right" && icon}
     </button>
   );
 }

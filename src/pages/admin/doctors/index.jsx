@@ -5,6 +5,7 @@ import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
 import "./style.css";
+import { ArrowLeft, Eye } from "lucide-react";
 
 // Exemplo de dados mockados
 const medicosMock = [
@@ -58,14 +59,16 @@ function AdminDoctors() {
       <Header />
       <main className="admin-patients-main">
         <div className="admin-patients-header">
-          <h2>Médicos Cadastrados</h2>
+          <h2 className="admin-patient-header-title">Médicos Cadastrados</h2>
           <Button
             background="#fff"
             color="#374151"
-            height="30px"
-            width="200px"
-            hoverBackground="#e6f4f1"
-            fontWeight={600}
+            height="35px"
+            width="180px"
+            hoverBackground="#f8f9fa"
+            borderRadius="0.375rem"
+            fontWeight="600"
+            icon={<ArrowLeft size={15}/>}
             onClick={() => navigate(-1)}
           >
             Voltar ao Dashboard
@@ -86,7 +89,7 @@ function AdminDoctors() {
             value={filtro}
             onChange={e => setFiltro(e.target.value)}
           >
-            <option value="">Filtrar</option>
+            <option value="">Todos</option>
             <option value="ativo">Ativo</option>
             <option value="inativo">Inativo</option>
           </select>
@@ -121,15 +124,14 @@ function AdminDoctors() {
                     <td>
                       <Button
                         background="#fff"
-                        color="#247575"
-                        fontWeight={600}
-                        border="2px solid #247575"
-                        fontSize="14px"
-                        height="33px"
+                        color="#4ecdc4"
+                        fontSize="0.90rem"
+                        border="1px solid #4ecdc4"
                         width="100%"
                         borderRadius="7px"
-                        hoverBackground="#247575"
-                        hoverColor="#fff"
+                        hoverBackground="#e6f9f8"
+                        icon={<Eye size={15}/>}
+                        style={{padding: "0.4rem 0"}}
                         onClick={() => navigate(`/admin/doctors/${m.id}`)}
                       >
                         Ver Detalhes
