@@ -1,131 +1,103 @@
-import {
-  FaUser,
-  FaUserMd,
-  FaClipboardList,
-  FaCheckCircle,
-  FaTimesCircle,
-  FaPlus,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import Header from "../../../components/header";
-import Button from "../../../components/Button";
-import Footer from "../../../components/footer";
-import "./style.css";
+import { UserRound, Stethoscope, Calendar, Plus } from "lucide-react"
+import Button from "../../../components/Button"
+import Header from "../../../components/header"
+import Footer from "../../../components/footer"
+import "./style.css"
 
-const resumo = [
-  {
-    label: "Pacientes",
-    value: 3,
-    icon: <FaUser />,
-    color: "#2c7a7b",
-    link: "/admin/patients",
-  },
-  {
-    label: "Médicos",
-    value: 3,
-    icon: <FaUserMd />,
-    color: "#319898",
-    link: "/admin/doctors",
-  },
-  {
-    label: "Pendentes",
-    value: 9,
-    icon: <FaClipboardList />,
-    color: "#f6ad55",
-    link: "/admin/appointments?status=pendente",
-  },
-  {
-    label: "Realizadas",
-    value: 6,
-    icon: <FaCheckCircle />,
-    color: "#38a169",
-    link: "/admin/appointments?status=realizada",
-  },
-  {
-    label: "Canceladas",
-    value: 3,
-    icon: <FaTimesCircle />,
-    color: "#e53e3e",
-    link: "/admin/appointments?status=cancelada",
-  },
-];
-
-function AdminDashboard() {
-  const navigate = useNavigate();
-
+export default function AdminDashboard() {
   return (
-    <div className="admin-dashboard-bg">
+    <div className="admin-container">
+      {/* Header */}
       <Header />
-      <main className="admin-dashboard-main">
-        <h2 className="admin-dashboard-title">Painel do Administrador</h2>
-        <div className="admin-dashboard-cards">
-          {resumo.map((item) => (
-            <div
-              className="admin-dashboard-card"
-              key={item.label}
-              style={{
-                borderTop: `4px solid ${item.color}`,
-                background:
-                  "linear-gradient(135deg, #f9fafb 80%, #e6f4f1 100%)",
-              }}
-            >
-              <div
-                className="admin-dashboard-card-icon"
-                style={{ color: item.color }}
-              >
-                {item.icon}
-              </div>
-              <div className="admin-dashboard-card-value">{item.value}</div>
-              <div className="admin-dashboard-card-label">{item.label}</div>
-              <Button
-                background="#fff"
-                color={item.color}
-                fontWeight={600}
-                hoverBackground="#f0f8f8"
-                height="36px"
-                width="100%"
-                border={`1.5px solid ${item.color}`}
-                style={{
-                  marginTop: "10px",
-                  transition: "background 0.2s, color 0.2s",
-                }}
-                onClick={() => (window.location.href = item.link)}
-              >
-                Ver {item.label.toLowerCase()}
-              </Button>
-            </div>
-          ))}
+
+      <div className="main-content">
+        {/* Page Title */}
+        <div className="page-title">
+          <h2 className="admin-title">Painel do Administrador</h2>
         </div>
-        <div className="admin-dashboard-actions-horizontal">
-          <h4>Ações rápidas</h4>
-          <div className="admin-dashboard-actions-btns">
 
-            <Button
-              background="#319898"
-              color="#fff"
-              height="40px"
-              fontWeight={600}
-              width="150px"
-              onClick={() => navigate("admin/doctors/create")}
-            >
-              + Novo Médico
+        {/* Dashboard Cards */}
+        <div className="dashboard-grid">
+          {/* Patients Card */}
+          <div className="dashboard--card">
+            <div className="card-icon patient-icon">
+              <UserRound size={32} />
+            </div>
+            <div className="card-content">
+              <h3 className="card-value">3</h3>
+              <p className="card-label">Pacientes</p>
+            </div>
+            <button className="card-action patient-action">Ver pacientes</button>
+          </div>
 
-            </Button>
-            <Button
-              background="#38a169"
-              color="#fff"
-              fontWeight={700}
-              width="200px"
-              onClick={() => navigate("/admin/appointments/create")}
-            >
-              <FaPlus /> Nova Consulta (Encaixe)
-            </Button>
+          {/* Doctors Card */}
+          <div className="dashboard--card">
+            <div className="card-icon doctor-icon">
+              <Stethoscope size={32} />
+            </div>
+            <div className="card-content">
+              <h3 className="card-value">3</h3>
+              <p className="card-label">Médicos</p>
+            </div>
+            <button className="card-action doctor-action">Ver médicos</button>
+          </div>
+
+          {/* Appointments Card */}
+          <div className="dashboard--card appointments-card">
+            <div className="card-icon appointment-icon">
+              <Calendar size={32} />
+            </div>
+            <div className="card-content">
+              <h3 className="card-value">18</h3>
+              <p className="card-label">Consultas</p>
+              <div className="appointment-stats">
+                <div className="stat-item">
+                  <span className="stat-badge pending"></span>
+                  <span className="stat-label">9 Pendentes</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-badge completed"></span>
+                  <span className="stat-label">6 Realizadas</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-badge cancelled"></span>
+                  <span className="stat-label">3 Canceladas</span>
+                </div>
+              </div>
+            </div>
+            <button className="card-action appointment-action">Ver consultas</button>
           </div>
         </div>
-      </main>
-      <Footer />
-    </div>
-  );
-}
 
-export default AdminDashboard;
+        {/* Quick Actions */}
+        <div className="quick-actions-container">
+          <div className="quick-actions-card">
+            <h3 className="section-title">Ações rápidas</h3>
+            <div className="quick-actions">
+              <button className="btn btn-primary">
+                <Plus className="icon" />
+                Novo Médico
+              </button>
+              <button className="btn btn-primary">
+                <Plus className="icon" />
+                Nova Consulta
+              </button>
+              <button className="btn btn-primary">
+                <Plus className="icon" />
+                Novo Paciente
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        
+      </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>Saúde+ © 2025 - Todos os direitos reservados</p>
+      </footer>
+    </div>
+  )
+}

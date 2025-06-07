@@ -431,7 +431,7 @@ const RegistrationForm = () => {
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
                 >
-                  {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+                  {showConfirmPassword ? <FaEye/> : <FaEyeSlash />}
                 </button>
               </div>
               {errors.confirmPassword && (
