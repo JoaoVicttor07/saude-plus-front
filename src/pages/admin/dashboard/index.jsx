@@ -1,10 +1,13 @@
-import { UserRound, Stethoscope, Calendar, Plus } from "lucide-react"
-import Button from "../../../components/Button"
-import Header from "../../../components/header"
-import Footer from "../../../components/footer"
-import "./style.css"
+import {useNavigate} from 'react-router-dom'
+import { UserRound, Stethoscope, Calendar, Plus } from "lucide-react";
+import Button from "../../../components/Button";
+import Header from "../../../components/header";
+import Footer from "../../../components/footer";
+import "./style.css";
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
+
   return (
     <div className="admin-container">
       {/* Header */}
@@ -23,11 +26,20 @@ export default function AdminDashboard() {
             <div className="card-icon patient-icon">
               <UserRound size={32} />
             </div>
-            <div className="card-content">
+            <div className="cardContent">
               <h3 className="card-value">3</h3>
               <p className="card-label">Pacientes</p>
             </div>
-            <button className="card-action patient-action">Ver pacientes</button>
+            <Button
+              width="100%"
+              background="#3b9b96"
+              hoverBackground="#2d7a75"
+              borderRadius="0.375rem"
+              onClick={() => navigate('/admin/patients')}
+              style={{ padding: "1rem" }}
+            >
+              Ver pacientes
+            </Button>
           </div>
 
           {/* Doctors Card */}
@@ -35,11 +47,20 @@ export default function AdminDashboard() {
             <div className="card-icon doctor-icon">
               <Stethoscope size={32} />
             </div>
-            <div className="card-content">
+            <div className="cardContent">
               <h3 className="card-value">3</h3>
               <p className="card-label">Médicos</p>
             </div>
-            <button className="card-action doctor-action">Ver médicos</button>
+            <Button
+              width="100%"
+              background="#3b9b96"
+              hoverBackground="#2d7a75"
+              borderRadius="0.375rem"
+              onClick={() => navigate('/admin/doctors')}
+              style={{ padding: "1rem" }}
+            >
+              Ver médicos
+            </Button>
           </div>
 
           {/* Appointments Card */}
@@ -47,7 +68,7 @@ export default function AdminDashboard() {
             <div className="card-icon appointment-icon">
               <Calendar size={32} />
             </div>
-            <div className="card-content">
+            <div className="cardContent">
               <h3 className="card-value">18</h3>
               <p className="card-label">Consultas</p>
               <div className="appointment-stats">
@@ -65,39 +86,53 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
-            <button className="card-action appointment-action">Ver consultas</button>
+            <Button
+              width="100%"
+              background="#3b9b96"
+              hoverBackground="#2d7a75"
+              // background="#4ecdc4"
+              // hoverBackground="#3db1a8"
+              borderRadius="0.375rem"
+              style={{ padding: "1rem" }}
+            >
+              Ver consultas
+            </Button>
           </div>
         </div>
 
         {/* Quick Actions */}
         <div className="quick-actions-container">
           <div className="quick-actions-card">
-            <h3 className="section-title">Ações rápidas</h3>
+            <h3 className="sectionTitle">Ações rápidas</h3>
             <div className="quick-actions">
-              <button className="btn btn-primary">
-                <Plus className="icon" />
+              <Button
+                background="#3b9b96"
+                hoverBackground="#2d7a75"
+                fontSize="0.875rem"
+                icon={<Plus size={15} />}
+                style={{ padding: "0.80rem 1.5rem" }}
+              >
                 Novo Médico
-              </button>
-              <button className="btn btn-primary">
-                <Plus className="icon" />
+              </Button>
+
+              <Button
+                background="#3b9b96"
+                hoverBackground="#2d7a75"
+                fontSize="0.875rem"
+                icon={<Plus size={15} />}
+                style={{ padding: "0.80rem 1.5rem" }}
+              >
                 Nova Consulta
-              </button>
-              <button className="btn btn-primary">
-                <Plus className="icon" />
-                Novo Paciente
-              </button>
+              </Button>
             </div>
           </div>
         </div>
 
         {/* Recent Activity */}
-        
       </div>
 
       {/* Footer */}
-      <footer className="footer">
-        <p>Saúde+ © 2025 - Todos os direitos reservados</p>
-      </footer>
+      <Footer/>
     </div>
-  )
+  );
 }
