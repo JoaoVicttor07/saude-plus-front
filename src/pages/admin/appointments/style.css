@@ -1,17 +1,17 @@
 /* Main Container */
-.appointments-container {
+.appt-container {
   min-height: 100vh;
   background-color: #4ecdc4;
 }
 
 /* Header Styles */
-.header {
+.appt-header {
   background-color: #4ecdc4;
   color: white;
   padding: 1rem;
 }
 
-.header-content {
+.appt-header-content {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -19,13 +19,13 @@
   align-items: center;
 }
 
-.logo {
+.appt-logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
 /* Main Content */
-.main-content {
+.appt-main-content {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
@@ -35,18 +35,18 @@
 }
 
 /* Page Header */
-.page-header {
+.appt-page-header {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.back-button {
+.appt-back-button {
   flex-shrink: 0;
 }
 
-.page-title {
+.appt-page-title {
   color: white;
   font-size: 1.75rem;
   font-weight: bold;
@@ -55,19 +55,19 @@
 }
 
 /* Tabs Styles */
-.tabs-container {
+.appt-tabs-container {
   display: flex;
   justify-content: center;
 }
 
-.tabs-header {
+.appt-tabs-header {
   display: flex;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   padding: 0.25rem;
 }
 
-.tab-button {
+.appt-tab-button {
   background-color: transparent;
   color: white;
   border: none;
@@ -79,29 +79,29 @@
   opacity: 0.7;
 }
 
-.tab-button:hover {
+.appt-tab-button:hover {
   opacity: 1;
 }
 
-.tab-button.active {
+.appt-tab-button.active {
   background-color: white;
   color: #4ecdc4;
   opacity: 1;
 }
 
 /* Search Container */
-.search-container {
+.appt-search-container {
   display: flex;
   justify-content: center;
 }
 
-.search-bar {
+.appt-search-bar {
   position: relative;
   width: 100%;
   max-width: 400px;
 }
 
-.search-icon {
+.appt-search-icon {
   position: absolute;
   left: 1rem;
   top: 50%;
@@ -111,7 +111,7 @@
   height: 1rem;
 }
 
-.search-input {
+.appt-search-input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
   border: none;
@@ -122,24 +122,24 @@
   placeholder-color: rgba(255, 255, 255, 0.7);
 }
 
-.search-input::placeholder {
+.appt-search-input::placeholder {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.search-input:focus {
+.appt-search-input:focus {
   outline: none;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* Appointments List */
-.appointments-list {
+.appt-appointments-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 /* Appointment Card */
-.appointment-card {
+.appt-appointment-card {
   background-color: white;
   border-radius: 0.5rem;
   padding: 1.5rem;
@@ -147,12 +147,12 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.appointment-card:hover {
+.appt-appointment-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-.appointment-header {
+.appt-appointment-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -161,104 +161,104 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.appointment-datetime {
+.appt-appointment-datetime {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.datetime-icon {
+.appt-datetime-icon {
   width: 1rem;
   height: 1rem;
   color: #4ecdc4;
 }
 
-.datetime-text {
+.appt-datetime-text {
   font-weight: 600;
   color: #4ecdc4;
   font-size: 1rem;
 }
 
-.appointment-status {
+.appt-appointment-status {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.status-icon {
+.appt-status-icon {
   width: 1rem;
   height: 1rem;
 }
 
-.status-icon.pending {
+.appt-status-icon.appt-pending {
   color: #ffc107;
 }
 
-.status-icon.completed {
+.appt-status-icon.appt-completed {
   color: #28a745;
 }
 
-.status-icon.cancelled {
+.appt-status-icon.appt-cancelled {
   color: #dc3545;
 }
 
-.status-text {
+.appt-status-text {
   font-weight: 500;
   font-size: 0.875rem;
 }
 
-.status-text.pending {
+.appt-status-text.appt-pending {
   color: #ffc107;
 }
 
-.status-text.completed {
+.appt-status-text.appt-completed {
   color: #28a745;
 }
 
-.status-text.cancelled {
+.appt-status-text.appt-cancelled {
   color: #dc3545;
 }
 
 /* Appointment Details */
-.appointment-details {
+.appt-appointment-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 
-.detail-row {
+.appt-detail-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.detail-icon {
+.appt-detail-icon {
   width: 0.875rem;
   height: 0.875rem;
   color: #6b7280;
 }
 
-.detail-label {
+.appt-detail-label {
   font-weight: 500;
   color: #374151;
   font-size: 0.875rem;
 }
 
-.detail-value {
+.appt-detail-value {
   color: #6b7280;
   font-size: 0.875rem;
 }
 
 /* Appointment Actions */
-.appointment-actions {
+.appt-appointment-actions {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
 
 /* Button Styles */
-.btn {
+.appt-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -272,79 +272,79 @@
   text-decoration: none;
 }
 
-.btn:hover {
+.appt-btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btn-outline {
+.appt-btn-outline {
   background-color: transparent;
   color: #4ecdc4;
   border: 1px solid #4ecdc4;
 }
 
-.btn-outline:hover {
+.appt-btn-outline:hover {
   background-color: #e6f9f8;
 }
 
-.btn-warning {
+.appt-btn-warning {
   background-color: #ffc107;
   color: white;
 }
 
-.btn-warning:hover {
+.appt-btn-warning:hover {
   background-color: #e0a800;
 }
 
-.btn-danger {
+.appt-btn-danger {
   background-color: #dc3545;
   color: white;
 }
 
-.btn-danger:hover {
+.appt-btn-danger:hover {
   background-color: #c82333;
 }
 
-.btn-secondary {
+.appt-btn-secondary {
   background-color: white;
   color: #4ecdc4;
 }
 
-.btn-secondary:hover {
+.appt-btn-secondary:hover {
   background-color: #f8f9fa;
 }
 
-.icon {
+.appt-icon {
   width: 0.875rem;
   height: 0.875rem;
 }
 
 /* Empty State */
-.empty-state {
+.appt-empty-state {
   text-align: center;
   padding: 3rem 1rem;
   color: white;
 }
 
-.empty-icon {
+.appt-empty-icon {
   width: 3rem;
   height: 3rem;
   margin: 0 auto 1rem;
   opacity: 0.5;
 }
 
-.empty-state h3 {
+.appt-empty-state h3 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
   opacity: 0.9;
 }
 
-.empty-state p {
+.appt-empty-state p {
   opacity: 0.7;
 }
 
 /* Modal Styles */
-.modal-overlay {
+.appt-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -358,7 +358,7 @@
   padding: 1rem;
 }
 
-.modal-content {
+.appt-modal-content {
   background-color: white;
   border-radius: 0.5rem;
   width: 100%;
@@ -368,7 +368,7 @@
   box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1);
 }
 
-.modal-header {
+.appt-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -376,13 +376,13 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.modal-header h3 {
+.appt-modal-header h3 {
   font-size: 1.25rem;
   font-weight: 600;
   color: #333;
 }
 
-.modal-close {
+.appt-modal-close {
   background: none;
   border: none;
   cursor: pointer;
@@ -390,75 +390,75 @@
   color: #6b7280;
 }
 
-.modal-close:hover {
+.appt-modal-close:hover {
   color: #374151;
 }
 
-.modal-body {
+.appt-modal-body {
   padding: 1.5rem;
 }
 
-.modal-section {
+.appt-modal-section {
   margin-bottom: 1.5rem;
 }
 
-.modal-section:last-child {
+.appt-modal-section:last-child {
   margin-bottom: 0;
 }
 
-.modal-section h4 {
+.appt-modal-section h4 {
   font-size: 1rem;
   font-weight: 600;
   color: #4ecdc4;
   margin-bottom: 0.75rem;
 }
 
-.modal-details {
+.appt-modal-details {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.modal-row {
+.appt-modal-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.modal-label {
+.appt-modal-label {
   font-weight: 500;
   color: #374151;
   font-size: 0.875rem;
 }
 
-.modal-value {
+.appt-modal-value {
   color: #6b7280;
   font-size: 0.875rem;
 }
 
-.status-badge {
+.appt-status-badge {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.75rem;
   font-weight: 500;
 }
 
-.status-badge.pending {
+.appt-status-badge.appt-pending {
   background-color: #fef3c7;
   color: #92400e;
 }
 
-.status-badge.completed {
+.appt-status-badge.appt-completed {
   background-color: #d1fae5;
   color: #065f46;
 }
 
-.status-badge.cancelled {
+.appt-status-badge.appt-cancelled {
   background-color: #fee2e2;
   color: #991b1b;
 }
 
-.modal-notes {
+.appt-modal-notes {
   color: #6b7280;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -468,7 +468,7 @@
   border-left: 3px solid #4ecdc4;
 }
 
-.modal-footer {
+.appt-modal-footer {
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
@@ -477,7 +477,7 @@
 }
 
 /* Footer */
-.footer {
+.appt-footer {
   background-color: #4ecdc4;
   color: white;
   text-align: center;
@@ -485,78 +485,78 @@
   margin-top: 2rem;
 }
 
-.footer p {
+.appt-footer p {
   font-size: 0.875rem;
   opacity: 0.8;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .main-content {
+  .appt-main-content {
     padding: 1rem;
     gap: 1rem;
   }
 
-  .page-header {
+  .appt-page-header {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
 
-  .page-title {
+  .appt-page-title {
     text-align: center;
     font-size: 1.5rem;
   }
 
-  .tabs-header {
+  .appt-tabs-header {
     flex-direction: column;
   }
 
-  .tab-button {
+  .appt-tab-button {
     text-align: center;
   }
 
-  .appointment-details {
+  .appt-appointment-details {
     grid-template-columns: 1fr;
   }
 
-  .appointment-actions {
+  .appt-appointment-actions {
     flex-direction: column;
   }
 
-  .btn {
+  .appt-btn {
     width: 100%;
     justify-content: center;
   }
 
-  .modal-content {
+  .appt-modal-content {
     margin: 1rem;
     max-width: none;
   }
 
-  .modal-row {
+  .appt-modal-row {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
   }
 
-  .modal-footer {
+  .appt-modal-footer {
     flex-direction: column;
   }
 }
 
 @media (max-width: 480px) {
-  .appointment-card {
+  .appt-appointment-card {
     padding: 1rem;
   }
 
-  .appointment-header {
+  .appt-appointment-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
 
-  .datetime-text {
+  .appt-datetime-text {
     font-size: 0.875rem;
   }
 }
