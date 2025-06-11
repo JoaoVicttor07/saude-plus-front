@@ -1,6 +1,5 @@
-"use client";
-
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import {
   ArrowLeft,
   Search,
@@ -15,6 +14,9 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
+import Button from '../../../components/Button'
+import Header from '../../../components/header'
+import Footer from '../../../components/footer'
 import "./style.css";
 
 const mockAppointments = [
@@ -94,6 +96,7 @@ const mockAppointments = [
 ];
 
 export default function ViewAppointments() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("pending");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -318,20 +321,24 @@ export default function ViewAppointments() {
   return (
     <div className="appt-container">
       {/* Header */}
-      <header className="appt-header">
-        <div className="appt-header-content">
-          <h1 className="appt-logo">Saúde+</h1>
-          <button className="appt-btn appt-btn-secondary">Sair</button>
-        </div>
-      </header>
+      <Header/>
 
       <div className="appt-main-content">
         {/* Page Title and Navigation */}
         <div className="appt-page-header">
-          <button className="appt-btn appt-btn-secondary appt-back-button">
-            <ArrowLeft className="appt-icon" />
+          <Button
+          background='#fff'
+          color='#374151'
+          hoverBackground="#f8f9fa"
+          fontWeight={600}
+          icon={<ArrowLeft size={15}/>}
+          borderRadius='0.375rem'
+          style={{padding: '0.7rem 1rem'}}
+          onClick={() => navigate(-1)}
+          >
             Voltar ao Dashboard
-          </button>
+            </Button>
+
           <h2 className="appt-page-title">Gerenciamento de Consultas</h2>
         </div>
 
@@ -402,9 +409,7 @@ export default function ViewAppointments() {
       </div>
 
       {/* Footer */}
-      <footer className="appt-footer">
-        <p>Saúde+ © 2025 - Todos os direitos reservados</p>
-      </footer>
+      <Footer/>
 
       {/* Modal */}
       <AppointmentModal
