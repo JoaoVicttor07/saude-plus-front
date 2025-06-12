@@ -13,7 +13,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <Header />
 
-      <div className="main-content">
+      <div className="main---content">
         {/* Page Title */}
         <div className="page-title">
           <h2 className="admin-title">Painel do Administrador</h2>
@@ -90,10 +90,9 @@ export default function AdminDashboard() {
               width="100%"
               background="#3b9b96"
               hoverBackground="#2d7a75"
-              // background="#4ecdc4"
-              // hoverBackground="#3db1a8"
               borderRadius="0.375rem"
               style={{ padding: "1rem" }}
+              onClick={() => navigate('/admin/appointments')}
             >
               Ver consultas
             </Button>
