@@ -13,7 +13,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <Header />
 
-      <div className="main-content">
+      <div className="main---content">
         {/* Page Title */}
         <div className="page-title">
           <h2 className="admin-title">Painel do Administrador</h2>

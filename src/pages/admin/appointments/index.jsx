@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Search,
@@ -14,9 +14,9 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
-import Button from '../../../components/Button'
-import Header from '../../../components/header'
-import Footer from '../../../components/footer'
+import Button from "../../../components/Button";
+import Header from "../../../components/header";
+import Footer from "../../../components/footer";
 import "./style.css";
 
 const mockAppointments = [
@@ -29,7 +29,7 @@ const mockAppointments = [
     specialty: "Cardiologia",
     location: "Clínica Central",
     status: "pending",
-    notes: "Consulta de rotina para acompanhamento cardíaco",
+
     phone: "(11) 98765-4321",
   },
   {
@@ -41,7 +41,7 @@ const mockAppointments = [
     specialty: "Dermatologia",
     location: "Clínica Norte",
     status: "pending",
-    notes: "Avaliação de lesão cutânea",
+
     phone: "(11) 99876-5432",
   },
   {
@@ -53,8 +53,7 @@ const mockAppointments = [
     specialty: "Ortopedia",
     location: "Clínica Sul",
     status: "completed",
-    notes:
-      "Consulta realizada com sucesso. Paciente orientado sobre fisioterapia.",
+
     phone: "(11) 97654-3210",
   },
   {
@@ -66,7 +65,7 @@ const mockAppointments = [
     specialty: "Neurologia",
     location: "Clínica Central",
     status: "completed",
-    notes: "Exame neurológico completo realizado. Resultados normais.",
+
     phone: "(11) 96543-2109",
   },
   {
@@ -78,7 +77,7 @@ const mockAppointments = [
     specialty: "Cardiologia",
     location: "Clínica Norte",
     status: "cancelled",
-    notes: "Cancelado pelo paciente por motivos pessoais",
+
     phone: "(11) 95432-1098",
   },
   {
@@ -90,7 +89,7 @@ const mockAppointments = [
     specialty: "Dermatologia",
     location: "Clínica Sul",
     status: "cancelled",
-    notes: "Cancelado devido à indisponibilidade do médico",
+
     phone: "(11) 94321-0987",
   },
 ];
@@ -187,24 +186,43 @@ export default function ViewAppointments() {
       </div>
 
       <div className="appt-appointment-actions">
-        <button
-          className="appt-btn appt-btn-outline"
+        <Button
+          background="#fff"
+          color="#4ecdc4"
+          fontWeight={600}
+          hoverBackground="#e6f9f8"
+          border="1px solid #4ecdc4"
+          borderRadius="0.375rem"
+          icon={<Eye size={15} />}
+          style={{ padding: "0.8rem 1rem" }}
           onClick={() => setSelectedAppointment(appointment)}
         >
-          <Eye className="appt-icon" />
           Ver Detalhes
-        </button>
+        </Button>
 
         {appointment.status === "pending" && (
           <>
-            <button className="appt-btn appt-btn-warning">
-              <RotateCcw className="appt-icon" />
+            <Button
+              fontWeight={600}
+              background="#ffc107"
+              hoverBackground="#e0a800"
+              borderRadius="0.375rem"
+              style={{ padding: "0.8rem 1rem" }}
+              icon={<RotateCcw size={15} />}
+            >
               Reagendar
-            </button>
-            <button className="appt-btn appt-btn-danger">
-              <X className="appt-icon" />
+            </Button>
+
+            <Button
+              fontWeight={600}
+              background="#dc3545"
+              hoverBackground="#c82333"
+              borderRadius="0.375rem"
+              icon={<X size={15} />}
+              style={{ padding: "0.8rem 1rem" }}
+            >
               Cancelar
-            </button>
+            </Button>
           </>
         )}
       </div>
@@ -289,29 +307,45 @@ export default function ViewAppointments() {
                 </div>
               </div>
             </div>
-
-            <div className="appt-modal-section">
-              <h4>Observações</h4>
-              <p className="appt-modal-notes">{appointment.notes}</p>
-            </div>
           </div>
 
           <div className="appt-modal-footer">
             {appointment.status === "pending" && (
               <>
-                <button className="appt-btn appt-btn-warning">
-                  <RotateCcw className="appt-icon" />
+                <Button
+                  fontWeight={600}
+                  background="#ffc107"
+                  hoverBackground="#e0a800"
+                  borderRadius="0.375rem"
+                  style={{ padding: "0.8rem 1rem" }}
+                  icon={<RotateCcw size={15} />}
+                >
                   Reagendar
-                </button>
-                <button className="appt-btn appt-btn-danger">
-                  <X className="appt-icon" />
+                </Button>
+
+                <Button
+                  fontWeight={600}
+                  background="#dc3545"
+                  hoverBackground="#c82333"
+                  borderRadius="0.375rem"
+                  icon={<X size={15} />}
+                  style={{ padding: "0.8rem 1rem" }}
+                >
                   Cancelar
-                </button>
+                </Button>
               </>
             )}
-            <button className="appt-btn appt-btn-secondary" onClick={onClose}>
+
+            <Button
+              background="#fff"
+              hoverBackground="#e6f9f8"
+              color="#4ecdc4"
+              border="1px solid #4ecdc4"
+              style={{ padding: "0.8rem 1rem" }}
+              onClick={onClose}
+            >
               Fechar
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -321,23 +355,23 @@ export default function ViewAppointments() {
   return (
     <div className="appt-container">
       {/* Header */}
-      <Header/>
+      <Header />
 
       <div className="appt-main-content">
         {/* Page Title and Navigation */}
         <div className="appt-page-header">
           <Button
-          background='#fff'
-          color='#374151'
-          hoverBackground="#f8f9fa"
-          fontWeight={600}
-          icon={<ArrowLeft size={15}/>}
-          borderRadius='0.375rem'
-          style={{padding: '0.7rem 1rem'}}
-          onClick={() => navigate(-1)}
+            background="#fff"
+            color="#374151"
+            hoverBackground="#f8f9fa"
+            fontWeight={600}
+            icon={<ArrowLeft size={15} />}
+            borderRadius="0.375rem"
+            style={{ padding: "0.7rem 1rem" }}
+            onClick={() => navigate(-1)}
           >
             Voltar ao Dashboard
-            </Button>
+          </Button>
 
           <h2 className="appt-page-title">Gerenciamento de Consultas</h2>
         </div>
@@ -409,7 +443,7 @@ export default function ViewAppointments() {
       </div>
 
       {/* Footer */}
-      <Footer/>
+      <Footer />
 
       {/* Modal */}
       <AppointmentModal
