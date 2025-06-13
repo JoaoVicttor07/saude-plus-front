@@ -53,6 +53,7 @@ function AppointmentDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [cancelada, setCancelada] = useState(false);
+  const [motivoCancelamento, setMotivoCancelamento] = useState("");
   const consulta = CONSULTAS.find((c) => String(c.id) === String(id));
 
   if (!consulta) {
@@ -76,11 +77,24 @@ function AppointmentDetail() {
 
   const handleCancelar = () => {
     // Aqui você pode chamar a API futuramente
-    setCancelada(true);
+    const motivo = prompt("Informe o motivo do cancelamento:");
+    if (motivo) {
+      setMotivoCancelamento(motivo);
+      setCancelada(true);
+    }
   };
 
   // Determina se pode cancelar: status agendada e não já cancelada
   const podeCancelar = consulta.status === "Agendada" && !cancelada;
+
+  // Determina o status e motivo para exibir
+  const statusFinal = cancelada ? "Cancelada" : consulta.status;
+  const motivoFinal =
+    cancelada
+      ? motivoCancelamento
+      : consulta.status === "Cancelada"
+        ? consulta.observacao
+        : "";
 
   return (
     <div className="dashboard-bg">
@@ -112,18 +126,24 @@ function AppointmentDetail() {
             <span className="label">Status:</span>
             <span
               className={`status-label ${
-                cancelada || consulta.status === "Cancelada"
+                statusFinal === "Cancelada"
                   ? "status-cancelada"
-                  : consulta.status === "Realizada"
+                  : statusFinal === "Realizada"
                   ? "status-realizada"
-                  : consulta.status === "Agendada"
+                  : statusFinal === "Agendada"
                   ? "status-agendada"
                   : ""
               }`}
             >
-              {cancelada ? "Cancelada" : consulta.status}
+              {statusFinal}
             </span>
           </div>
+          {statusFinal === "Cancelada" && motivoFinal && (
+            <div className="appointment-detail-row">
+              <span className="label">Motivo do cancelamento:</span>
+              <span style={{ color: "#b00" }}>{motivoFinal}</span>
+            </div>
+          )}
         </div>
         <div className="dashboard-actions">
           {podeCancelar && (

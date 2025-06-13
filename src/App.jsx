@@ -13,6 +13,7 @@ import ProfileView from './pages/patient/profileView';
 // Médico
 import DoctorDashboard from './pages/doctor/dashboard';
 import DoctorProfile from "./pages/doctor/profile";
+import DoctorCalendar from "./pages/doctor/calendar"; 
 
 // Admin
 import AdminDashboard from './pages/admin/dashboard';
@@ -44,6 +45,7 @@ function App() {
         {/* Rotas Médico */}
         <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
         <Route path="/doctor/profile" element={<DoctorProfile />} />
+        <Route path="/doctor/calendar" element={<DoctorCalendar />} />
 
         {/* Rotas Admin */}
         <Route path="/admin/dashboard" element={<AdminDashboard />} />

@@ -1,110 +1,297 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Modal from '../../../components/Modal'
-import './style.css';
+import "./style.css"
+import { FaCalendarAlt, FaClock, FaUser, FaChevronRight } from "react-icons/fa"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import ConsultationDetails from "../../../components/ConsultationDetails";
+import CancelModal from "../../../components/CancelModal";
 
-function DoctorDashboard() {
+export default function DoctorCalendar() {
+  const navigate = useNavigate();
+
+  // Consultas como estado
   const [consultas, setConsultas] = useState([
-    { id: 1, data: '22/05/2025', hora: '14:00', paciente: 'João Silva', clinica: 'Clínica Central', sala: '101', status: 'Pendente' },
-    { id: 2, data: '23/05/2025', hora: '10:00', paciente: 'Maria Souza', clinica: 'Clínica do Norte', sala: '102', status: 'Pendente' },
+    {
+      data: "22/05/2025",
+      hora: "14:00",
+      paciente: "Maria Oliveira",
+      tipo: "Consulta de rotina",
+      status: "Confirmada",
+      phone: "(11) 99999-9999",
+      insurance: "Unimed",
+      symptoms: "Consulta de rotina",
+    },
+    {
+      data: "22/05/2025",
+      hora: "15:30",
+      paciente: "João Santos",
+      tipo: "Retorno",
+      status: "Confirmada",
+      phone: "(11) 88888-8888",
+      insurance: "Bradesco Saúde",
+      symptoms: "Retorno",
+    },
+    {
+      data: "23/05/2025",
+      hora: "09:00",
+      paciente: "Ana Silva",
+      tipo: "Primeira consulta",
+      status: "Confirmada",
+      phone: "(11) 77777-7777",
+      insurance: "SulAmérica",
+      symptoms: "Primeira consulta",
+    },
+    {
+      data: "24/05/2025",
+      hora: "10:00",
+      paciente: "Pedro Oliveira",
+      tipo: "Consulta preventiva",
+      status: "Pendente",
+      phone: "(11) 66666-6666",
+      insurance: "Amil",
+      symptoms: "Consulta preventiva",
+    },
+    {
+      data: "25/05/2025",
+      hora: "11:00",
+      paciente: "Carla Mendes",
+      tipo: "Acompanhamento",
+      status: "Confirmada",
+      phone: "(11) 55555-5555",
+      insurance: "Porto Seguro",
+      symptoms: "Acompanhamento pós-cirúrgico",
+    },
+    {
+      data: "25/05/2025",
+      hora: "13:00",
+      paciente: "Lucas Lima",
+      tipo: "Retorno",
+      status: "Confirmada",
+      phone: "(11) 44444-4444",
+      insurance: "Unimed",
+      symptoms: "Consulta de retorno",
+    },
+    {
+      data: "26/05/2025",
+      hora: "14:30",
+      paciente: "Fernanda Souza",
+      tipo: "Exame",
+      status: "Pendente",
+      phone: "(11) 33333-3333",
+      insurance: "Bradesco Saúde",
+      symptoms: "Exame de rotina",
+    },
+    {
+      data: "27/05/2025",
+      hora: "16:00",
+      paciente: "Rafael Torres",
+      tipo: "Pediatria",
+      status: "Confirmada",
+      phone: "(11) 22222-2222",
+      insurance: "SulAmérica",
+      symptoms: "Consulta pediátrica",
+    },
+    {
+      data: "28/05/2025",
+      hora: "17:30",
+      paciente: "Juliana Alves",
+      tipo: "Nutrição",
+      status: "Confirmada",
+      phone: "(11) 11111-1111",
+      insurance: "Amil",
+      symptoms: "Acompanhamento nutricional",
+    },
+    {
+      data: "29/05/2025",
+      hora: "19:00",
+      paciente: "Bruno Martins",
+      tipo: "Ortopedia",
+      status: "Confirmada",
+      phone: "(11) 00000-0000",
+      insurance: "Porto Seguro",
+      symptoms: "Consulta ortopédica",
+    },
   ]);
 
-  // Estados do modal
-  const [showModal, setShowModal] = useState(false);
-  const [cancelId, setCancelId] = useState(null);
-  const [motivo, setMotivo] = useState("");
+  // Estado para mostrar todas as consultas
+  const [showAll, setShowAll] = useState(false);
 
-  // Abrir modal
-  const abrirModal = (id) => {
-    setCancelId(id);
-    setMotivo("");
-    setShowModal(true);
+  // Estado para detalhes
+  const [selectedConsultation, setSelectedConsultation] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+
+  // Estado para cancelamento
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
+  // Função para abrir detalhes (busca sempre a consulta atualizada)
+  const handleDetailClick = (consulta) => {
+    const consultaAtualizada = consultas.find(
+      (c) =>
+        c.data === consulta.data &&
+        c.hora === consulta.hora &&
+        c.paciente === consulta.paciente
+    );
+
+    setSelectedConsultation({
+      ...consultaAtualizada,
+      date: consultaAtualizada.data
+        ? new Date(consultaAtualizada.data.split("/").reverse().join("-"))
+        : null,
+      time: consultaAtualizada.hora,
+      patientName: consultaAtualizada.paciente,
+      status: consultaAtualizada.status || "Confirmada",
+      phone: consultaAtualizada.phone || "",
+      insurance: consultaAtualizada.insurance || "",
+      symptoms: consultaAtualizada.symptoms || consultaAtualizada.tipo || "",
+      cancelReason: consultaAtualizada.cancelReason || "",
+    });
+    setShowDetails(true);
   };
 
-  // Fechar modal
-  const fecharModal = () => {
-    setShowModal(false);
-    setCancelId(null);
-    setMotivo("");
+  // Função para fechar detalhes
+  const handleCloseDetails = () => {
+    setShowDetails(false);
+    setSelectedConsultation(null);
   };
 
-  // Confirmar cancelamento
-  const confirmarCancelamento = () => {
-    if (motivo.trim() !== "") {
-      setConsultas(consultas.map((consulta) =>
-        consulta.id === cancelId
-          ? { ...consulta, status: `Cancelada (${motivo})` }
-          : consulta
-      ));
-      setShowModal(false);
-      setCancelId(null);
-      setMotivo("");
-      alert('Consulta cancelada com sucesso!');
-    }
+  // Função para abrir modal de cancelamento
+  const handleCancelClick = () => {
+    setShowCancelModal(true);
+    setShowDetails(false);
   };
 
-  // Alternar status entre Pendente e Realizada
-  const toggleStatus = (id) => {
-    setConsultas(consultas.map((consulta) =>
-      consulta.id === id
-        ? { ...consulta, status: consulta.status === 'Realizada' ? 'Pendente' : 'Realizada' }
-        : consulta
-    ));
+  // Função para fechar modal de cancelamento
+  const handleCloseCancelModal = () => {
+    setShowCancelModal(false);
+    setSelectedConsultation(null);
+  };
+
+  // Função para confirmar cancelamento
+  const handleConfirmCancel = (reason) => {
+    // Atualiza o array de consultas
+    setConsultas((prev) =>
+      prev.map((c) =>
+        c.data === selectedConsultation.data &&
+        c.hora === selectedConsultation.time &&
+        c.paciente === selectedConsultation.patientName
+          ? { ...c, status: "Cancelada", cancelReason: reason }
+          : c
+      )
+    );
+    // Atualiza o detalhe selecionado também
+    setSelectedConsultation((prev) => ({
+      ...prev,
+      status: "Cancelada",
+      cancelReason: reason,
+    }));
+    setShowCancelModal(false);
+    setShowDetails(true);
   };
 
   return (
-    <div className="doctor-dashboard-container">
-      <h2>Bem-vindo, Doutor!</h2>
-      <h3>Consultas Agendadas</h3>
-      <ul className="consultas-list">
-        {consultas.map((consulta) => (
-          <li key={consulta.id} className="consulta-item">
-            <p>
-              <strong>Data:</strong> {consulta.data} <br />
-              <strong>Hora:</strong> {consulta.hora} <br />
-              <strong>Paciente:</strong> {consulta.paciente} <br />
-              <strong>Local:</strong> {consulta.clinica} - Sala {consulta.sala} <br />
-              <strong>Status:</strong> {consulta.status}
-            </p>
-            <div className="consulta-actions">
-              <button
-                className="cancelar-button"
-                onClick={() => abrirModal(consulta.id)}
-                disabled={consulta.status.startsWith('Cancelada')}
-              >
-                Cancelar
-              </button>
-              <button
-                className={`toggle-switch ${consulta.status === 'Realizada' ? 'on' : 'off'}`}
-                onClick={() => toggleStatus(consulta.id)}
-                disabled={consulta.status.startsWith('Cancelada')}
-                aria-label="Alternar status"
-              >
-                <span className="switch-track">
-                  <span className="switch-label">
-                    {consulta.status === 'Realizada' ? 'Realizada' : 'Pendente'}
-                  </span>
-                  <span className="switch-knob"></span>
-                </span>
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <nav className="doctor-nav">
-        <Link to="/doctor/profile">Perfil</Link>
+    <div className="dashboard-container">
+      {/* Header */}
+      <header className="header">
+        <h1 className="logo">Saúde+</h1>
+        <button className="btn-sair">Sair</button>
+      </header>
 
-      </nav>
-      {/* Modal para motivo do cancelamento */}
-      <Modal
-        show={showModal}
-        motivo={motivo}
-        setMotivo={setMotivo}
-        onConfirm={confirmarCancelamento}
-        onClose={fecharModal}
-      />
+      {/* Main Content */}
+      <div className="main-content">
+        <div className="card">
+          {/* Welcome Message */}
+          <h2 className="welcome-title">Bem-vindo, Doutor!</h2>
+
+          {/* Upcoming Appointments */}
+          <div className="appointments-section">
+            <h3 className="section-title">Próximas Consultas</h3>
+
+            <div
+              className="appointments-list"
+              style={
+                showAll
+                  ? { maxHeight: 320, overflowY: "auto", transition: "max-height 0.3s" }
+                  : {}
+              }
+            >
+              {(showAll ? consultas : consultas.slice(0, 3)).map((consulta, index) => (
+                <div key={index} className="appointment-item">
+                  <div className="appointment-info">
+                    <div className="appointment-icon">
+                      <FaCalendarAlt />
+                    </div>
+                    <div className="appointment-details">
+                      <div className="appointment-datetime">
+                        <span className="appointment-date">{consulta.data}</span>
+                        <FaClock className="clock-icon" />
+                        <span className="appointment-time">{consulta.hora}</span>
+                      </div>
+                      <div className="appointment-patient">
+                        {consulta.paciente} - {consulta.tipo}
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    className="btn-"
+                    onClick={() => handleDetailClick(consulta)}
+                  >
+                    Detalhes
+                    <FaChevronRight className="chevron-icon" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {!showAll && consultas.length > 3 && (
+              <div className="view-all">
+                <button className="btn-view-all" onClick={() => setShowAll(true)}>
+                  Ver mais consultas
+                  <FaChevronRight className="chevron-icon" />
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="action-buttons">
+            <button
+              className="btn-action"
+              onClick={() => navigate("/doctor/calendar")}
+            >
+              <FaCalendarAlt className="btn-icon" />
+              Ver Calendário de Consultas
+            </button>
+
+            <button
+              className="btn-action"
+              onClick={() => navigate("/doctor/profile")}
+            >
+              <FaUser className="btn-icon" />
+              Ver Meu Perfil
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Detalhes da Consulta (Mini Tela) */}
+      {showDetails && selectedConsultation && (
+        <ConsultationDetails
+          consultation={selectedConsultation}
+          onClose={handleCloseDetails}
+          onCancelClick={handleCancelClick}
+        />
+      )}
+
+      {/* Modal de Cancelamento */}
+      {showCancelModal && selectedConsultation && (
+        <CancelModal
+          consultation={selectedConsultation}
+          onClose={handleCloseCancelModal}
+          onConfirm={handleConfirmCancel}
+        />
+      )}
+
+      {/* Footer */}
+      <footer className="footer">Saúde+ © 2025 - Todos os direitos reservados</footer>
     </div>
   );
 }
-
-export default DoctorDashboard;

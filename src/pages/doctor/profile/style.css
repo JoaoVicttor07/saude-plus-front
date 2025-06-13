@@ -1,41 +1,194 @@
-.doctor-profile-container {
-  font-family: Arial, sans-serif;
-  background-color: #f7fafc;
-  color: #2d3748;
+.doctor-profile-bg {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  /* Limite de largura */
-  max-width: 100vw;
-  box-sizing: border-box;
+  background: #10a39b;
 }
 
-.profile-info {
+.doctor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 32px 0 24px;
+}
+
+.doctor-logo {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.doctor-exit-btn {
   background: #fff;
+  color: #222;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0;
+  transition: background 0.2s;
+}
+.doctor-exit-btn:hover {
+  background: #f3f3f3;
+}
+
+.doctor-profile-title {
+  color: #fff;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 16px 0 20px ,;
+}
+
+.doctor-profile-card {
+  max-width: 600px;
+  margin: 0 auto;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  padding: 24px 32px;
-  margin-bottom: 24px;
-  min-width: 320px;
-  max-width: 400px; /* Limite de largura */
-  width: 100%;
+  overflow: hidden;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.doctor-profile-card-top {
+  background: linear-gradient(135deg, #10a39b 0%, #1ed2b6 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  padding: 9px 0 9px 0;
 }
 
-.profile-observacao textarea {
-  width: 100%;
-  max-width: 100%;
-  min-width: 100%;
-  border-radius: 6px;
-  border: 1px solid #cbd5e0;
-  padding: 8px;
-  font-size: 15px;
+.doctor-avatar {
+  width: 64px;
+  height: 64px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #10a39b;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.07);
+}
+
+.doctor-specialty-badge {
+  background: #fff;
+  color: #10a39b;
+  border-radius: 16px;
+  padding: 4px 18px;
+  font-size: 1rem;
+  font-weight: 500;
   margin-top: 4px;
-  resize: vertical;
-  box-sizing: border-box;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+}
+
+.doctor-profile-card-bottom {
+  background: #fff;
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.doctor-name-block {
+  text-align: center;
+  margin-bottom: 12px;
+}
+.doctor-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+}
+.doctor-crm {
+  color: #a3a3a3;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  display: block;
+}
+
+.doctor-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+.doctor-info-item {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.doctor-info-label {
+  color: #10a39b;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.doctor-info-value {
+  color: #222;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.doctor-observation-block {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.doctor-observation-label {
+  color: #222;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.doctor-observation-textarea {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  resize: none;
+  min-height: 70px;
+  background: #f7fafc;
+}
+
+.doctor-profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+.doctor-save-btn {
+  background: #10a39b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.doctor-save-btn:hover {
+  background: #0e8c85;
+}
+
+.doctor-edit-btn {
+  background: #fff;
+  color: #10a39b;
+  border: 2px solid #10a39b;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.doctor-edit-btn:hover {
+  background: #10a39b;
+  color: #fff;
 }
