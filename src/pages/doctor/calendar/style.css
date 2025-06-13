@@ -1,0 +1,55 @@
+.calendar-page {
+  min-height: 100vh;
+  background: #0d9488;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-page-header {
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+  align-items: center;
+  /*padding: 32px 0 24px 0;*/
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.calendar-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* já está correto para alinhar pelo topo */
+  gap: 0px; /* diminua o valor para aproximar */
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: auto%;
+  box-sizing: border-box;
+  padding: 0%;
+}
+
+.consultation-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #0d9488;
+  border-radius: 50%;
+  margin: 4px auto 0 auto;
+}
+
+.btn-sair {
+  background: #6b6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-right: 5%;
+}
+.btn-sair:hover {
+  background: #7b7b7b;
+}
