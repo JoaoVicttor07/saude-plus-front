@@ -5,6 +5,7 @@ import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
 import "./style.css";
+import { ArrowLeft, Eye } from "lucide-react";
 
 // Exemplo de dados mockados
 const medicosMock = [
@@ -12,7 +13,7 @@ const medicosMock = [
     id: 1,
     nome: "Dr. João Almeida",
     crm: "123456-SP",
-    email: "joao.almeida@email.com",
+    especialidade: "Cardiologia",
     telefone: "(11) 91234-5678",
     status: "Ativo",
   },
@@ -20,7 +21,7 @@ const medicosMock = [
     id: 2,
     nome: "Dra. Maria Oliveira",
     crm: "654321-RJ",
-    email: "maria.oliveira@email.com",
+    especialidade: "Pediatria",
     telefone: "(21) 99876-5432",
     status: "Ativo",
   },
@@ -28,7 +29,7 @@ const medicosMock = [
     id: 3,
     nome: "Dr. Pedro Santos",
     crm: "789123-MG",
-    email: "pedro.santos@email.com",
+    especialidade: "Ortopedia",
     telefone: "(31) 98888-1234",
     status: "Inativo",
   },
@@ -40,32 +41,34 @@ function AdminDoctors() {
   const [filtro, setFiltro] = useState("");
 
   const medicosFiltrados = medicosMock.filter((m) => {
-    const termo = busca.toLowerCase();
-    const statusOk = filtro ? m.status.toLowerCase() === filtro : true;
-    return (
-      statusOk &&
-      (
-        m.nome.toLowerCase().includes(termo) ||
-        m.crm.toLowerCase().includes(termo) ||
-        m.email.toLowerCase().includes(termo) ||
-        m.telefone.includes(termo)
-      )
-    );
-  });
+  const termo = busca.toLowerCase();
+  const statusOk = filtro ? m.status.toLowerCase() === filtro : true;
+  // Busca por nome, crm, especialidade ou telefone
+  const nomeOk = m.nome.toLowerCase().includes(termo);
+  const crmOk = m.crm.toLowerCase().includes(termo);
+  const especialidadeOk = m.especialidade.toLowerCase().includes(termo);
+  const telefoneOk = m.telefone.toLowerCase().includes(termo);
+  return (
+    statusOk &&
+    (nomeOk || crmOk || especialidadeOk || telefoneOk)
+  );
+});
 
   return (
     <div className="admin-patients-bg">
       <Header />
       <main className="admin-patients-main">
         <div className="admin-patients-header">
-          <h2>Médicos Cadastrados</h2>
+          <h2 className="admin-patient-header-title">Médicos Cadastrados</h2>
           <Button
             background="#fff"
-            color="#247575"
-            hoverBackground="#e6f4f1"
-            fontWeight={600}
-            border="2px solid #247575"
-            borderRadius="7px"
+            color="#374151"
+            height="35px"
+            width="180px"
+            hoverBackground="#f8f9fa"
+            borderRadius="0.375rem"
+            fontWeight="600"
+            icon={<ArrowLeft size={15}/>}
             onClick={() => navigate(-1)}
           >
             Voltar ao Dashboard
@@ -86,7 +89,7 @@ function AdminDoctors() {
             value={filtro}
             onChange={e => setFiltro(e.target.value)}
           >
-            <option value="">Filtrar</option>
+            <option value="">Todos</option>
             <option value="ativo">Ativo</option>
             <option value="inativo">Inativo</option>
           </select>
@@ -97,7 +100,7 @@ function AdminDoctors() {
               <tr>
                 <th>Nome Completo</th>
                 <th>CRM</th>
-                <th>E-mail</th>
+                <th>Especialidade</th>
                 <th>Telefone</th>
                 <th>Status</th>
                 <th>Ações</th>
@@ -115,20 +118,20 @@ function AdminDoctors() {
                   <tr key={m.id} className={idx % 2 === 0 ? "linha-par" : "linha-impar"}>
                     <td>{m.nome}</td>
                     <td>{m.crm}</td>
-                    <td>{m.email}</td>
+                    <td>{m.especialidade}</td>
                     <td>{m.telefone}</td>
                     <td>{m.status}</td>
                     <td>
                       <Button
                         background="#fff"
-                        color="#247575"
-                        fontWeight={600}
-                        border="2px solid #247575"
-                        fontSize="14px"
-                        height="33px"
+                        color="#4ecdc4"
+                        fontSize="0.90rem"
+                        border="1px solid #4ecdc4"
+                        width="100%"
                         borderRadius="7px"
-                        hoverBackground="#247575"
-                        hoverColor="#fff"
+                        hoverBackground="#e6f9f8"
+                        icon={<Eye size={15}/>}
+                        style={{padding: "0.4rem 0"}}
                         onClick={() => navigate(`/admin/doctors/${m.id}`)}
                       >
                         Ver Detalhes

@@ -20,7 +20,8 @@
   margin-bottom: 2.5rem;
 }
 
-.admin-patients-header h2 {
+.admin-patient-header-title {
+  color: #fff;
   font-size: 2.5rem;
   font-weight: 700;
   color: #fff;
@@ -54,8 +55,8 @@
   display: flex;
   align-items: center;
   background: #fff;
-  border: 2px solid #247575;
-  border-radius: 7px;
+  /* border: 2px solid #247575; */
+  border-radius: 0.375rem;
   padding: 0 12px;
   font-size: 1.1rem;
   width: 320px;
@@ -69,11 +70,12 @@
   background: transparent;
   width: 100%;
   margin-left: 8px;
+  color: #374151;
 }
 
 .admin-patients-filter {
-  border: 2px solid #247575;
-  border-radius: 7px;
+  /* border: 2px solid #247575; */
+  border-radius: 0.375rem;
   padding: 10px 16px;
   font-size: 1.1rem;
   background: #fff;

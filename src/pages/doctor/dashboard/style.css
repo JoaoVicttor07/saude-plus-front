@@ -61,6 +61,16 @@
   margin-bottom: 2rem;
 }
 
+h2 {
+  color: #2c7a7b;
+  font-size: 28px;
+}
+
+h3 {
+  color: #319898;
+  font-size: 20px;
+}
+
 /* Appointments Section */
 .appointments-section {
   margin-bottom: 2rem;

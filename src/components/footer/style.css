@@ -1,7 +1,8 @@
 .footer-component {
   margin-top: 20px;
   text-align: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
+  opacity: 0.9;
   font-size: 14px;
-  font-weight: 500;
+  padding-bottom: 1rem;
 }
