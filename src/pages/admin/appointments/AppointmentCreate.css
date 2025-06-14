@@ -144,6 +144,7 @@
   border-radius: 0.5rem;
   font-size: 0.875rem;
   background-color: white;
+  color: #6b7280;
 }
 
 .search-input:focus {
@@ -159,6 +160,33 @@
   gap: 0.75rem;
   max-height: 400px;
   overflow-y: auto;
+}
+
+.selection-list::-webkit-scrollbar {
+  width: 8px;
+  /* largura da barra vertical */
+  height: 8px;
+  /* altura da barra horizontal (caso tenha) */
+}
+
+.selection-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  /* cinza claríssimo */
+  border-radius: 4px;
+}
+
+.selection-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.selection-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.selection-list::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .selection-item {
@@ -239,7 +267,7 @@
   height: 100%;
 }
 
-.calendar-container {
+.calendar---container {
   margin-bottom: 2rem;
 }
 
@@ -357,6 +385,7 @@
   transition: all 0.2s ease;
   font-size: 0.875rem;
   font-weight: 500;
+  color: #333;
 }
 
 .time-slot:hover {
@@ -574,6 +603,14 @@
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.modal-footer-sucess {
+  display: flex;
+  justify-content: center;
+
   padding: 1.5rem;
   border-top: 1px solid #e5e7eb;
 }
