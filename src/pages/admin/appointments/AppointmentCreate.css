@@ -53,6 +53,8 @@
   color: #9ca3af;
   font-size: 0.875rem;
   font-weight: 500;
+  background: none;
+  box-shadow: none;
 }
 
 .step.active {
