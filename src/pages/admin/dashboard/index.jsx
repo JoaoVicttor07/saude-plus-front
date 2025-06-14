@@ -104,7 +104,7 @@ export default function AdminDashboard() {
           <div className="quick-actions-card">
             <h3 className="sectionTitle">Ações rápidas</h3>
             <div className="quick-actions">
-              <Button
+              {/* <Button
                 background="#3b9b96"
                 hoverBackground="#2d7a75"
                 fontSize="0.875rem"
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
                 style={{ padding: "0.80rem 1.5rem" }}
               >
                 Novo Médico
-              </Button>
+              </Button> */}
 
               <Button
                 background="#3b9b96"
@@ -120,6 +120,7 @@ export default function AdminDashboard() {
                 fontSize="0.875rem"
                 icon={<Plus size={15} />}
                 style={{ padding: "0.80rem 1.5rem" }}
+                onClick={() => navigate('/admin/appointments/create')}
               >
                 Nova Consulta
               </Button>
