@@ -1,5 +1,5 @@
 import api from "./api";
-import { jwtDecode } from 'jwt-decode'; // Correto para jwt-decode v4+
+import { jwtDecode } from 'jwt-decode';
 
 const AuthService = {
   login: async (credentials) => {
@@ -85,10 +85,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Token expirado ou inválido
       AuthService.logout();
-      // Opcional: redirecionar para a página de login
-      // window.location.href = '/login';
       console.warn('Sessão expirada ou token inválido. Usuário deslogado.');
     }
     return Promise.reject(error);

@@ -1,10 +1,37 @@
 import { useState } from "react";
 import Footer from "../../../components/footer";
+import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./style.css";
 import AuthService from "../../../services/AuthService";
 
+const RegistrationSuccessModal = ({ show, onCloseAndRedirect }) => {
+  if (!show) return null;
+
+  return (
+    <div className="reg-success-modal-overlay">
+      <div className="reg-success-modal-dialog">
+        <div className="reg-success-modal-header">
+          <h3>Cadastro Realizado!</h3>
+        </div>
+        <div className="reg-success-modal-body">
+          <p>Sua conta foi criada com sucesso.</p>
+        </div>
+        <div className="reg-success-modal-footer">
+          <button
+            onClick={onCloseAndRedirect}
+            className="btn-primary reg-success-modal-button"
+          >
+            Fazer Login
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const RegistrationForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     cpf: "",
@@ -26,6 +53,7 @@ const RegistrationForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +74,6 @@ const RegistrationForm = () => {
       [name]: processedValue,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -84,14 +111,12 @@ const RegistrationForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = "Nome completo é obrigatório";
     } else if (formData.name.trim().length < 2) {
       newErrors.name = "Nome deve ter pelo menos 2 caracteres";
     }
 
-    // CPF validation
     if (!formData.cpf.trim()) {
       newErrors.cpf = "CPF é obrigatório";
     } else if (
@@ -101,7 +126,6 @@ const RegistrationForm = () => {
       newErrors.cpf = "CPF deve ter formato válido";
     }
 
-    // Phone validation
     if (!formData.phone.trim()) {
       newErrors.phone = "Telefone é obrigatório";
     } else if (
@@ -111,7 +135,6 @@ const RegistrationForm = () => {
       newErrors.phone = "Telefone deve ter formato válido";
     }
 
-    // Date of birth validation
     if (!formData.dateOfBirth) {
       newErrors.dateOfBirth = "Data de nascimento é obrigatória";
     } else {
@@ -146,19 +169,16 @@ const RegistrationForm = () => {
       newErrors.estado = "Estado deve ser a sigla (ex: RN)";
     }
 
-    // Gender validation
     if (!formData.gender) {
       newErrors.gender = "Gênero é obrigatório";
     }
 
-    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "Email é obrigatório";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Email deve ter formato válido";
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = "Senha é obrigatória";
     } else if (formData.password.length < 8) {
@@ -168,7 +188,6 @@ const RegistrationForm = () => {
         "Senha deve conter ao menos: 1 letra minúscula, 1 maiúscula e 1 número";
     }
 
-    // Confirm password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Confirmação de senha é obrigatória";
     } else if (formData.password !== formData.confirmPassword) {
@@ -208,30 +227,10 @@ const RegistrationForm = () => {
     };
 
     try {
-      // 3. Chamar AuthService.register
       console.log("Enviando para API:", apiData);
-      const response = await AuthService.register(apiData);
-      console.log("Form submitted successfully:", response);
-      alert("Cadastro realizado com sucesso!");
-
-      // Reset form
-      setFormData({
-        name: "",
-        cpf: "",
-        phone: "",
-        dateOfBirth: "",
-        logradouro: "",
-        numero: "",
-        bairro: "",
-        cep: "",
-        cidade: "",
-        estado: "",
-        gender: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setErrors({});
+      await AuthService.register(apiData);
+      console.log("Form submitted successfully:");
+      setShowSuccessModal(true);
     } catch (error) {
       console.error("Error submitting form:", error.response || error);
 
@@ -257,6 +256,11 @@ const RegistrationForm = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleCloseSuccessModalAndRedirect = () => {
+    setShowSuccessModal(false);
+    navigate("/signin");
   };
 
   const getPasswordStrength = (password) => {
@@ -475,7 +479,6 @@ const RegistrationForm = () => {
             {/* Wrapper para CEP, Cidade e Estado */}
             <div className="full-width multi-field-line">
               {" "}
-              {/* Nova classe para o wrapper */}
               {/* CEP Field */}
               <div className="form-group">
                 <label htmlFor="cep" className="form-label">
@@ -526,7 +529,6 @@ const RegistrationForm = () => {
               {/* Estado Field */}
               <div className="form-group form-group-short">
                 {" "}
-                {/* Classe adicional para controlar o tamanho do campo Estado */}
                 <label htmlFor="estado" className="form-label">
                   Estado *
                 </label>
@@ -628,9 +630,6 @@ const RegistrationForm = () => {
                   {errors.password}
                 </span>
               )}
-              {/* <small id="password-help" className="form-help">
-                Mínimo 8 caracteres, incluindo maiúscula, minúscula e número
-              </small> */}
             </div>
 
             {/* Confirm Password Field */}
@@ -691,10 +690,6 @@ const RegistrationForm = () => {
               "Criar Conta"
             )}
           </button>
-
-          {/* <small id="submit-help" className="form-help center">
-            Ao criar sua conta, você concorda com nossos termos de uso
-          </small> */}
         </form>
 
         <div className="login-link">
@@ -704,6 +699,10 @@ const RegistrationForm = () => {
       </div>
 
       <Footer />
+      <RegistrationSuccessModal
+        show={showSuccessModal}
+        onCloseAndRedirect={handleCloseSuccessModalAndRedirect}
+      />
     </div>
   );
 };
