@@ -7,9 +7,7 @@ import "./style.css";
 import { useAuth } from "../../../context/AuthContext"; // 1. Importar useAuth
 
 const RegistrationSuccessModal = ({ show, onCloseAndRedirect }) => {
-  console.log("RegistrationSuccessModal renderizando. Props show:", show); // Log adicional
   if (!show) {
-    console.log("RegistrationSuccessModal: show é false, retornando null."); // Log adicional
     return null;
   }
 
@@ -206,13 +204,10 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handleSubmit iniciado"); // Log adicional
 
     if (!validateForm()) {
-      console.log("Validação falhou"); // Log adicional
       return;
     }
-    console.log("Validação passou"); // Log adicional
 
     // setIsSubmitting(true);
 
@@ -236,17 +231,11 @@ const RegistrationForm = () => {
     };
 
     try {
-      console.log("Antes de chamar AuthContext.signup. authIsLoading:", authIsLoading);
-      console.log("Enviando para API:", apiData);
-      
       const response = await signup(apiData); // signup agora está no AuthContext
       
-      console.log("AuthContext.signup retornou. authIsLoading é:", authIsLoading); // Verifique o estado de authIsLoading aqui
       
       if (response) { 
-        console.log("Tentando mostrar o modal de sucesso.");
         setShowSuccessModal(true); // Agora deve funcionar de forma confiável
-        console.log("setShowSuccessModal(true) foi chamado.");
       } else {
         console.warn("Signup retornou, mas a resposta não foi considerada sucesso para mostrar o modal.");
         alert("Cadastro pode ter ocorrido, mas houve um problema ao confirmar.");

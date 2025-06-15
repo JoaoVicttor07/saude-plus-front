@@ -105,7 +105,7 @@ function PatientCalendar() {
   return (
     <div className="calendar-bg">
       <Header />
-      <main className="calendar-container">
+      <main className="calendar----container">
         <h2 className="calendar-title">Agendar Consulta</h2>
         <p className="calendar-desc">
           Selecione a especialidade e o médico, depois escolha um horário.

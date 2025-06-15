@@ -1,7 +1,5 @@
-// import { useNavigate } from "react-router-dom";
 import Button from "../Button";
-// import AuthService from "../../services/AuthService";
-import { useAuth } from "../../context/AuthContext"; // Importar useAuth
+import { useAuth } from "../../context/AuthContext";
 import "./style.css";
 
 function Header() {
@@ -35,7 +33,7 @@ function Header() {
               hoverBackground="#f8f9fa"
               onClick={handleLogout}
               borderRadius="0.375rem"
-              width="7rem"
+              style={{padding: '0.7rem 2.5rem'}}
             >
               Sair
             </Button>

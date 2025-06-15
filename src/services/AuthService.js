@@ -27,26 +27,30 @@ const AuthService = {
 
   logout: async () => {
     const token = AuthService.getToken();
+    localStorage.removeItem('userToken');
     if (token) {
       try {
         await api.post('/auth/logout');
         console.log('Logout realizado com sucesso na API.');
       } catch (error) {
-        console.error('Erro ao fazer logout na API:', error.response ? error.response.data : error.message);
+        console.error('Erro ao fazer logout na API (token já removido localmente):', error.response ? error.response.data : error.message);
       }
     }
-
-    localStorage.removeItem('userToken');
   },
 
   getCurrentUser: () => {
     const token = localStorage.getItem('userToken');
     if (token) {
       try {
-        return jwtDecode(token);
+        const decodedToken = jwtDecode(token);
+        return {
+          id: decodedToken.sub,
+          email: decodedToken.email,
+          role: decodedToken.role,
+        };
       } catch (error) {
-        console.error('Token inválido ou expirado:', error);
-        AuthService.logout(); // Faz logout se o token for inválido
+        console.error('Token inválido ou expirado ao tentar decodificar:', error);
+        AuthService.logout();
         return null;
       }
     }
@@ -62,43 +66,13 @@ const AuthService = {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        // Verifica se o token não expirou
-        if (decodedToken.exp * 1000 > Date.now()) {
-          return true;
-        }
+        return decodedToken.exp * 1000 > Date.now();
       } catch (error) {
-        // Se houver erro na decodificação, o token é inválido
         return false;
       }
     }
     return false;
   }
 };
-
-// Adicionar interceptor para incluir o token JWT em todas as requisições
-api.interceptors.request.use(
-  (config) => {
-    const token = AuthService.getToken();
-    if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Opcional: Interceptor de resposta para lidar com erros 401 (Não Autorizado)
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      AuthService.logout();
-      console.warn('Sessão expirada ou token inválido. Usuário deslogado.');
-    }
-    return Promise.reject(error);
-  }
-);
 
 export default AuthService;
