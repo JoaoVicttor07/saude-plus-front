@@ -1,31 +1,50 @@
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Button from "../Button";
+// import AuthService from "../../services/AuthService";
+import { useAuth } from "../../context/AuthContext"; // Importar useAuth
 import "./style.css";
 
 function Header() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // TODO: Limpar autenticação quando houver
-    navigate("/signin");
+  const { isAuthenticated, user, logout, isLoading } = useAuth(); // Usar o contexto
+
+  const handleLogout = async () => {
+    await logout(); // Chamar a função logout do contexto
+    // O redirecionamento é feito dentro da função logout do AuthContext
   };
+
+  if (isLoading) {
+    return null; // Ou um spinner/placeholder enquanto o auth carrega
+  }
 
   return (
     <header className="main-header">
       <div className="main-logo" aria-label="Saúde+">
         Saúde<span>+</span>
       </div>
-      <Button
-      background="#fff"
-      color="#374151"
-      fontWeight="600"
-      hoverBackground="#f8f9fa"
-      onClick={handleLogout}
-      borderRadius="0.375rem"
-      width = "7rem"
-      >
-        Sair
-      </Button>
+      {isAuthenticated &&
+        user && ( // Mostrar botão de sair e nome do usuário se autenticado
+          <div className="header-user-info">
+            {/* Você pode querer exibir o nome do usuário aqui, ex: user.email ou user.nome se tiver */}
+            {/* <span>Olá, {user.sub || user.email}</span>  */}
+            <Button
+              background="#fff"
+              color="#374151"
+              fontWeight="600"
+              hoverBackground="#f8f9fa"
+              onClick={handleLogout}
+              borderRadius="0.375rem"
+              width="7rem"
+            >
+              Sair
+            </Button>
+          </div>
+        )}
+      {/* Se não autenticado, você pode querer mostrar botões de Login/Cadastro aqui,
+          mas como este header parece ser para páginas internas, o botão Sair é o principal.
+          Se este header também aparecer em /signin, você precisará de lógica condicional
+          para não mostrar o botão Sair ali. */}
     </header>
   );
 }

@@ -25,9 +25,18 @@ const AuthService = {
     }
   },
 
-  logout: () => {
+  logout: async () => {
+    const token = AuthService.getToken();
+    if (token) {
+      try {
+        await api.post('/auth/logout');
+        console.log('Logout realizado com sucesso na API.');
+      } catch (error) {
+        console.error('Erro ao fazer logout na API:', error.response ? error.response.data : error.message);
+      }
+    }
+
     localStorage.removeItem('userToken');
-    // Adicione qualquer outra lógica de limpeza de logout aqui (ex: redirecionar para login)
   },
 
   getCurrentUser: () => {

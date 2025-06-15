@@ -3,10 +3,15 @@ import Footer from "../../../components/footer";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./style.css";
-import AuthService from "../../../services/AuthService";
+// import AuthService from "../../../services/AuthService";
+import { useAuth } from "../../../context/AuthContext"; // 1. Importar useAuth
 
 const RegistrationSuccessModal = ({ show, onCloseAndRedirect }) => {
-  if (!show) return null;
+  console.log("RegistrationSuccessModal renderizando. Props show:", show); // Log adicional
+  if (!show) {
+    console.log("RegistrationSuccessModal: show é false, retornando null."); // Log adicional
+    return null;
+  }
 
   return (
     <div className="reg-success-modal-overlay">
@@ -32,6 +37,7 @@ const RegistrationSuccessModal = ({ show, onCloseAndRedirect }) => {
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
+  const { signup, isLoading: authIsLoading } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     cpf: "",
@@ -50,7 +56,7 @@ const RegistrationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -200,12 +206,15 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("handleSubmit iniciado"); // Log adicional
 
     if (!validateForm()) {
+      console.log("Validação falhou"); // Log adicional
       return;
     }
+    console.log("Validação passou"); // Log adicional
 
-    setIsSubmitting(true);
+    // setIsSubmitting(true);
 
     const apiData = {
       nome: formData.name,
@@ -227,12 +236,25 @@ const RegistrationForm = () => {
     };
 
     try {
+      console.log("Antes de chamar AuthContext.signup. authIsLoading:", authIsLoading);
       console.log("Enviando para API:", apiData);
-      await AuthService.register(apiData);
-      console.log("Form submitted successfully:");
-      setShowSuccessModal(true);
+      
+      const response = await signup(apiData); // signup agora está no AuthContext
+      
+      console.log("AuthContext.signup retornou. authIsLoading é:", authIsLoading); // Verifique o estado de authIsLoading aqui
+      
+      if (response) { 
+        console.log("Tentando mostrar o modal de sucesso.");
+        setShowSuccessModal(true); // Agora deve funcionar de forma confiável
+        console.log("setShowSuccessModal(true) foi chamado.");
+      } else {
+        console.warn("Signup retornou, mas a resposta não foi considerada sucesso para mostrar o modal.");
+        alert("Cadastro pode ter ocorrido, mas houve um problema ao confirmar.");
+      }
+
     } catch (error) {
-      console.error("Error submitting form:", error.response || error);
+      console.error(
+        "Erro no handleSubmit do RegistrationForm:", error.response || error);
 
       if (error.response && error.response.data) {
         const errorData = error.response.data;
@@ -253,9 +275,10 @@ const RegistrationForm = () => {
       } else {
         alert("Erro ao realizar cadastro. Tente novamente mais tarde.");
       }
-    } finally {
-      setIsSubmitting(false);
     }
+    // finally {
+    //   setIsSubmitting(false);
+    // }
   };
 
   const handleCloseSuccessModalAndRedirect = () => {
@@ -677,11 +700,11 @@ const RegistrationForm = () => {
 
           <button
             type="submit"
-            className={`btn-primary ${isSubmitting ? "loading" : ""}`}
-            disabled={isSubmitting}
+            className={`btn-primary ${authIsLoading ? "loading" : ""}`}
+            disabled={authIsLoading}
             aria-describedby="submit-help"
           >
-            {isSubmitting ? (
+            {authIsLoading ? (
               <>
                 <span className="spinner"></span>
                 Criando conta...
