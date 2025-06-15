@@ -82,7 +82,7 @@ Para clonar o repositório e instalar as dependências:
    ```
 3. Execute o projeto em modo de desenvolvimento:
    ```bash
-   npm start
+   npm run dev
    ```
 4. Abra no navegador: O frontend estará disponível em http://localhost:3000.
 
