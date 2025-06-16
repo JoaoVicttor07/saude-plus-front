@@ -76,16 +76,19 @@ export default function PatientDetailsPage() {
 
   // Filtra as consultas conforme a aba ativa
   const filteredAppointments = appointments.filter((appointment) => {
-    if (activeTab === "Agendadas") return appointment.status === "Agendada";
-    if (activeTab === "Realizadas") return appointment.status === "Realizada";
-    if (activeTab === "Canceladas") return appointment.status === "Cancelada";
-    return true;
+    if (activeTab === "Agendadas") return appointment.status === "AGENDADA";
+    if (activeTab === "Realizadas") return appointment.status === "REALIZADA";
+    if (activeTab === "Canceladas") return appointment.status === "DESMARCADA";
+    return false;
   });
 
   const getStatusBadgeClass = (status) => {
-    if (status === "Agendada") return "status-badge-table status-scheduled";
-    if (status === "Realizada") return "status-badge-table status-done";
-    if (status === "Cancelada") return "status-badge-table status-canceled";
+    if (!status) return "status-badge-table";
+    const upperStatus = status.toUpperCase();
+
+    if (upperStatus === "AGENDADA") return "status-badge-table status-scheduled";
+    if (upperStatus === "REALIZADA") return "status-badge-table status-done";
+    if (upperStatus === "DESMARCADA") return "status-badge-table status-canceled";
     return "status-badge-table";
   };
 
@@ -176,7 +179,7 @@ export default function PatientDetailsPage() {
 
         {/* Action Buttons */}
         <div className="action-buttons">
-          <Button
+          {/* <Button
             background="#3b9b96"
             hoverBackground="#2d7a75"
             fontWeight={600}
@@ -186,9 +189,9 @@ export default function PatientDetailsPage() {
             onClick={handleScheduleAppointment}
           >
             Agendar Consulta
-          </Button>
+          </Button> */}
 
-          <Button
+          {/* <Button
             background="#fff"
             color="#374151"
             hoverBackground="#e6f4f1"
@@ -200,7 +203,7 @@ export default function PatientDetailsPage() {
             {patientStatus === "Ativo"
               ? "Desativar Paciente"
               : "Ativar Paciente"}
-          </Button>
+          </Button> */}
         </div>
 
         {showModal && (
@@ -295,15 +298,15 @@ export default function PatientDetailsPage() {
                         colSpan={5}
                         style={{ textAlign: "center", color: "#888" }}
                       >
-                        Nenhuma consulta encontrada.
+                         Nenhuma consulta encontrada para "{activeTab}".
                       </td>
                     </tr>
                   ) : (
                     filteredAppointments.map((appointment) => (
                       <tr key={appointment.id}>
-                        <td>{appointment.data}</td>
-                        <td>{appointment.horario}</td>
-                        <td>{appointment.medico}</td>
+                        <td>{formatarData(appointment.inicio)}</td>
+                        <td>{new Date(appointment.inicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}</td>
+                        <td>{appointment.medico?.nome || 'N/A'}</td>
                         <td>
                           <span
                             className={getStatusBadgeClass(appointment.status)}
