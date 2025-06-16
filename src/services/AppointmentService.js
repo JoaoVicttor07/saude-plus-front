@@ -49,7 +49,28 @@ const AppointmentService = {
             console.error(`Erro ao desmarcar consulta ${appointmentId}:`, error.response?.data || error.message);
             throw error;
         }
-    }
+    },
+
+    getAppointmentsByStatusAndPatient: async (patientId, status) => {
+        try {
+            const response = await api.get(`/consultas/paciente/${patientId}/status/${status}`);
+            return response.data;
+        } catch (error) {
+            console.error(`Erro ao buscar consultas por status ${status} para o paciente ${patientId}:`, error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    getAllAppointmentsByPatient: async (patientId) => {
+        try {
+            // Assuming this endpoint returns all appointments for the patient
+            const response = await api.get(`/consultas/paciente/${patientId}`);
+            return response.data;
+        } catch (error) {
+            console.error(`Erro ao buscar todas as consultas para o paciente ${patientId}:`, error.response?.data || error.message);
+            throw error;
+        }
+    },
 
     // Manter outras funções que você possa ter ou adicionar depois, como para buscar horários, criar consulta, etc.
     // Exemplo:
