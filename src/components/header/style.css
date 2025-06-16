@@ -1,0 +1,16 @@
+.main-header {
+  padding: 1rem 5rem 0 5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  user-select: none;
+}
+.main-logo span {
+  color: #fff;
+}

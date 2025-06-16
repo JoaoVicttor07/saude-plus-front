@@ -1,0 +1,51 @@
+.consultations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style:0 none;
+}
+
+.consultation-list-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  max-width: 400px;
+  width: 100%;
+  margin-top: 0rem;
+  max-height: 400px; /* ou o valor que já está usando */
+  overflow-y: auto;  /* ativa a rolagem apenas quando necessário */
+  margin: 10px;
+}
+
+.consultation-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.consultation-info {
+  color: #374151;
+  font-size: 1rem;
+}
+
+.detail-button {
+  background: none;
+  border: none;
+  color: #0d9488;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.detail-button:hover {
+  color: #0f766e;
+}
+

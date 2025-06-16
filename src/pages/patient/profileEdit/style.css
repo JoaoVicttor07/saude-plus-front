@@ -1,0 +1,120 @@
+.profile-edit-bg {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card principal */
+.profile-edit-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(44, 122, 123, 0.10);
+  max-width: 520px;
+  width: 95vw;
+  margin: auto;
+  padding: 2.2rem 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-edit-title {
+  color: #247575;
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.profile-edit-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Grid de duas colunas para campos */
+.profile-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 32px;
+  width: 100%;
+}
+
+.profile-edit-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.profile-edit-form label {
+  font-weight: 600;
+  color: #247575;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-edit-icon {
+  font-size: 1.08em;
+  opacity: 0.8;
+}
+
+.profile-edit-form input,
+.profile-edit-form .custom-input {
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  border: 1.5px solid #b2dfdb;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #222;
+  background: #f8fefe;
+  transition: border 0.2s;
+  width: 100%;
+}
+
+.profile-edit-form input:focus,
+.profile-edit-form .custom-input:focus {
+  border-color: #2c7a7b;
+  outline: none;
+}
+
+.profile-edit-form input:disabled,
+.profile-edit-form .custom-input:disabled {
+  background: #f1f5f9;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Botões */
+.profile-edit-actions {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+
+
+/* Responsivo: 1 coluna em telas menores */
+@media (max-width: 700px) {
+  .profile-edit-container {
+    max-width: 99vw;
+    padding: 1.2rem 0.5rem 2rem 0.5rem;
+  }
+  .profile-edit-grid {
+    grid-template-columns: 1fr;
+    gap: 16px 0;
+  }
+  .profile-edit-actions {
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .profile-edit-actions button {
+    max-width: 100%;
+  }
+}

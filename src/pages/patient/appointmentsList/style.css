@@ -1,0 +1,43 @@
+@import '../dashboard/style.css';
+
+.status-label {
+  margin-left: 12px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.95em;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.status-realizada {
+  background: #e6f8ed;
+  color: #219150;
+}
+
+.status-cancelada {
+  background: #ffeaea;
+  color: #b00;
+}
+
+.status-agendada {
+  background: #e6f4fa;
+  color: #1976d2;
+}
+
+.dashboard-appointments-list {
+  max-height: 340px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+.dashboard-action-link {
+  margin-left: 18px;
+  color: #319898;
+  font-weight: 500;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+.dashboard-action-link:hover {
+  color: #1a6a6a;
+}
