@@ -191,13 +191,7 @@ export default function DoctorCalendar() {
           </div>
 
           <div className="action-buttons">
-            <button
-              className="btn-action"
-              onClick={() => navigate("/doctor/calendar")}
-            >
-              <FaCalendarAlt className="btn-icon" />
-              Ver Calendário de Consultas
-            </button>
+            
 
             <button
               className="btn-action"

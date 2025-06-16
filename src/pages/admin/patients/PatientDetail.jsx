@@ -116,7 +116,7 @@ export default function PatientDetailsPage() {
   return (
     <div className="patient-details-container">
       <Header />
-      <main className="main-content">
+      <main className="main------content">
         <div className="page-header">
           <h2 className="page-title">Detalhes do Paciente</h2>
           <Button
