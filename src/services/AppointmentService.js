@@ -21,6 +21,36 @@ const AppointmentService = {
         }
     },
 
+    getFutureAppointmentsByPatient: async (patientId) => {
+        try {
+            const response = await api.get(`/consultas/paciente/${patientId}/futuras`);
+            return response.data;
+        } catch (error) {
+            console.error(`Erro ao buscar agendamentos futuros para o paciente ${patientId}:`, error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    getAppointmentById: async (appointmentId) => {
+        try {
+            const response = await api.get(`/consultas/${appointmentId}`);
+            return response.data;
+        } catch (error) {
+            console.error(`Erro ao buscar consulta pelo ID ${appointmentId}:`, error.response?.data || error.message);
+            throw error;
+        }
+    },
+
+    unmarkAppointmentByPatient: async (appointmentId) => {
+        try {
+            const response = await api.put(`/consultas/${appointmentId}/desmarcar`);
+            return response.data;
+        } catch (error) {
+            console.error(`Erro ao desmarcar consulta ${appointmentId}:`, error.response?.data || error.message);
+            throw error;
+        }
+    }
+
     // Manter outras funções que você possa ter ou adicionar depois, como para buscar horários, criar consulta, etc.
     // Exemplo:
     // getAvailableSlots: async (doctorId, date) => { ... },

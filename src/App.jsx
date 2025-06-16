@@ -43,7 +43,7 @@ function App() {
       <Route element={<ProtectedRoute allowedRoles={[ROLES.PACIENTE]} />}>
         <Route path="/dashboard" element={<PatientDashboard />} />
         <Route path="/appointments" element={<AppointmentsList />} />
-        <Route path="/appointment/:id" element={<AppointmentDetail />} />
+        <Route path="/appointment-details/:id" element={<AppointmentDetail />} /> 
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/profile/edit" element={<ProfileEdit />} />
         <Route path="/profile" element={<ProfileView />} />
