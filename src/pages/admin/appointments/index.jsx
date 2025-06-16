@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -17,90 +17,51 @@ import {
 import Button from "../../../components/Button";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
+import ConsultaService from "../../../services/ConsultaService";
 import "./style.css";
-
-const mockAppointments = [
-  {
-    id: "1",
-    date: "2025-06-10",
-    time: "14:00",
-    patient: "Ana Souza",
-    doctor: "Dr. João Silva",
-    specialty: "Cardiologia",
-    location: "Clínica Central",
-    status: "pending",
-
-    phone: "(11) 98765-4321",
-  },
-  {
-    id: "2",
-    date: "2025-06-09",
-    time: "10:30",
-    patient: "Carlos Mendes",
-    doctor: "Dr. Maria Santos",
-    specialty: "Dermatologia",
-    location: "Clínica Norte",
-    status: "pending",
-
-    phone: "(11) 99876-5432",
-  },
-  {
-    id: "3",
-    date: "2025-06-08",
-    time: "16:00",
-    patient: "Lucia Oliveira",
-    doctor: "Dr. Pedro Costa",
-    specialty: "Ortopedia",
-    location: "Clínica Sul",
-    status: "completed",
-
-    phone: "(11) 97654-3210",
-  },
-  {
-    id: "4",
-    date: "2025-06-07",
-    time: "09:00",
-    patient: "Roberto Silva",
-    doctor: "Dr. Ana Lima",
-    specialty: "Neurologia",
-    location: "Clínica Central",
-    status: "completed",
-
-    phone: "(11) 96543-2109",
-  },
-  {
-    id: "5",
-    date: "2025-06-06",
-    time: "11:30",
-    patient: "Fernanda Costa",
-    doctor: "Dr. João Silva",
-    specialty: "Cardiologia",
-    location: "Clínica Norte",
-    status: "cancelled",
-
-    phone: "(11) 95432-1098",
-  },
-  {
-    id: "6",
-    date: "2025-06-05",
-    time: "15:45",
-    patient: "Marcos Pereira",
-    doctor: "Dr. Maria Santos",
-    specialty: "Dermatologia",
-    location: "Clínica Sul",
-    status: "cancelled",
-
-    phone: "(11) 94321-0987",
-  },
-];
 
 export default function ViewAppointments() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("pending");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredAppointments = mockAppointments.filter((appointment) => {
+  const statusMap = {
+    AGENDADA: "pending",
+    REALIZADA: "completed",
+    DESMARCADA: "cancelled",
+  };
+
+  useEffect(() => {
+    async function fetchAppointments() {
+      setIsLoading(true);
+      try {
+        const data = await ConsultaService.listarTodas();
+        // Adapta os campos para o formato esperado pelo componente
+        const mapped = data.map((c) => ({
+          id: c.id,
+          date: c.inicio?.split("T")[0] || "",
+          time: c.inicio?.split("T")[1]?.slice(0, 5) || "",
+          patient: c.paciente?.nome || "-",
+          doctor: c.medico?.nome || "-",
+          specialty: c.medico?.especialidade?.nome || "-",
+          location: c.local || "-",
+          status: statusMap[c.status] || "pending",
+          phone: c.paciente?.telefone || "-",
+        }));
+        setAppointments(mapped);
+      } catch (e) {
+        setAppointments([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAppointments();
+  }, []);
+
+  const filteredAppointments = appointments.filter((appointment) => {
     const matchesTab = appointment.status === activeTab;
     const matchesSearch =
       searchTerm === "" ||
@@ -138,6 +99,7 @@ export default function ViewAppointments() {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return "-";
     const date = new Date(dateString);
     return date.toLocaleDateString("pt-BR", {
       day: "2-digit",

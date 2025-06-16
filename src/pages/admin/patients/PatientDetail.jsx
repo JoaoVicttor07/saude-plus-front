@@ -16,36 +16,36 @@ const patientData = {
   dataCadastro: "25/04/2023",
 };
 
-const appointmentsData = [
-  {
-    id: 1,
-    data: "10/06/2025",
-    horario: "14:00",
-    medico: "Dr. João Almeida",
-    status: "Agendada",
-  },
-  {
-    id: 2,
-    data: "10/06/2025",
-    horario: "14:00",
-    medico: "Dr. teste",
-    status: "Agendada",
-  },
-  {
-    id: 3,
-    data: "09/06/2025",
-    horario: "10:00",
-    medico: "Dr. Maria",
-    status: "Realizada",
-  },
-  {
-    id: 4,
-    data: "08/06/2025",
-    horario: "09:00",
-    medico: "Dr. Pedro",
-    status: "Cancelada",
-  },
-];
+// const appointmentsData = [
+//   {
+//     id: 1,
+//     data: "10/06/2025",
+//     horario: "14:00",
+//     medico: "Dr. João Almeida",
+//     status: "Agendada",
+//   },
+//   {
+//     id: 2,
+//     data: "10/06/2025",
+//     horario: "14:00",
+//     medico: "Dr. teste",
+//     status: "Agendada",
+//   },
+//   {
+//     id: 3,
+//     data: "09/06/2025",
+//     horario: "10:00",
+//     medico: "Dr. Maria",
+//     status: "Realizada",
+//   },
+//   {
+//     id: 4,
+//     data: "08/06/2025",
+//     horario: "09:00",
+//     medico: "Dr. Pedro",
+//     status: "Cancelada",
+//   },
+// ];
 
 export default function PatientDetailsPage() {
   const navigate = useNavigate();
@@ -92,12 +92,12 @@ export default function PatientDetailsPage() {
     (patientStatus === "Ativo" ? "status-active" : "status-inactive");
 
   // NOVO: Filtragem das consultas por aba
-  const filteredAppointments = appointmentsData.filter((appointment) => {
-    if (activeTab === "Agendadas") return appointment.status === "Agendada";
-    if (activeTab === "Realizadas") return appointment.status === "Realizada";
-    if (activeTab === "Canceladas") return appointment.status === "Cancelada";
-    return true;
-  });
+  // const filteredAppointments = appointmentsData.filter((appointment) => {
+  //   if (activeTab === "Agendadas") return appointment.status === "Agendada";
+  //   if (activeTab === "Realizadas") return appointment.status === "Realizada";
+  //   if (activeTab === "Canceladas") return appointment.status === "Cancelada";
+  //   return true;
+  // });
 
   // NOVO: Badge de status da consulta (opcional, para customizar cor)
   const getStatusBadgeClass = (status) => {

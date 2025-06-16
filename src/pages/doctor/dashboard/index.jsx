@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react";
 import ConsultationDetails from "../../../components/ConsultationDetails";
 import CancelModal from "../../../components/CancelModal";
+import Header from "../../../components/header"
+import Footer from "../../../components/footer";
 
 export default function DoctorCalendar() {
   const navigate = useNavigate();
@@ -190,10 +192,7 @@ export default function DoctorCalendar() {
   return (
     <div className="dashboard-container">
       {/* Header */}
-      <header className="header">
-        <h1 className="logo">Saúde+</h1>
-        <button className="btn-sair">Sair</button>
-      </header>
+      <Header/>
 
       {/* Main Content */}
       <div className="main-content">
@@ -291,7 +290,7 @@ export default function DoctorCalendar() {
       )}
 
       {/* Footer */}
-      <footer className="footer">Saúde+ © 2025 - Todos os direitos reservados</footer>
+      <Footer/>
     </div>
   );
 }
