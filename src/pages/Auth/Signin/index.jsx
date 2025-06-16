@@ -4,54 +4,30 @@ import Button from "../../../components/Button";
 import Link from "../../../components/Link";
 import Footer from "../../../components/footer";
 import { useAuth } from "../../../context/AuthContext";
+import DOMPurify from "dompurify";
 import "./style.css";
 
 function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [erro, setErro] = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
-  // const navigate = useNavigate();
 
-  // Apenas login e isLoading são usados ativamente no código abaixo
   const { login, isLoading } = useAuth();
-  // const { login, isLoading, isAuthenticated, user } = useAuth(); // Linha original
-  // const navigate = useNavigate();
-
-  // Se o usuário já estiver autenticado, você pode querer redirecioná-lo
-  // Esta lógica pode ser movida para um componente de Rota Protegida ou para o App.jsx
-  // useEffect(() => {
-  //   // Se for usar este useEffect, adicione isAuthenticated e user de volta à desestruturação acima
-  //   // e importe useNavigate de 'react-router-dom' e inicialize-o.
-  //   if (isAuthenticated && user) {
-  //     // Lógica de redirecionamento baseada no papel, se necessário aqui
-  //     // Exemplo:
-  //     // const userRole = user.authorities && user.authorities.length > 0 ? user.authorities[0].authority.toUpperCase() : null;
-  //     // if (userRole === "GERENTE") navigate("/admin/dashboard");
-  //     // else if (userRole === "MEDICO") navigate("/doctor/dashboard");
-  //     // else if (userRole === "PACIENTE") navigate("/dashboard");
-  //     // else navigate("/dashboard"); // Fallback
-  //   }
-  // }, [isAuthenticated, user, navigate]); // Adicionar dependências corretas se descomentado
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro(""); // Limpar erros anteriores
+    setErro("");
 
     if (!email || !password) {
       setErro("Email e senha são obrigatórios.");
       return;
     }
 
+     const sanitizedEmail = DOMPurify.sanitize(email);
+
     try {
-      // Chama a função login do AuthContext
-      // A função login no AuthContext agora lida com a chamada ao AuthService,
-      // armazena o usuário, define isAuthenticated e faz o redirecionamento.
-      await login({ email, senha: password });
-      // Se o login for bem-sucedido, o AuthContext cuidará do redirecionamento.
-      // Não é mais necessário chamar navigate() aqui para o redirecionamento pós-login.
+      await login({ email: sanitizedEmail, senha: password });
     } catch (error) {
-      // A função login no AuthContext deve relançar o erro para que possamos tratá-lo aqui para a UI.
       console.error("Erro no componente Signin ao tentar logar:", error);
       if (
         error.response &&
@@ -65,7 +41,6 @@ function Signin() {
         error.message &&
         error.message.includes("estáticos inválidos")
       ) {
-        // Para o modo estático, se implementado no context
         setErro(error.message);
       } else {
         setErro(

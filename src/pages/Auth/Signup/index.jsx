@@ -3,8 +3,8 @@ import Footer from "../../../components/footer";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./style.css";
-// import AuthService from "../../../services/AuthService";
-import { useAuth } from "../../../context/AuthContext"; // 1. Importar useAuth
+import { useAuth } from "../../../context/AuthContext";
+import DOMPurify from "dompurify";
 
 const RegistrationSuccessModal = ({ show, onCloseAndRedirect }) => {
   if (!show) {
@@ -54,7 +54,6 @@ const RegistrationForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  // const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -209,41 +208,55 @@ const RegistrationForm = () => {
       return;
     }
 
-    // setIsSubmitting(true);
+    const sanitizedFormData = {
+      ...formData,
+      name: DOMPurify.sanitize(formData.name),
+      logradouro: DOMPurify.sanitize(formData.logradouro),
+      bairro: DOMPurify.sanitize(formData.bairro),
+      cidade: DOMPurify.sanitize(formData.cidade),
+      estado: DOMPurify.sanitize(formData.estado),
+      email: DOMPurify.sanitize(formData.email),
+    };
 
     const apiData = {
-      nome: formData.name,
-      cpf: formData.cpf.replace(/\D/g, ""),
-      email: formData.email,
-      senha: formData.password,
-      sexo: formData.gender ? formData.gender.charAt(0).toUpperCase() : "",
-      telefone: formData.phone.replace(/\D/g, ""),
-      dataNascimento: formData.dateOfBirth,
+      nome: sanitizedFormData.name,
+      cpf: sanitizedFormData.cpf.replace(/\D/g, ""),
+      email: sanitizedFormData.email,
+      senha: sanitizedFormData.password,
+      sexo: sanitizedFormData.gender
+        ? sanitizedFormData.gender.charAt(0).toUpperCase()
+        : "",
+      telefone: sanitizedFormData.phone.replace(/\D/g, ""),
+      dataNascimento: sanitizedFormData.dateOfBirth,
       endereco: {
-        logradouro: formData.logradouro,
-        numero: formData.numero,
-        bairro: formData.bairro,
-        cep: formData.cep.replace(/\D/g, ""),
-        cidade: formData.cidade,
-        estado: formData.estado.toUpperCase(),
+        logradouro: sanitizedFormData.logradouro,
+        numero: sanitizedFormData.numero,
+        bairro: sanitizedFormData.bairro,
+        cep: sanitizedFormData.cep.replace(/\D/g, ""),
+        cidade: sanitizedFormData.cidade,
+        estado: sanitizedFormData.estado.toUpperCase(),
       },
       descricao: "",
     };
 
     try {
-      const response = await signup(apiData); // signup agora está no AuthContext
-      
-      
-      if (response) { 
-        setShowSuccessModal(true); // Agora deve funcionar de forma confiável
-      } else {
-        console.warn("Signup retornou, mas a resposta não foi considerada sucesso para mostrar o modal.");
-        alert("Cadastro pode ter ocorrido, mas houve um problema ao confirmar.");
-      }
+      const response = await signup(apiData);
 
+      if (response) {
+        setShowSuccessModal(true);
+      } else {
+        console.warn(
+          "Signup retornou, mas a resposta não foi considerada sucesso para mostrar o modal."
+        );
+        alert(
+          "Cadastro pode ter ocorrido, mas houve um problema ao confirmar."
+        );
+      }
     } catch (error) {
       console.error(
-        "Erro no handleSubmit do RegistrationForm:", error.response || error);
+        "Erro no handleSubmit do RegistrationForm:",
+        error.response || error
+      );
 
       if (error.response && error.response.data) {
         const errorData = error.response.data;
@@ -265,9 +278,6 @@ const RegistrationForm = () => {
         alert("Erro ao realizar cadastro. Tente novamente mais tarde.");
       }
     }
-    // finally {
-    //   setIsSubmitting(false);
-    // }
   };
 
   const handleCloseSuccessModalAndRedirect = () => {
