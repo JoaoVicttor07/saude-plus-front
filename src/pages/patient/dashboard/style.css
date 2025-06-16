@@ -1,0 +1,122 @@
+.dashboard-bg {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.patient-dashboard-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 80vw;
+  padding: 2rem 2rem 2.5rem 2rem;
+  color: #222;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: auto;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1a6a6a;
+}
+
+.dashboard-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #247575;
+}
+
+.dashboard-appointments-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  width: 100%;
+}
+.dashboard-appointment-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+.dashboard-appointment-icon {
+  color: #319898;
+  font-size: 1.2rem;
+}
+
+.dashboard-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #247575;
+  margin-bottom: 1.5rem;
+}
+.dashboard-empty svg {
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.dashboard-action-btn {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  outline: 2px solid transparent;
+}
+.dashboard-action-btn:focus {
+  outline: 2px solid #1a6a6a;
+}
+.dashboard-action-btn.primary {
+  background: #319898;
+  color: #fff;
+  border: none;
+}
+.dashboard-action-btn.primary:hover {
+  background: #247575;
+}
+.dashboard-action-btn.secondary {
+  background: #fff;
+  color: #247575;
+  border: 2px solid #247575;
+}
+.dashboard-action-btn.secondary:hover {
+  background: #f0f8f8;
+  color: #1a6a6a;
+  border-color: #1a6a6a;
+}
+
+@media (max-width: 600px) {
+  .patient-dashboard-container {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem 2rem 0.5rem;
+  }
+  .dashboard-header {
+    padding: 0 1rem;
+  }
+}
