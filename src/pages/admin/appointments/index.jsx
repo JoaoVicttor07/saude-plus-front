@@ -140,11 +140,11 @@ export default function ViewAppointments() {
           <span className="appt-detail-label">Especialidade:</span>
           <span className="appt-detail-value">{appointment.specialty}</span>
         </div>
-        <div className="appt-detail-row">
+        {/* <div className="appt-detail-row">
           <MapPin className="appt-detail-icon" />
           <span className="appt-detail-label">Local:</span>
           <span className="appt-detail-value">{appointment.location}</span>
-        </div>
+        </div> */}
       </div>
 
       <div className="appt-appointment-actions">
@@ -164,7 +164,7 @@ export default function ViewAppointments() {
 
         {appointment.status === "pending" && (
           <>
-            <Button
+            {/* <Button
               fontWeight={600}
               background="#ffc107"
               hoverBackground="#e0a800"
@@ -173,9 +173,9 @@ export default function ViewAppointments() {
               icon={<RotateCcw size={15} />}
             >
               Reagendar
-            </Button>
+            </Button> */}
 
-            <Button
+            {/* <Button
               fontWeight={600}
               background="#dc3545"
               hoverBackground="#c82333"
@@ -184,7 +184,7 @@ export default function ViewAppointments() {
               style={{ padding: "0.8rem 1rem" }}
             >
               Cancelar
-            </Button>
+            </Button> */}
           </>
         )}
       </div>
@@ -262,10 +262,10 @@ export default function ViewAppointments() {
                   </span>
                 </div>
                 <div className="appt-modal-row">
-                  <span className="appt-modal-label">Local:</span>
+                  {/* <span className="appt-modal-label">Local:</span>
                   <span className="appt-modal-value">
                     {appointment.location}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
@@ -281,11 +281,12 @@ export default function ViewAppointments() {
                   borderRadius="0.375rem"
                   style={{ padding: "0.8rem 1rem" }}
                   icon={<RotateCcw size={15} />}
+                  disabled
                 >
                   Reagendar
                 </Button>
 
-                <Button
+                {/* <Button
                   fontWeight={600}
                   background="#dc3545"
                   hoverBackground="#c82333"
@@ -294,7 +295,7 @@ export default function ViewAppointments() {
                   style={{ padding: "0.8rem 1rem" }}
                 >
                   Cancelar
-                </Button>
+                </Button> */}
               </>
             )}
 
