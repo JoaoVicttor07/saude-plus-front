@@ -24,11 +24,16 @@ function PatientDashboard() {
         try {
           const data = await AppointmentService.getFutureAppointmentsByPatient(
             user.id
+          
           );
-          const sortedData = data.sort(
-            (a, b) => new Date(a.inicio) - new Date(b.inicio)
-          );
-          setFutureAppointments(sortedData || []);
+
+          // Filter for AGENDADA status and then sort
+          const scheduledAppointments = (data || [])
+            .filter(app => app.status === "AGENDADA")
+            .sort((a, b) => new Date(a.inicio) - new Date(b.inicio));
+          setFutureAppointments(scheduledAppointments);
+
+          
         } catch (err) {
           console.error("Erro ao buscar agendamentos no dashboard:", err);
           setError(
