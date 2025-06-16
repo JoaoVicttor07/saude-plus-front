@@ -3,7 +3,7 @@ import api from "./api";
 const ConsultaService = {
     listarTodas: async () => {
         try {
-            const response = await api.get('/api/consultas');
+            const response = await api.get('/consultas');
             return response.data;
         } catch (error) {
             console.error('Erro ao listar consultas:', error);
@@ -13,7 +13,7 @@ const ConsultaService = {
 
     buscarPorId: async (id) => {
         try {
-            const response = await api.get(`/api/consultas/${id}`);
+            const response = await api.get(`/consultas/${id}`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao buscar consulta por ID (${id}):`, error);
@@ -23,7 +23,7 @@ const ConsultaService = {
 
     agendar: async (dados) => {
         try {
-            const response = await api.post('/api/consultas', dados);
+            const response = await api.post('/consultas', dados);
             return response.data;
         } catch (error) {
             console.error('Erro ao agendar consulta:', error);
@@ -33,7 +33,7 @@ const ConsultaService = {
 
     listarPorMedico: async (idMedico) => {
         try {
-            const response = await api.get(`/api/consultas/medico/${idMedico}`);
+            const response = await api.get(`/consultas/medico/${idMedico}`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao listar consultas por médico (${idMedico}):`, error);
@@ -43,7 +43,7 @@ const ConsultaService = {
 
     listarPorPaciente: async (idPaciente) => {
         try {
-            const response = await api.get(`/api/consultas/paciente/${idPaciente}`);
+            const response = await api.get(`/consultas/paciente/${idPaciente}`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao listar consultas por paciente (${idPaciente}):`, error);
@@ -53,7 +53,7 @@ const ConsultaService = {
 
     listarPorStatus: async (status) => {
         try {
-            const response = await api.get(`/api/consultas/status/${status}`);
+            const response = await api.get(`/consultas/status/${status}`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao listar consultas por status (${status}):`, error);
@@ -63,7 +63,7 @@ const ConsultaService = {
 
     desmarcar: async (id) => {
         try {
-            const response = await api.put(`/api/consultas/${id}/desmarcar`);
+            const response = await api.put(`/consultas/${id}/desmarcar`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao desmarcar consulta (${id}):`, error);
@@ -73,7 +73,7 @@ const ConsultaService = {
 
     listarFuturasMedico: async (idMedico) => {
         try {
-            const response = await api.get(`/api/consultas/medico/${idMedico}/futuras`);
+            const response = await api.get(`/consultas/medico/${idMedico}/futuras`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao listar futuras consultas do médico (${idMedico}):`, error);
@@ -83,7 +83,7 @@ const ConsultaService = {
 
     listarFuturasPaciente: async (idPaciente) => {
         try {
-            const response = await api.get(`/api/consultas/paciente/${idPaciente}/futuras`);
+            const response = await api.get(`/consultas/paciente/${idPaciente}/futuras`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao listar futuras consultas do paciente (${idPaciente}):`, error);

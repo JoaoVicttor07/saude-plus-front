@@ -1,12 +1,50 @@
-import {useNavigate} from 'react-router-dom'
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserRound, Stethoscope, Calendar, Plus } from "lucide-react";
 import Button from "../../../components/Button";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
+import PacienteService from "../../../services/PacienteService";
+import MedicoService from "../../../services/MedicoService";
+import AppointmentService from "../../../services/AppointmentService";
+import ConsultaService from "../../../services/ConsultaService";
 import "./style.css";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+
+  const [totalPacientes, setTotalPacientes] = useState(0);
+  const [totalMedicos, setTotalMedicos] = useState(0);
+  const [totalConsultas, setTotalConsultas] = useState(0);
+  const [pendentes, setPendentes] = useState(0);
+  const [realizadas, setRealizadas] = useState(0);
+  const [canceladas, setCanceladas] = useState(0);
+
+  useEffect(() => {
+    PacienteService.listarTodos()
+      .then((data) => setTotalPacientes(Array.isArray(data) ? data.length : 0))
+      .catch(() => setTotalPacientes(0));
+
+    MedicoService.listarTodos()
+      .then((data) => setTotalMedicos(Array.isArray(data) ? data.length : 0))
+      .catch(() => setTotalMedicos(0));
+
+    ConsultaService.listarTodas()
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setTotalConsultas(data.length);
+          setPendentes(data.filter((c) => c.status === "AGENDADA").length);
+          setRealizadas(data.filter((c) => c.status === "REALIZADA").length);
+          setCanceladas(data.filter((c) => c.status === "DESMARCADA").length);
+        }
+      })
+      .catch(() => {
+        setTotalConsultas(0);
+        setPendentes(0);
+        setRealizadas(0);
+        setCanceladas(0);
+      });
+  }, []);
 
   return (
     <div className="admin-container">
@@ -27,7 +65,7 @@ export default function AdminDashboard() {
               <UserRound size={32} />
             </div>
             <div className="cardContent">
-              <h3 className="card-value">3</h3>
+              <h3 className="card-value">{totalPacientes}</h3>
               <p className="card-label">Pacientes</p>
             </div>
             <Button
@@ -35,7 +73,7 @@ export default function AdminDashboard() {
               background="#3b9b96"
               hoverBackground="#2d7a75"
               borderRadius="0.375rem"
-              onClick={() => navigate('/admin/patients')}
+              onClick={() => navigate("/admin/patients")}
               style={{ padding: "1rem" }}
             >
               Ver pacientes
@@ -48,7 +86,7 @@ export default function AdminDashboard() {
               <Stethoscope size={32} />
             </div>
             <div className="cardContent">
-              <h3 className="card-value">3</h3>
+              <h3 className="card-value">{totalMedicos}</h3>
               <p className="card-label">Médicos</p>
             </div>
             <Button
@@ -56,7 +94,7 @@ export default function AdminDashboard() {
               background="#3b9b96"
               hoverBackground="#2d7a75"
               borderRadius="0.375rem"
-              onClick={() => navigate('/admin/doctors')}
+              onClick={() => navigate("/admin/doctors")}
               style={{ padding: "1rem" }}
             >
               Ver médicos
@@ -69,20 +107,20 @@ export default function AdminDashboard() {
               <Calendar size={32} />
             </div>
             <div className="cardContent">
-              <h3 className="card-value">18</h3>
+              <h3 className="card-value">{totalConsultas}</h3>
               <p className="card-label">Consultas</p>
               <div className="appointment-stats">
                 <div className="stat-item">
                   <span className="stat-badge pending"></span>
-                  <span className="stat-label">9 Pendentes</span>
+                  <span className="stat-label">{pendentes} Pendentes</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-badge completed"></span>
-                  <span className="stat-label">6 Realizadas</span>
+                  <span className="stat-label">{realizadas} Realizadas</span>
                 </div>
                 <div className="stat-item">
                   <span className="stat-badge cancelled"></span>
-                  <span className="stat-label">3 Canceladas</span>
+                  <span className="stat-label">{canceladas} Canceladas</span>
                 </div>
               </div>
             </div>
@@ -92,7 +130,7 @@ export default function AdminDashboard() {
               hoverBackground="#2d7a75"
               borderRadius="0.375rem"
               style={{ padding: "1rem" }}
-              onClick={() => navigate('/admin/appointments')}
+              onClick={() => navigate("/admin/appointments")}
             >
               Ver consultas
             </Button>
@@ -120,7 +158,8 @@ export default function AdminDashboard() {
                 fontSize="0.875rem"
                 icon={<Plus size={15} />}
                 style={{ padding: "0.80rem 1.5rem" }}
-                onClick={() => navigate('/admin/appointments/create')}
+                onClick={() => navigate("/admin/appointments/create")}
+                disabled
               >
                 Nova Consulta
               </Button>
@@ -132,7 +171,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Footer */}
-      <Footer/>
+      <Footer />
     </div>
   );
 }
