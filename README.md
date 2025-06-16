@@ -1,7 +1,7 @@
 <h1 align="center" style="font-weight: bold;">Saúde Plus Frontend 💻</h1>
 
 <p align="center">
- <a href="layout">Layout</a> • 
+ <a href="#layout">Layout</a> • 
  <a href="#descricao">Descrição</a> • 
  <a href="#funcionalidades">Funcionalidades</a> • 
  <a href="#instalacao">Instalação</a> • 
@@ -19,9 +19,9 @@
 <h2 id="layout">🎨 Layout</h2>
 
 <p align="center">
-    <img src="./public/imgForm.png" alt="Image Non" width="400px">
-    <img src="./public/imgLogin.webp" alt="Image Non" width="400px">
-    <img src="./public/imgRg.webp" alt="Image Non" width="400px">
+    <img src="./public/imgLogin.png" alt="Image Login" width="400px">
+    <img src="./public/imgRegistro.png" alt="Image Registro" width="400px">
+    <img src="./public/imgGerente.png" alt="Image Gerente" width="400px">
 </p>
 
 <h2 id="descricao">📄 Descrição</h2>
@@ -84,7 +84,7 @@ Para clonar o repositório e instalar as dependências:
    ```bash
    npm run dev
    ```
-4. Abra no navegador: O frontend estará disponível em http://localhost:3000.
+4. Abra no navegador: O frontend estará disponível em http://localhost:5173.
 
 <h2 id="colab">🤝 Colaboradores</h2>
 
