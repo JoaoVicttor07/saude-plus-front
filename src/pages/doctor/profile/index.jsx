@@ -1,34 +1,47 @@
 import "./style.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
+import MedicoService from "../../../services/MedicoService";
+import Header from "../../../components/header";
+import Footer from "../../../components/footer";
 
 const outrosTitulos = ["Drx.", "Dre.", "Dre@", "Dr*", "D."];
 
 export default function DoctorProfile() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [doctor, setDoctor] = useState({
-    nome: "João Silva",
-    email: "doctor@doctor.com",
-    especialidade: "Clínico Geral",
-    crm: "1234567",
-    telefone: "(84) 99999-8888",
-    genero: "Masculino",
-    cpf: "123.456.789-00",
-  });
-
+  const [doctor, setDoctor] = useState(null);
   const [titulo, setTitulo] = useState("Dr.");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (doctor.genero === "Masculino") {
-      setTitulo("Dr.");
-    } else if (doctor.genero === "Feminino") {
-      setTitulo("Dra.");
-    } else {
-      const random = outrosTitulos[Math.floor(Math.random() * outrosTitulos.length)];
+    async function fetchDoctor() {
+      if (!user?.id) return;
+      setLoading(true);
+      try {
+        const data = await MedicoService.buscarPorId(user.id);
+        setDoctor(data);
+      } catch (error) {
+        setDoctor(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDoctor();
+  }, [user]);
+
+  useEffect(() => {
+    if (!doctor) return;
+    if (doctor.genero === "Masculino") setTitulo("Dr.");
+    else if (doctor.genero === "Feminino") setTitulo("Dra.");
+    else {
+      const random =
+        outrosTitulos[Math.floor(Math.random() * outrosTitulos.length)];
       setTitulo(random);
     }
-  }, [doctor.genero]);
+  }, [doctor]);
 
   function handleChange(e) {
     setDoctor({ ...doctor, [e.target.name]: e.target.value });
@@ -49,18 +62,49 @@ export default function DoctorProfile() {
     const nomes = nome
       .trim()
       .split(" ")
-      .filter(n => !ignorar.includes(n.toLowerCase()));
+      .filter((n) => !ignorar.includes(n.toLowerCase()));
     if (nomes.length === 0) return "";
     if (nomes.length === 1) return nomes[0][0].toUpperCase();
     return (nomes[0][0] + nomes[nomes.length - 1][0]).toUpperCase();
   }
 
+  if (loading) {
+    return (
+      <div className="doctor-profile-bg">
+        <header className="doctor-header">
+          <h1 className="doctor-logo">Saúde+</h1>
+          <button className="doctor-exit-btn">Sair</button>
+        </header>
+        <main>
+          <h2 className="doctor-profile-title">Perfil do Médico</h2>
+          <div style={{ textAlign: "center", margin: "2rem" }}>
+            Carregando...
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!doctor) {
+    return (
+      <div className="doctor-profile-bg">
+        <header className="doctor-header">
+          <h1 className="doctor-logo">Saúde+</h1>
+          <button className="doctor-exit-btn">Sair</button>
+        </header>
+        <main>
+          <h2 className="doctor-profile-title">Perfil do Médico</h2>
+          <div style={{ textAlign: "center", margin: "2rem", color: "#c00" }}>
+            Não foi possível carregar os dados do médico.
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="doctor-profile-bg">
-      <header className="doctor-header">
-        <h1 className="doctor-logo">Saúde+</h1>
-        <button className="doctor-exit-btn">Sair</button>
-      </header>
+      <Header/>
 
       <main>
         <h2 className="doctor-profile-title">Perfil do Médico</h2>
@@ -69,7 +113,9 @@ export default function DoctorProfile() {
             <div className="doctor-avatar">
               <span>{getInitials(doctor.nome)}</span>
             </div>
-            <span className="doctor-specialty-badge">{doctor.especialidade}</span>
+            <span className="doctor-specialty-badge">
+              {doctor.especialidade?.nome || doctor.especialidade || ""}
+            </span>
           </div>
           <div className="doctor-profile-card-bottom">
             <div className="doctor-name-block">
@@ -90,7 +136,9 @@ export default function DoctorProfile() {
                 </>
               ) : (
                 <>
-                  <span className="doctor-name">{titulo} {doctor.nome}</span>
+                  <span className="doctor-name">
+                    {titulo} {doctor.nome}
+                  </span>
                   <span className="doctor-crm">CRM: {doctor.crm}</span>
                 </>
               )}
@@ -153,7 +201,14 @@ export default function DoctorProfile() {
                 )}
               </div>
             </div>
-            <div className="doctor-profile-actions" style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+            <div
+              className="doctor-profile-actions"
+              style={{
+                display: "flex",
+                gap: "12px",
+                justifyContent: "flex-end",
+              }}
+            >
               {!isEditing && (
                 <button className="doctor-edit-btn" onClick={handleEdit}>
                   Editar
@@ -163,7 +218,10 @@ export default function DoctorProfile() {
                 className="doctor-save-btn"
                 onClick={handleSave}
                 disabled={!isEditing}
-                style={{ opacity: isEditing ? 1 : 0.6, cursor: isEditing ? "pointer" : "not-allowed" }}
+                style={{
+                  opacity: isEditing ? 1 : 0.6,
+                  cursor: isEditing ? "pointer" : "not-allowed",
+                }}
               >
                 Salvar
               </button>
@@ -173,19 +231,21 @@ export default function DoctorProfile() {
       </main>
 
       {/* Botão Voltar alinhado à direita */}
-      <div style={{ width: "100%", display: "flex", justifyContent: "flex-end", margin: "20px 0 0 0" }}>
-        <button
-          className="btn-sair"
-          onClick={() => navigate(-1)}
-        >
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          margin: "20px 0 0 0",
+        }}
+      >
+        <button className="btn-sair" onClick={() => navigate(-1)}>
           Voltar
         </button>
       </div>
 
       {/* Rodapé padrão */}
-      <footer className="footer" style={{ textAlign: "center", color: "#fff", marginTop: 16 }}>
-        Saúde+ © 2025 - Todos os direitos reservados
-      </footer>
+      <Footer/>
     </div>
   );
 }

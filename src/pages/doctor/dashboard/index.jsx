@@ -7,8 +7,10 @@ import CancelModal from "../../../components/CancelModal";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 import ConsultaService from "../../../services/ConsultaService";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function DoctorCalendar() {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [consultas, setConsultas] = useState([]);
@@ -25,19 +27,22 @@ export default function DoctorCalendar() {
       setLoading(true);
       setError(null);
       try {
-        const data = await ConsultaService.listarPorMedico();
+        if (!user?.id) throw new Error("Usuário não autenticado");
+        // Passe o id do médico para o service
+        const data = await ConsultaService.listarPorMedico(user.id);
 
-        // Opcional: formate dados para uso interno
-        const formatted = data.map((c) => ({
+        // Filtra apenas AGENDADA
+        const agendadas = data.filter((c) => c.status === "AGENDADA");
+
+        // Formate se necessário
+        const formatted = agendadas.map((c) => ({
           ...c,
-          // parse de data para Date, caso necessário
           dateObj: c.dataConsulta ? new Date(c.dataConsulta) : null,
-          status: c.status || "Confirmada",
-          // Campos que você pode ajustar conforme seu backend
+          status: c.status,
           id: c.idConsulta || c.id,
-          patientName: c.paciente || c.nomePaciente || "",
+          patientName: c.paciente?.nome || c.nomePaciente || "",
           time: c.horaConsulta || c.hora || "",
-          phone: c.telefonePaciente || "",
+          phone: c.paciente?.telefone || "",
           insurance: c.planoSaude || "",
           symptoms: c.sintomas || c.tipo || "",
           cancelReason: c.motivoCancelamento || "",
@@ -51,8 +56,8 @@ export default function DoctorCalendar() {
         setLoading(false);
       }
     }
-    fetchConsultas();
-  }, []);
+    if (user?.id) fetchConsultas();
+  }, [user]);
 
   const handleDetailClick = (consulta) => {
     setSelectedConsultation(consulta);
@@ -132,37 +137,50 @@ export default function DoctorCalendar() {
                       : {}
                   }
                 >
-                  {(showAll ? consultas : consultas.slice(0, 3)).map((consulta, index) => (
-                    <div key={consulta.id || index} className="appointment-item">
-                      <div className="appointment-info">
-                        <div className="appointment-icon">
-                          <FaCalendarAlt />
-                        </div>
-                        <div className="appointment-details">
-                          <div className="appointment-datetime">
-                            <span className="appointment-date">{consulta.dataConsulta || consulta.data}</span>
-                            <FaClock className="clock-icon" />
-                            <span className="appointment-time">{consulta.hora || consulta.time}</span>
-                          </div>
-                          <div className="appointment-patient">
-                            {consulta.patientName || consulta.paciente} - {consulta.tipo}
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        className="btn-"
-                        onClick={() => handleDetailClick(consulta)}
+                  {(showAll ? consultas : consultas.slice(0, 3)).map(
+                    (consulta, index) => (
+                      <div
+                        key={consulta.id || index}
+                        className="appointment-item"
                       >
-                        Detalhes
-                        <FaChevronRight className="chevron-icon" />
-                      </button>
-                    </div>
-                  ))}
+                        <div className="appointment-info">
+                          <div className="appointment-icon">
+                            <FaCalendarAlt />
+                          </div>
+                          <div className="appointment-details">
+                            <div className="appointment-datetime">
+                              <span className="appointment-date">
+                                {consulta.dataConsulta || consulta.data}
+                              </span>
+                              <FaClock className="clock-icon" />
+                              <span className="appointment-time">
+                                {consulta.hora || consulta.time}
+                              </span>
+                            </div>
+                            <div className="appointment-patient">
+                              {consulta.patientName || consulta.paciente} -{" "}
+                              {consulta.tipo}
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          className="btn-"
+                          onClick={() => handleDetailClick(consulta)}
+                        >
+                          Detalhes
+                          <FaChevronRight className="chevron-icon" />
+                        </button>
+                      </div>
+                    )
+                  )}
                 </div>
 
                 {!showAll && consultas.length > 3 && (
                   <div className="view-all">
-                    <button className="btn-view-all" onClick={() => setShowAll(true)}>
+                    <button
+                      className="btn-view-all"
+                      onClick={() => setShowAll(true)}
+                    >
                       Ver mais consultas
                       <FaChevronRight className="chevron-icon" />
                     </button>
