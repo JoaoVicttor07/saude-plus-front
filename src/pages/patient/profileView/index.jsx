@@ -1,19 +1,86 @@
+import { useEffect, useState } from "react";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
-import Footer from "../../../components/footer"
+import Footer from "../../../components/footer";
 import "./style.css";
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaEnvelope, FaPhone, FaIdCard } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaPhone, FaIdCard, FaSpinner, FaExclamationTriangle } from "react-icons/fa";
+import { useAuth } from "../../../context/AuthContext";
+import PacienteService from "../../../services/PacienteService";
 
-const usuario = {
-  nome: "Maria Souza",
-  email: "maria@email.com",
-  telefone: "(11) 91234-5678",
-  cpf: "123.456.789-00",
-};
+
 
 function ProfileView() {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
+  const [profileData, setProfileData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const fetchProfile = async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+          const data = await PacienteService.buscarMeuPerfil();
+          setProfileData(data);
+        } catch (err) {
+          console.error("Erro ao buscar perfil:", err);
+          setError(err.message || "Não foi possível carregar os dados do perfil. Tente novamente mais tarde.");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchProfile();
+    } else {
+      setIsLoading(false);
+      setError("Usuário não autenticado.");
+    }
+  }, [user, isAuthenticated, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="profile-bg">
+        <Header />
+        <main className="profile-container" role="main">
+          <div className="profile-loading">
+            <FaSpinner className="fa-spin" size={48} />
+            <p>Carregando perfil...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="profile-bg">
+        <Header />
+        <main className="profile-container" role="main">
+          <p>Nenhum dado de perfil encontrado.</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="profile-bg">
+        <Header />
+        <main className="profile-container" role="main">
+          <div className="profile-error">
+            <FaExclamationTriangle size={48} style={{ color: "#b00" }} />
+            <p>{error}</p>
+            <Button onClick={() => navigate("/dashboard")}>Voltar ao Dashboard</Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="profile-bg">
@@ -26,25 +93,25 @@ function ProfileView() {
               <span className="profile-label">
                 <FaUser className="profile-icon" /> Nome
               </span>
-              <span className="profile-value">{usuario.nome}</span>
+              <span className="profile-value">{profileData.nomeCompleto || profileData.nome || "N/A"}</span>
             </div>
             <div className="profile-field">
               <span className="profile-label">
                 <FaEnvelope className="profile-icon" /> E-mail
               </span>
-              <span className="profile-value">{usuario.email}</span>
+              <span className="profile-value">{profileData.email || "N/A"}</span>
             </div>
             <div className="profile-field">
               <span className="profile-label">
                 <FaPhone className="profile-icon" /> Telefone
               </span>
-              <span className="profile-value">{usuario.telefone}</span>
+              <span className="profile-value">{profileData.telefone || "N/A"}</span>
             </div>
             <div className="profile-field">
               <span className="profile-label">
                 <FaIdCard className="profile-icon" /> CPF
               </span>
-              <span className="profile-value">{usuario.cpf}</span>
+              <span className="profile-value">{profileData.cpf || "N/A"}</span>
             </div>
           </div>
         </div>
@@ -59,7 +126,6 @@ function ProfileView() {
             height="45px"
             width="50%"
             onClick={() => navigate("/profile/edit")}
-            
           >
             Editar Perfil
           </Button>
@@ -73,14 +139,14 @@ function ProfileView() {
             width="50%"
             borderRadius="6px"
             onClick={() => navigate("/dashboard")}
-            
           >
             Dashboard
           </Button>
         </div>
       </main>
-      <Footer/>
+      <Footer />
     </div>
+
   );
 }
 
