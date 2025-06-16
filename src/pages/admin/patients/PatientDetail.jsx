@@ -1,59 +1,48 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import Button from "../../../components/Button";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
+import PacienteService from "../../../services/PacienteService";
+import ConsultaService from "../../../services/ConsultaService";
 import "./PatientDetail.css";
 import { ArrowLeft, Calendar, UserX, UserCheck } from "lucide-react";
-
-const patientData = {
-  nome: "Ana Paula Souza",
-  cpf: "123.456.789-00",
-  email: "ana@email.com",
-  telefone: "(11) 91234-5678",
-  status: "Ativo",
-  dataCadastro: "25/04/2023",
-};
-
-// const appointmentsData = [
-//   {
-//     id: 1,
-//     data: "10/06/2025",
-//     horario: "14:00",
-//     medico: "Dr. João Almeida",
-//     status: "Agendada",
-//   },
-//   {
-//     id: 2,
-//     data: "10/06/2025",
-//     horario: "14:00",
-//     medico: "Dr. teste",
-//     status: "Agendada",
-//   },
-//   {
-//     id: 3,
-//     data: "09/06/2025",
-//     horario: "10:00",
-//     medico: "Dr. Maria",
-//     status: "Realizada",
-//   },
-//   {
-//     id: 4,
-//     data: "08/06/2025",
-//     horario: "09:00",
-//     medico: "Dr. Pedro",
-//     status: "Cancelada",
-//   },
-// ];
+import { mascararCPF, formatarTelefone, formatarData } from "../../../utils/formatters";
 
 export default function PatientDetailsPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("Agendadas");
-  const [patientStatus, setPatientStatus] = useState(patientData.status);
+  const { id } = useParams();
 
+  const [patientData, setPatientData] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [activeTab, setActiveTab] = useState("Agendadas");
+  const [patientStatus, setPatientStatus] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [pendingAction, setPendingAction] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      setErro("");
+      try {
+        const paciente = await PacienteService.buscarPorId(id);
+        setPatientData(paciente);
+        setPatientStatus(paciente.ativo ? "Ativo" : "Inativo");
+        // Buscar consultas do paciente
+        const consultas = await ConsultaService.listarPorPaciente(id);
+        setAppointments(consultas);
+      } catch (err) {
+        setErro("Erro ao buscar dados do paciente.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [id]);
+
   const statusToggleIcon = patientStatus === "Ativo" ? <UserX /> : <UserCheck />;
 
   const handleTogglePatientStatus = () => {
@@ -62,15 +51,10 @@ export default function PatientDetailsPage() {
   };
 
   const handleConfirmAction = () => {
-    if (pendingAction === "desativar") {
-      setPatientStatus("Inativo");
-      // alert("Paciente desativado!");
-    } else {
-      setPatientStatus("Ativo");
-      // alert("Paciente ativado!");
-    }
+    setPatientStatus(patientStatus === "Ativo" ? "Inativo" : "Ativo");
     setShowModal(false);
     setPendingAction(null);
+    // Aqui você pode chamar PacienteService.desativar/ativar se quiser atualizar no back-end
   };
 
   const handleCancelAction = () => {
@@ -86,20 +70,18 @@ export default function PatientDetailsPage() {
     alert("Agendar Nova Consulta");
   };
 
-  // NOVO: Badge dinâmico para status do paciente
   const statusBadgeClass =
     "status-badge " +
     (patientStatus === "Ativo" ? "status-active" : "status-inactive");
 
-  // NOVO: Filtragem das consultas por aba
-  // const filteredAppointments = appointmentsData.filter((appointment) => {
-  //   if (activeTab === "Agendadas") return appointment.status === "Agendada";
-  //   if (activeTab === "Realizadas") return appointment.status === "Realizada";
-  //   if (activeTab === "Canceladas") return appointment.status === "Cancelada";
-  //   return true;
-  // });
+  // Filtra as consultas conforme a aba ativa
+  const filteredAppointments = appointments.filter((appointment) => {
+    if (activeTab === "Agendadas") return appointment.status === "Agendada";
+    if (activeTab === "Realizadas") return appointment.status === "Realizada";
+    if (activeTab === "Canceladas") return appointment.status === "Cancelada";
+    return true;
+  });
 
-  // NOVO: Badge de status da consulta (opcional, para customizar cor)
   const getStatusBadgeClass = (status) => {
     if (status === "Agendada") return "status-badge-table status-scheduled";
     if (status === "Realizada") return "status-badge-table status-done";
@@ -107,14 +89,34 @@ export default function PatientDetailsPage() {
     return "status-badge-table";
   };
 
+  if (loading) {
+    return (
+      <div className="patient-details-container">
+        <Header />
+        <main className="main-content">
+          <p style={{ textAlign: "center", margin: 40 }}>Carregando...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (erro || !patientData) {
+    return (
+      <div className="patient-details-container">
+        <Header />
+        <main className="main-content">
+          <p style={{ textAlign: "center", margin: 40, color: "#b00" }}>{erro || "Paciente não encontrado."}</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="patient-details-container">
-      {/* Header */}
       <Header />
-
-      {/* Main Content */}
       <main className="main-content">
-        {/* Page Title and Back Button */}
         <div className="page-header">
           <h2 className="page-title">Detalhes do Paciente</h2>
           <Button
@@ -142,7 +144,7 @@ export default function PatientDetailsPage() {
 
         {/* Registration Date */}
         <p className="registration-date">
-          Cadastrado desde: {patientData.dataCadastro}
+          Cadastrado desde: {formatarData(patientData.dataCriacao) || "-"}
         </p>
 
         {/* Patient Info Card */}
@@ -159,7 +161,7 @@ export default function PatientDetailsPage() {
             </div>
             <div className="info-item">
               <span className="info-label">CPF:</span>
-              <span className="info-value">{patientData.cpf}</span>
+              <span className="info-value">{mascararCPF(patientData.cpf)}</span>
             </div>
             <div className="info-item">
               <span className="info-label">E-mail:</span>
@@ -167,7 +169,7 @@ export default function PatientDetailsPage() {
             </div>
             <div className="info-item">
               <span className="info-label">Telefone:</span>
-              <span className="info-value">{patientData.telefone}</span>
+              <span className="info-value">{formatarTelefone(patientData.telefone)}</span>
             </div>
           </div>
         </div>

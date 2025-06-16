@@ -1,60 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
 import { ArrowLeft, Eye } from "lucide-react";
+import PacienteService from "../../../services/PacienteService";
+import { mascararCPF, formatarTelefone } from "../../../utils/formatters";
 
 import "./style.css";
-
-// Exemplo de dados mockados
-const pacientesMock = [
-  {
-    id: 1,
-    nome: "Ana Paula Souza",
-    cpf: "123.456.789-00",
-    email: "ana@email.com",
-    telefone: "(11) 91234-5678",
-    status: "Ativo",
-  },
-  {
-    id: 2,
-    nome: "Carlos Silva",
-    cpf: "987.456.321-00",
-    email: "carlos@email.com",
-    telefone: "(21) 99876-5432",
-    status: "Ativo",
-  },
-  {
-    id: 3,
-    nome: "Carlos Silva",
-    cpf: "987.456.321-00",
-    email: "carlos@email.com",
-    telefone: "(21) 99876-5432",
-    status: "Inativo",
-  },
-];
-
-function mascararCPF(cpf) {
-  // Exibe apenas os 3 do meio
-  return cpf.replace(/^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})$/, "***.$2.***");
-}
 
 function AdminPatients() {
   const navigate = useNavigate();
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState("");
+  const [pacientes, setPacientes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState("");
 
-  const pacientesFiltrados = pacientesMock.filter((p) => {
+  useEffect(() => {
+    async function fetchPacientes() {
+      setLoading(true);
+      setErro("");
+      try {
+        const data = await PacienteService.listarTodos();
+        setPacientes(data);
+      } catch (err) {
+        setErro("Erro ao buscar pacientes.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPacientes();
+  }, []);
+
+  const pacientesFiltrados = pacientes.filter((p) => {
     const termo = busca.toLowerCase();
-    const statusOK = filtro ? p.status.toLowerCase() === filtro : true;
+    const statusOK = filtro ? p.ativo === (filtro === "ativo") : true;
     return (
       statusOK &&
       (p.nome.toLowerCase().includes(termo) ||
-        p.cpf.includes(termo) ||
+        p.cpf?.includes(termo) ||
         p.email.toLowerCase().includes(termo) ||
-        p.telefone.includes(termo))
+        p.telefone?.includes(termo))
     );
   });
 
@@ -64,7 +52,6 @@ function AdminPatients() {
       <main className="admin-patients-main">
         <div className="admin-patients-header">
           <h2 className="admin-patient-header-title">Pacientes Cadastrados</h2>
-
           <Button
             background="#fff"
             color="#374151"
@@ -100,59 +87,62 @@ function AdminPatients() {
           </select>
         </div>
         <div className="admin-patients-table-container">
-          <table className="admin-patients-table">
-            <thead>
-              <tr>
-                <th>Nome Completo</th>
-                <th>CPF</th>
-                <th>E-mail</th>
-                <th>Telefone</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pacientesFiltrados.length === 0 ? (
+          {loading ? (
+            <div style={{ padding: 32, textAlign: "center" }}>Carregando...</div>
+          ) : erro ? (
+            <div style={{ padding: 32, color: "#b00", textAlign: "center" }}>{erro}</div>
+          ) : (
+            <table className="admin-patients-table">
+              <thead>
                 <tr>
-                  <td
-                    colSpan={6}
-                    style={{ textAlign: "center", color: "#888" }}
-                  >
-                    Nenhum paciente encontrado.
-                  </td>
+                  <th>Nome Completo</th>
+                  <th>CPF</th>
+                  <th>E-mail</th>
+                  <th>Telefone</th>
+                  <th>Status</th>
+                  <th>Ações</th>
                 </tr>
-              ) : (
-                pacientesFiltrados.map((p, idx) => (
-                  <tr
-                    key={p.id}
-                    className={idx % 2 === 0 ? "linha-par" : "linha-impar"}
-                  >
-                    <td>{p.nome}</td>
-                    <td>{mascararCPF(p.cpf)}</td>
-                    <td>{p.email}</td>
-                    <td>{p.telefone}</td>
-                    <td>{p.status}</td>
-                    <td>
-                      <Button
-                        background="#fff"
-                        color="#4ecdc4"
-                        fontSize="0.90rem"
-                        border="1px solid #4ecdc4"
-                        width="100%"
-                        borderRadius="7px"
-                        hoverBackground="#e6f9f8"
-                        icon={<Eye size={15}/>}
-                        style={{padding: "0.4rem 0"}}
-                        onClick={() => navigate(`/admin/patients/${p.id}`)}
-                      >
-                        Ver Detalhes
-                      </Button>
+              </thead>
+              <tbody>
+                {pacientesFiltrados.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} style={{ textAlign: "center", color: "#888" }}>
+                      Nenhum paciente encontrado.
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  pacientesFiltrados.map((p, idx) => (
+                    <tr
+                      key={p.id}
+                      className={idx % 2 === 0 ? "linha-par" : "linha-impar"}
+                    >
+                      <td>{p.nome}</td>
+                      <td>{mascararCPF(p.cpf)}</td>
+                      <td>{p.email}</td>
+                      <td>{formatarTelefone(p.telefone)}</td>
+                      <td>{p.ativo ? "Ativo" : "Inativo"}</td>
+                      <td>
+                        <Button
+                          background="#fff"
+                          color="#4ecdc4"
+                          fontSize="0.90rem"
+                          border="1px solid #4ecdc4"
+                          width="100%"
+                          borderRadius="7px"
+                          hoverBackground="#e6f9f8"
+                          icon={<Eye size={15}/>}
+                          style={{padding: "0.4rem 0"}}
+                          onClick={() => navigate(`/admin/patients/${p.id}`)}
+                        >
+                          Ver Detalhes
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       </main>
       <Footer />

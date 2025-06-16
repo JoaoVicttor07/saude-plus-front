@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   Calendar,
@@ -15,57 +15,80 @@ import {
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
+import MedicoService from "../../../services/MedicoService";
+import ConsultaService from "../../../services/ConsultaService";
+// import { formatarTelefone } from "../../../utils/formatters";
 import "./DoctorDetail.css";
-
-const mockDoctor = {
-  id: "1",
-  name: "Dr. João Almeida",
-  crm: "123456-SP",
-  specialty: "Cardiologia",
-  phone: "(11) 91234-5678",
-  address: "Não sei o que vai ser aqui, 123 - Cafundó do Judas/BA",
-  status: "Inactive",
-  registrationDate: "10/01/2024",
-};
-
-const mockAppointments = [
-  {
-    id: "1",
-    date: "12/06/2025",
-    time: "14:00",
-    patient: "Ana Paula Souza",
-    location: "Clínica Central",
-    status: "pending",
-  },
-  {
-    id: "2",
-    date: "11/06/2025",
-    time: "10:30",
-    patient: "Carlos Silva",
-    location: "Clínica Norte",
-    status: "completed",
-  },
-  {
-    id: "3",
-    date: "10/06/2025",
-    time: "16:00",
-    patient: "Maria Santos",
-    location: "Clínica Sul",
-    status: "cancelled",
-  },
-];
 
 export default function DoctorDetails() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("pending");
+  const { id } = useParams();
 
-  const pendingAppointments = mockAppointments.filter(
+  const [doctor, setDoctor] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [activeTab, setActiveTab] = useState("pending");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchDoctorAndAppointments() {
+      setIsLoading(true);
+      try {
+        const medico = await MedicoService.buscarPorId(id);
+        setDoctor(medico);
+
+        const consultas = await ConsultaService.listarPorMedico(id);
+        // Mapeia status do backend para os tabs
+        const statusMap = {
+          AGENDADA: "pending",
+          REALIZADA: "completed",
+          DESMARCADA: "cancelled",
+        };
+        const mapped = (consultas || []).map((c) => ({
+          id: c.id,
+          date: c.inicio ? new Date(c.inicio).toLocaleDateString("pt-BR") : "-",
+          time: c.inicio
+            ? new Date(c.inicio).toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "-",
+          patient: c.paciente?.nome || "-",
+          location: c.local || "-",
+          status: statusMap[c.status] || "pending",
+        }));
+        setAppointments(mapped);
+      } catch (error) {
+        setDoctor(null);
+        setAppointments([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchDoctorAndAppointments();
+  }, [id]);
+
+  function formatarEndereco(endereco) {
+    if (!endereco || typeof endereco !== "object") return "-";
+    const { logradouro, numero, bairro, cidade, estado, cep } = endereco;
+    return [
+      logradouro,
+      numero,
+      bairro,
+      cidade,
+      estado,
+      cep ? `CEP: ${cep}` : null,
+    ]
+      .filter(Boolean)
+      .join(", ");
+  }
+
+  const pendingAppointments = appointments.filter(
     (apt) => apt.status === "pending"
   );
-  const completedAppointments = mockAppointments.filter(
+  const completedAppointments = appointments.filter(
     (apt) => apt.status === "completed"
   );
-  const cancelledAppointments = mockAppointments.filter(
+  const cancelledAppointments = appointments.filter(
     (apt) => apt.status === "cancelled"
   );
 
@@ -91,56 +114,94 @@ export default function DoctorDetails() {
           </tr>
         </thead>
         <tbody>
-          {appointments.map((appointment) => (
-            <tr key={appointment.id}>
-              <td>{appointment.date}</td>
-              <td>{appointment.time}</td>
-              <td>{appointment.patient}</td>
-              <td>{appointment.location}</td>
-              <td>
-                <div className="action-buttons">
-                  <Button
-                  background="#fff"
-                  hoverBackground="#e6f9f8"
-                  color="#4ecdc4"
-                  border="1px solid #4ecdc4"
-                  fontSize="0.75rem"
-                  icon={<Eye size={15}/>}
-                  style={{padding: "0.5rem 1rem"}}
-                  >
-                    Ver detalhes
-                    </Button>
-                  {appointment.status === "pending" && (
-                    <>
-                      <Button
-                      background="#ffc107"
-                      fontSize="0.75rem"
-                      hoverBackground="#e8a800"
-                      icon={<RotateCcw size={15}/>}
-                      style={{padding: "0.5rem 1rem"}}
-                      >
-                        Remarcar
-                      </Button>
-
-                      <Button
-                      background="#dc3545"
-                      hoverBackground="#c82333"
-                      fontSize="0.75rem"
-                      icon={<X size={15}/>}
-                      style={{padding: "0.5rem 1rem"}}
-                      >
-                        Cancelar
-                      </Button>
-                    </>
-                  )}
-                </div>
+          {appointments.length === 0 ? (
+            <tr>
+              <td colSpan={5} style={{ textAlign: "center", color: "#888" }}>
+                Nenhuma consulta encontrada.
               </td>
             </tr>
-          ))}
+          ) : (
+            appointments.map((appointment) => (
+              <tr key={appointment.id}>
+                <td>{appointment.date}</td>
+                <td>{appointment.time}</td>
+                <td>{appointment.patient}</td>
+                <td>{appointment.location}</td>
+                <td>
+                  <div className="action-buttons">
+                    <Button
+                      background="#fff"
+                      hoverBackground="#e6f9f8"
+                      color="#4ecdc4"
+                      border="1px solid #4ecdc4"
+                      fontSize="0.75rem"
+                      icon={<Eye size={15} />}
+                      style={{ padding: "0.5rem 1rem" }}
+                      disabled
+                    >
+                      Ver detalhes
+                    </Button>
+                    {appointment.status === "pending" && (
+                      <>
+                        <Button
+                          background="#ffc107"
+                          fontSize="0.75rem"
+                          hoverBackground="#e8a800"
+                          icon={<RotateCcw size={15} />}
+                          style={{ padding: "0.5rem 1rem" }}
+                          disabled
+                        >
+                          Remarcar
+                        </Button>
+                        <Button
+                          background="#dc3545"
+                          hoverBackground="#c82333"
+                          fontSize="0.75rem"
+                          icon={<X size={15} />}
+                          style={{ padding: "0.5rem 1rem" }}
+                          disabled
+                        >
+                          Cancelar
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
   );
+
+  if (isLoading) {
+    return (
+      <div className="doctor-details-container">
+        <Header />
+        <div className="main--content">
+          <div style={{ textAlign: "center", margin: "3rem 0" }}>
+            Carregando dados do médico...
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!doctor) {
+    return (
+      <div className="doctor-details-container">
+        <Header />
+        <div className="main--content">
+          <div style={{ textAlign: "center", margin: "3rem 0", color: "#c00" }}>
+            Médico não encontrado.
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="doctor-details-container">
@@ -151,7 +212,7 @@ export default function DoctorDetails() {
         {/* Page Title and Doctor Name */}
         <div className="page-title">
           <h2 className="subtitle">Detalhes do médico</h2>
-          <h3 className="doctor-name">{mockDoctor.name}</h3>
+          <h3 className="doctor-name">{doctor.nome}</h3>
         </div>
 
         {/* Action Buttons */}
@@ -170,7 +231,7 @@ export default function DoctorDetails() {
             Voltar à Lista
           </Button>
 
-          <Button
+          {/* <Button
             background="#3b9b96"
             fontWeight={600}
             width="180px"
@@ -179,11 +240,11 @@ export default function DoctorDetails() {
             icon={<Calendar size={15} />}
           >
             Agendar Consulta
-          </Button>
+          </Button> */}
         </div>
 
         {/* Doctor Details Card */}
-        <div className="card">
+        <div className="card---">
           <div className="card-content">
             <div className="doctor-info-grid">
               <div className="info-column">
@@ -191,21 +252,25 @@ export default function DoctorDetails() {
                   <label className="info-label">Nome:</label>
                   <p className="info-value">
                     <User className="info-icon" />
-                    {mockDoctor.name}
+                    {doctor.nome}
                   </p>
                 </div>
                 <div className="info-item">
                   <label className="info-label">Telefone:</label>
                   <p className="info-value">
                     <Phone className="info-icon" />
-                    {mockDoctor.phone}
+                    {doctor.telefone}
                   </p>
                 </div>
                 <div className="info-item">
                   <label className="info-label">Data de Cadastro:</label>
                   <p className="info-value">
                     <Calendar className="info-icon" />
-                    {mockDoctor.registrationDate}
+                    {doctor.dataCadastro
+                      ? new Date(doctor.dataCadastro).toLocaleDateString(
+                          "pt-BR"
+                        )
+                      : "-"}
                   </p>
                 </div>
               </div>
@@ -215,14 +280,14 @@ export default function DoctorDetails() {
                   <label className="info-label">CRM:</label>
                   <p className="info-value">
                     <CreditCard className="info-icon" />
-                    {mockDoctor.crm}
+                    {doctor.crm}
                   </p>
                 </div>
                 <div className="info-item">
                   <label className="info-label">Endereço:</label>
                   <p className="info-value">
                     <MapPin className="info-icon" />
-                    {mockDoctor.address}
+                    {formatarEndereco(doctor.endereco)}
                   </p>
                 </div>
               </div>
@@ -232,13 +297,13 @@ export default function DoctorDetails() {
                   <label className="info-label">Especialidade:</label>
                   <p className="info-value">
                     <Stethoscope className="info-icon" />
-                    {mockDoctor.specialty}
+                    {doctor.especialidade?.nome || "-"}
                   </p>
                 </div>
                 <div className="info-item">
                   <label className="info-label">Status:</label>
                   <div className="status-container">
-                    {getStatusBadge(mockDoctor.status)}
+                    {getStatusBadge(doctor.ativo)}
                   </div>
                 </div>
               </div>
@@ -247,7 +312,7 @@ export default function DoctorDetails() {
         </div>
 
         {/* Appointments Section */}
-        <div className="card">
+        <div className="card---">
           <div className="tabsContainer">
             <div className="tabs-header">
               <button

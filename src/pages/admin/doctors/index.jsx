@@ -7,6 +7,7 @@ import Footer from "../../../components/footer";
 import MedicoService from "../../../services/MedicoService";
 import "./style.css";
 import { ArrowLeft, Eye } from "lucide-react";
+import { formatarTelefone } from "../../../utils/formatters"; // Importa a função
 
 function AdminDoctors() {
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ function AdminDoctors() {
                     <td>{m.nome}</td>
                     <td>{m.crm}</td>
                     <td>{m.especialidade?.nome || "-"}</td>
-                    <td>{m.telefone || "-"}</td>
+                    <td>{formatarTelefone(m.telefone) || "-"}</td>
                     <td>{m.ativo ? "Ativo" : "Inativo"}</td>
                     <td>
                       <Button
