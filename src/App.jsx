@@ -13,6 +13,8 @@ import ProfileView from "./pages/patient/profileView";
 
 // Médico
 import DoctorDashboard from "./pages/doctor/dashboard";
+import DoctorAppointmentsList from "./pages/doctor/appointmentList";
+import DoctorAppointmentDetail from "./pages/doctor/appointmentDetail"; 
 import DoctorProfile from "./pages/doctor/profile";
 import DoctorCalendar from "./pages/doctor/calendar";
 
@@ -52,6 +54,8 @@ function App() {
       {/* Rotas Médico Protegidas */}
       <Route element={<ProtectedRoute allowedRoles={[ROLES.MEDICO]} />}>
         <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+        <Route path="/doctor/appointments" element={<DoctorAppointmentsList />} />
+        <Route path="/doctor/appointment-details/:id" element={<DoctorAppointmentDetail />} />
         <Route path="/doctor/profile" element={<DoctorProfile />} />
         <Route path="/doctor/calendar" element={<DoctorCalendar />} />
       </Route>
@@ -70,10 +74,10 @@ function App() {
         />
       </Route>
 
-      {/* Adicione uma rota para "Não Autorizado" se desejar */}
+      {/**/}
       {/* <Route path="/unauthorized" element={<UnauthorizedPage />} /> */}
 
-      {/* Rota Catch-all para páginas não encontradas (opcional) */}
+      {/**/}
       {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Routes>
   );

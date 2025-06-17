@@ -24,15 +24,13 @@ const CalendarPage = () => {
       setLoading(true);
       setError(null);
       try {
-        // Aqui você precisa passar o id do médico logado, 
-        // ou adaptar para pegar do contexto ou state global
-        const medicoId = "me"; // se seu backend suporta /consultas/medico/me ou algo assim
+        const medicoId = "me";
         const data = await ConsultaService.listarPorMedico(medicoId);
 
         const formatted = data.map((c) => ({
           ...c,
-          date: new Date(c.dataConsulta), // adaptar nome do campo conforme seu backend
-          id: c.idConsulta || c.id, // ajustar conforme backend
+          date: new Date(c.dataConsulta),
+          id: c.idConsulta || c.id,
         }));
 
         setConsultations(formatted);

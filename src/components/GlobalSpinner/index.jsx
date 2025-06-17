@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css'; // Crie este arquivo CSS para estilizar o spinner
+import './style.css';
 
 const GlobalSpinner = () => {
   return (

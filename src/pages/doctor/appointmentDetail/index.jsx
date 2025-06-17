@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { FaSpinner, FaExclamationCircle, FaCalendarAlt } from "react-icons/fa";
 import Header from "../../../components/header";
 import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
-import AppointmentService from "../../../services/AppointmentService";
-import "./style.css";
+import ConsultaService from "../../../services/ConsultaService";
+import "../../patient/appointmentDetail/style.css";
 
 const formatDateTime = (isoString) => {
   if (!isoString) return { date: "Data inválida", time: "Hora inválida" };
@@ -21,32 +21,27 @@ const formatDateTime = (isoString) => {
     });
     return { date, time };
   } catch (e) {
-    console.error("Erro ao formatar data:", e, "Valor original:", isoString);
     return { date: "Erro na data", time: "Erro na hora" };
   }
 };
 
-function AppointmentDetail() {
+function DoctorAppointmentDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
 
   const [consulta, setConsulta] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isCanceling, setIsCanceling] = useState(false);
-  const [cancelSuccess, setCancelSuccess] = useState(false);
 
   useEffect(() => {
     if (id) {
       const fetchAppointmentDetail = async () => {
         setIsLoading(true);
         setError(null);
-        setCancelSuccess(false);
         try {
-          const data = await AppointmentService.getAppointmentById(id);
+          const data = await ConsultaService.buscarPorId(id);
           setConsulta(data);
         } catch (err) {
-          console.error("Erro ao buscar detalhes da consulta:", err);
           setError("Não foi possível carregar os detalhes desta consulta.");
           setConsulta(null);
         } finally {
@@ -59,34 +54,6 @@ function AppointmentDetail() {
       setIsLoading(false);
     }
   }, [id]);
-
-  const handleDesmarcarConsulta = async () => {
-    if (!consulta || consulta.status !== "AGENDADA") return;
-
-    const confirmDesmarcar = window.confirm(
-      "Tem certeza que deseja desmarcar esta consulta?"
-    );
-
-    if (confirmDesmarcar) {
-      setIsCanceling(true);
-      setError(null);
-      try {
-        const updatedConsulta =
-          await AppointmentService.unmarkAppointmentByPatient(consulta.id);
-        setConsulta(updatedConsulta);
-        setCancelSuccess(true);
-      } catch (err) {
-        console.error("Erro ao desmarcar consulta:", err);
-        setError(
-          err.response?.data?.message ||
-            "Falha ao desmarcar a consulta. Tente novamente."
-        );
-        setCancelSuccess(false);
-      } finally {
-        setIsCanceling(false);
-      }
-    }
-  };
 
   if (isLoading) {
     return (
@@ -116,8 +83,8 @@ function AppointmentDetail() {
           <h2 className="dashboard-title">Erro ao Carregar Consulta</h2>
           <p>{error}</p>
           <div className="dashboard-actions">
-            <Button onClick={() => navigate("/dashboard")}>
-              Voltar ao Dashboard
+            <Button onClick={() => navigate("/doctor/appointments")}>
+              Voltar ao Histórico
             </Button>
           </div>
         </main>
@@ -140,8 +107,8 @@ function AppointmentDetail() {
             </p>
           </div>
           <div className="dashboard-actions">
-            <Button onClick={() => navigate("/dashboard")}>
-              Voltar ao Dashboard
+            <Button onClick={() => navigate("/doctor/appointments")}>
+              Voltar ao Histórico
             </Button>
           </div>
         </main>
@@ -153,7 +120,6 @@ function AppointmentDetail() {
   const { date: formattedDate, time: formattedTime } = formatDateTime(
     consulta.inicio
   );
-  const podeCancelar = consulta.status === "AGENDADA";
 
   return (
     <div className="dashboard-bg">
@@ -170,25 +136,13 @@ function AppointmentDetail() {
             <span>{formattedTime}</span>
           </div>
           <div className="appointment-detail-row">
-            <span className="label">Médico:</span>
-            <span>{consulta.medico?.nome || "N/A"}</span>
+            <span className="label">Paciente:</span>
+            <span>{consulta.paciente?.nome || "N/A"}</span>
           </div>
           <div className="appointment-detail-row">
             <span className="label">Especialidade:</span>
             <span>{consulta.medico?.especialidade?.nome || "N/A"}</span>
           </div>
-          <div className="appointment-detail-row">
-            <span className="label">Local:</span>
-            <span>{consulta.medico?.clinica?.nomeFantasia || "N/A"}</span>
-          </div>
-          {/* {consulta.medico?.clinica?.endereco && (
-            <div className="appointment-detail-row">
-              <span className="label">Endereço da Clínica:</span>
-              <span>
-                {`${consulta.medico.clinica.endereco.logradouro}, ${consulta.medico.clinica.endereco.numero} - ${consulta.medico.clinica.endereco.bairro}, ${consulta.medico.clinica.endereco.cidade} - ${consulta.medico.clinica.endereco.estado}, CEP: ${consulta.medico.clinica.endereco.cep}`}
-              </span>
-            </div>
-          )} */}
           <div className="appointment-detail-row">
             <span className="label">Status:</span>
             <span
@@ -197,12 +151,6 @@ function AppointmentDetail() {
               {consulta.status || "N/A"}
             </span>
           </div>
-          {/* {consulta.diagnostico && (
-            <div className="appointment-detail-row">
-              <span className="label">Motivo/Diagnóstico:</span>
-              <span>{consulta.diagnostico}</span>
-            </div>
-          )} */}
           {consulta.observacao && (
             <div className="appointment-detail-row">
               <span className="label">Observações/Motivo Cancel.:</span>
@@ -215,47 +163,8 @@ function AppointmentDetail() {
               </span>
             </div>
           )}
-          {/**/}
-          {error && isCanceling && (
-            <p
-              className="error-message"
-              style={{ color: "#b00", marginTop: "10px" }}
-            >
-              {error}
-            </p>
-          )}
-
-          {cancelSuccess && (
-            <div
-              className="success-message"
-              style={{ color: "green", textAlign: "center", margin: "15px 0" }}
-            >
-              Consulta cancelada com sucesso!
-            </div>
-          )}
         </div>
         <div className="dashboard-actions">
-          {podeCancelar && !cancelSuccess && (
-            <Button
-              color="#b00"
-              fontWeight={600}
-              hoverBackground="#ffcccc"
-              hoverColor="#900"
-              background="#ffeaea"
-              border="1px solid #b00"
-              height="45px"
-              onClick={handleDesmarcarConsulta}
-              disabled={isCanceling}
-              style={{ marginBottom: "15px" }}
-            >
-              {isCanceling ? (
-                <FaSpinner className="fa-spin" />
-              ) : (
-                "Cancelar consulta"
-              )}
-            </Button>
-          )}
-
           <Button
             background="#fff"
             color="#2c7a7b"
@@ -263,9 +172,9 @@ function AppointmentDetail() {
             hoverBackground="#F0F8F8"
             border="2px solid #2c7a7b"
             height="45px"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/doctor/appointments")}
           >
-            Voltar ao Dashboard
+            Voltar ao Histórico
           </Button>
         </div>
       </main>
@@ -274,4 +183,4 @@ function AppointmentDetail() {
   );
 }
 
-export default AppointmentDetail;
+export default DoctorAppointmentDetail;

@@ -1,4 +1,4 @@
-@import '../dashboard/style.css';
+@import "../dashboard/style.css";
 
 .status-label {
   margin-left: 12px;
@@ -14,7 +14,7 @@
   color: #219150;
 }
 
-.status-cancelada {
+.status-desmarcada {
   background: #ffeaea;
   color: #b00;
 }
@@ -29,6 +29,33 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 4px;
+}
+
+.dashboard-appointments-list::-webkit-scrollbar {
+  width: 8px;
+  /* largura da barra vertical */
+  height: 8px;
+  /* altura da barra horizontal (caso tenha) */
+}
+
+.dashboard-appointments-list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  /* cinza claríssimo */
+  border-radius: 4px;
+}
+
+.dashboard-appointments-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.dashboard-appointments-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-appointments-list::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .dashboard-action-link {

@@ -6,24 +6,26 @@ import MedicoService from "../../../services/MedicoService";
 import Header from "../../../components/header";
 import Footer from "../../../components/footer";
 
-const outrosTitulos = ["Drx.", "Dre.", "Dre@", "Dr*", "D."];
-
 export default function DoctorProfile() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
   const [doctor, setDoctor] = useState(null);
-  const [titulo, setTitulo] = useState("Dr.");
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMsg, setSuccessMsg] = useState(null);
 
   useEffect(() => {
     async function fetchDoctor() {
       if (!user?.id) return;
       setLoading(true);
+      setError(null);
       try {
         const data = await MedicoService.buscarPorId(user.id);
         setDoctor(data);
       } catch (error) {
+        setError("Não foi possível carregar os dados do médico.");
         setDoctor(null);
       } finally {
         setLoading(false);
@@ -32,38 +34,41 @@ export default function DoctorProfile() {
     fetchDoctor();
   }, [user]);
 
-  useEffect(() => {
-    if (!doctor) return;
-    if (doctor.genero === "Masculino") setTitulo("Dr.");
-    else if (doctor.genero === "Feminino") setTitulo("Dra.");
-    else {
-      const random =
-        outrosTitulos[Math.floor(Math.random() * outrosTitulos.length)];
-      setTitulo(random);
-    }
-  }, [doctor]);
-
   function handleChange(e) {
     setDoctor({ ...doctor, [e.target.name]: e.target.value });
   }
 
   function handleEdit() {
     setIsEditing(true);
+    setSuccessMsg(null);
+    setError(null);
   }
 
-  function handleSave() {
-    setIsEditing(false);
-    // Aqui você pode adicionar lógica para salvar no backend, se desejar
+  async function handleSave() {
+    setSaving(true);
+    setError(null);
+    setSuccessMsg(null);
+    try {
+      const { nome, email, telefone, crm } = doctor;
+      const updated = await MedicoService.atualizar(doctor.id, {
+        nome,
+        email,
+        telefone,
+        crm,
+      });
+      setDoctor(updated);
+      setIsEditing(false);
+      setSuccessMsg("Dados atualizados com sucesso!");
+    } catch (err) {
+      setError("Erro ao atualizar dados. Tente novamente.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   function getInitials(nome) {
     if (!nome) return "";
-    const ignorar = ["dr", "dra", "dr.", "dra."];
-    const nomes = nome
-      .trim()
-      .split(" ")
-      .filter((n) => !ignorar.includes(n.toLowerCase()));
-    if (nomes.length === 0) return "";
+    const nomes = nome.trim().split(" ");
     if (nomes.length === 1) return nomes[0][0].toUpperCase();
     return (nomes[0][0] + nomes[nomes.length - 1][0]).toUpperCase();
   }
@@ -71,15 +76,10 @@ export default function DoctorProfile() {
   if (loading) {
     return (
       <div className="doctor-profile-bg">
-        <header className="doctor-header">
-          <h1 className="doctor-logo">Saúde+</h1>
-          <button className="doctor-exit-btn">Sair</button>
-        </header>
+        <Header />
         <main>
           <h2 className="doctor-profile-title">Perfil do Médico</h2>
-          <div style={{ textAlign: "center", margin: "2rem" }}>
-            Carregando...
-          </div>
+          <div className="doctor-profile-loading">Carregando...</div>
         </main>
       </div>
     );
@@ -88,14 +88,11 @@ export default function DoctorProfile() {
   if (!doctor) {
     return (
       <div className="doctor-profile-bg">
-        <header className="doctor-header">
-          <h1 className="doctor-logo">Saúde+</h1>
-          <button className="doctor-exit-btn">Sair</button>
-        </header>
+        <Header />
         <main>
           <h2 className="doctor-profile-title">Perfil do Médico</h2>
-          <div style={{ textAlign: "center", margin: "2rem", color: "#c00" }}>
-            Não foi possível carregar os dados do médico.
+          <div className="doctor-profile-error">
+            {error || "Não foi possível carregar os dados do médico."}
           </div>
         </main>
       </div>
@@ -104,148 +101,125 @@ export default function DoctorProfile() {
 
   return (
     <div className="doctor-profile-bg">
-      <Header/>
-
+      <Header />
       <main>
-        <h2 className="doctor-profile-title">Perfil do Médico</h2>
-        <div className="doctor-profile-card">
-          <div className="doctor-profile-card-top">
-            <div className="doctor-avatar">
-              <span>{getInitials(doctor.nome)}</span>
+        <div className="doctor-profile-modern-card">
+          <div className="doctor-profile-avatar-block">
+            <div className="doctor-profile-avatar">
+              {getInitials(doctor.nome)}
             </div>
-            <span className="doctor-specialty-badge">
-              {doctor.especialidade?.nome || doctor.especialidade || ""}
-            </span>
+            <div className="doctor-profile-info">
+              <span className="doctor-profile-name">{doctor.nome}</span>
+              <span className="doctor-profile-specialty">
+                {doctor.especialidade?.nome || doctor.especialidade || ""}
+              </span>
+              <span className="doctor-profile-crm">CRM: {doctor.crm}</span>
+            </div>
           </div>
-          <div className="doctor-profile-card-bottom">
-            <div className="doctor-name-block">
-              {isEditing ? (
-                <>
+          <form
+            className="doctor-profile-form"
+            onSubmit={e => {
+              e.preventDefault();
+              if (isEditing) handleSave();
+            }}
+            autoComplete="off"
+          >
+            <div className="doctor-profile-fields">
+              <div className="doctor-profile-field">
+                <label>Nome</label>
+                {isEditing ? (
                   <input
-                    className="doctor-name"
                     name="nome"
                     value={doctor.nome}
                     onChange={handleChange}
-                  />
-                  <input
-                    className="doctor-crm"
-                    name="crm"
-                    value={doctor.crm}
-                    onChange={handleChange}
-                  />
-                </>
-              ) : (
-                <>
-                  <span className="doctor-name">
-                    {titulo} {doctor.nome}
-                  </span>
-                  <span className="doctor-crm">CRM: {doctor.crm}</span>
-                </>
-              )}
-            </div>
-            <div className="doctor-info-grid">
-              <div className="doctor-info-item">
-                <span className="doctor-info-label">Email</span>
-                {isEditing ? (
-                  <input
-                    className="doctor-info-value"
-                    name="email"
-                    value={doctor.email}
-                    onChange={handleChange}
+                    required
+                    maxLength={80}
                   />
                 ) : (
-                  <span className="doctor-info-value">{doctor.email}</span>
+                  <span>{doctor.nome}</span>
                 )}
               </div>
-              <div className="doctor-info-item">
-                <span className="doctor-info-label">Telefone</span>
+              <div className="doctor-profile-field">
+                <label>Email</label>
                 {isEditing ? (
                   <input
-                    className="doctor-info-value"
+                    name="email"
+                    type="email"
+                    value={doctor.email}
+                    onChange={handleChange}
+                    required
+                  />
+                ) : (
+                  <span>{doctor.email}</span>
+                )}
+              </div>
+              <div className="doctor-profile-field">
+                <label>Telefone</label>
+                {isEditing ? (
+                  <input
                     name="telefone"
                     value={doctor.telefone}
                     onChange={handleChange}
+                    required
                   />
                 ) : (
-                  <span className="doctor-info-value">{doctor.telefone}</span>
+                  <span>{doctor.telefone}</span>
                 )}
               </div>
-              <div className="doctor-info-item">
-                <span className="doctor-info-label">Gênero</span>
-                {isEditing ? (
-                  <select
-                    className="doctor-info-value"
-                    name="genero"
-                    value={doctor.genero}
-                    onChange={handleChange}
-                  >
-                    <option value="Masculino">Masculino</option>
-                    <option value="Feminino">Feminino</option>
-                    <option value="Outro">Outro</option>
-                  </select>
-                ) : (
-                  <span className="doctor-info-value">{doctor.genero}</span>
-                )}
-              </div>
-              <div className="doctor-info-item">
-                <span className="doctor-info-label">CPF</span>
+              <div className="doctor-profile-field">
+                <label>CRM</label>
                 {isEditing ? (
                   <input
-                    className="doctor-info-value"
-                    name="cpf"
-                    value={doctor.cpf}
+                    name="crm"
+                    value={doctor.crm}
                     onChange={handleChange}
+                    required
+                    maxLength={30}
                   />
                 ) : (
-                  <span className="doctor-info-value">{doctor.cpf}</span>
+                  <span>{doctor.crm}</span>
                 )}
               </div>
+              <div className="doctor-profile-field">
+                <label>CPF</label>
+                <span>{doctor.cpf}</span>
+              </div>
             </div>
-            <div
-              className="doctor-profile-actions"
-              style={{
-                display: "flex",
-                gap: "12px",
-                justifyContent: "flex-end",
-              }}
-            >
+            {error && (
+              <div className="doctor-profile-error">{error}</div>
+            )}
+            {successMsg && (
+              <div className="doctor-profile-success">{successMsg}</div>
+            )}
+            <div className="doctor-profile-btns">
               {!isEditing && (
-                <button className="doctor-edit-btn" onClick={handleEdit}>
+                <button
+                  type="button"
+                  className="doctor-profile-btn edit"
+                  onClick={handleEdit}
+                >
                   Editar
                 </button>
               )}
               <button
-                className="doctor-save-btn"
-                onClick={handleSave}
-                disabled={!isEditing}
-                style={{
-                  opacity: isEditing ? 1 : 0.6,
-                  cursor: isEditing ? "pointer" : "not-allowed",
-                }}
+                type="submit"
+                className="doctor-profile-btn save"
+                disabled={!isEditing || saving}
               >
-                Salvar
+                {saving ? "Salvando..." : "Salvar"}
+              </button>
+              <button
+                type="button"
+                className="doctor-profile-btn back"
+                onClick={() => navigate(-1)}
+              >
+                Voltar
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </main>
-
-      {/* Botão Voltar alinhado à direita */}
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "flex-end",
-          margin: "20px 0 0 0",
-        }}
-      >
-        <button className="btn-sair" onClick={() => navigate(-1)}>
-          Voltar
-        </button>
-      </div>
-
-      {/* Rodapé padrão */}
-      <Footer/>
+      <Footer />
     </div>
   );
 }

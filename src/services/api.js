@@ -10,7 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = AuthService.getToken(); // Pega o token do AuthService
+    const token = AuthService.getToken();
     if (token) {
       config.headers['Authorization'] = 'Bearer ' + token;
     }

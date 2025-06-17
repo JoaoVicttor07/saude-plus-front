@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { FaCalendarAlt, FaSpinner, FaExclamationCircle } from 'react-icons/fa';
 import Header from '../../../components/header';
 import Button from '../../../components/Button';
-import Footer from "../../../components/footer"
-import AppointmentService from '../../../services/AppointmentService';
+import Footer from "../../../components/footer";
+import ConsultaService from '../../../services/ConsultaService';
 import { useAuth } from '../../../context/AuthContext';
-import './style.css';
+import "../../patient/appointmentsList/style.css";
 
 const formatDateTime = (isoString) => {
   if (!isoString) return { date: "Data inválida", time: "Hora inválida" };
@@ -22,12 +22,11 @@ const formatDateTime = (isoString) => {
     });
     return { date, time };
   } catch (e) {
-    console.error("Erro ao formatar data:", e, "Valor original:", isoString);
     return { date: "Erro na data", time: "Erro na hora" };
   }
 };
 
-function AppointmentsList() {
+function DoctorAppointmentsList() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [appointmentsHistory, setAppointmentsHistory] = useState([]);
@@ -40,11 +39,13 @@ function AppointmentsList() {
         setIsLoading(true);
         setError(null);
         try {
-          const allAppointments = await AppointmentService.getAllAppointmentsByPatient(user.id);
+          const allAppointments = await ConsultaService.listarPorMedico(user.id);
 
           if (allAppointments && Array.isArray(allAppointments)) {
             const filteredAppointments = allAppointments.filter(
-              (appointment) => appointment.status === 'REALIZADA' || appointment.status === 'DESMARCADA'
+              (appointment) =>
+                appointment.status === 'REALIZADA' ||
+                appointment.status === 'DESMARCADA'
             );
 
             const sortedAppointments = filteredAppointments.sort(
@@ -55,7 +56,6 @@ function AppointmentsList() {
             setAppointmentsHistory([]);
           }
         } catch (err) {
-          console.error("Erro ao buscar histórico de consultas:", err);
           setError(
             "Não foi possível carregar seu histórico de consultas. Tente novamente mais tarde."
           );
@@ -75,7 +75,6 @@ function AppointmentsList() {
       <Header />
       <main className="patient-dashboard-container" role="main">
         <h2 className="dashboard-title">Histórico de Consultas</h2>
-
 
         {isLoading && (
           <div className="dashboard-loading">
@@ -107,15 +106,14 @@ function AppointmentsList() {
                 <li className="dashboard-appointment-item" key={c.id}>
                   <FaCalendarAlt className="dashboard-appointment-icon" aria-hidden="true" />
                   <span>
-                    <b>{date}</b> {time} - {c.medico?.nome || 'Médico não informado'}
+                    <b>{date}</b> {time} - {c.paciente?.nome || 'Paciente não informado'}
                     <span
                       className={`status-label status-${statusClass}`}
                     >
-                       {/**/}
                       {c.status === 'DESMARCADA' ? 'Desmarcada' : c.status === 'REALIZADA' ? 'Realizada' : c.status}
                     </span>
                   </span>
-                  <Link className="dashboard-action-link" to={`/appointment-details/${c.id}`}>
+                  <Link className="dashboard-action-link" to={`/doctor/appointment-details/${c.id}`}>
                     Detalhes
                   </Link>
                 </li>
@@ -123,7 +121,6 @@ function AppointmentsList() {
             })}
           </ul>
         )}
-
 
         <div className="dashboard-actions">
           <Button
@@ -134,7 +131,7 @@ function AppointmentsList() {
             height="50px"
             hoverBackground="#f0f8f8"
             fontWeight={600}
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/doctor/dashboard')}
           >
             Voltar ao Dashboard
           </Button>
@@ -145,4 +142,4 @@ function AppointmentsList() {
   );
 }
 
-export default AppointmentsList;
+export default DoctorAppointmentsList;

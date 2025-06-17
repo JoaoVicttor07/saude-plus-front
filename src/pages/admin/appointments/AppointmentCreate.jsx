@@ -104,7 +104,6 @@ const mockAvailability = {
   },
 };
 
-// Funções utilitárias movidas para o escopo do módulo
 const getDaysInMonth = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -126,7 +125,6 @@ const formatDate = (date) => {
   return date.toISOString().split("T")[0];
 };
 
-// Componentes de Etapa movidos para fora
 const StepIndicator = ({ currentStep }) => (
   <div className="step-indicator">
     <div
@@ -490,7 +488,6 @@ const ConfirmationModal = ({
   );
 };
 
-// NOVO MODAL DE SUCESSO
 const SuccessModal = ({ show, onCloseAndRedirect }) => {
   if (!show) return null;
   return (
@@ -531,8 +528,7 @@ export default function ScheduleAppointment() {
   const [selectedTime, setSelectedTime] = useState(null);
   const [patientSearch, setPatientSearch] = useState("");
   const [doctorSearch, setDoctorSearch] = useState("");
-  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 5)); // June 2025
-  // const [notes, setNotes] = useState(""); // Estado de 'notes' mantido, caso seja usado em outro lugar ou reativado
+  const [currentMonth, setCurrentMonth] = useState(new Date(2025, 5));
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -574,7 +570,6 @@ export default function ScheduleAppointment() {
       doctor: selectedDoctor,
       date: selectedDate,
       time: selectedTime,
-      // notes: notes,
     });
     setShowConfirmation(false);
     setShowSuccessModal(true);
