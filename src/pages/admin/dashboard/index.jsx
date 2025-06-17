@@ -54,32 +54,6 @@ export default function AdminDashboard() {
     }
   }, [showModal]);
 
-  const openModal = () => {
-    setForm({
-      nome: "",
-      cpf: "",
-      email: "",
-      senha: "",
-      sexo: "",
-      telefone: "",
-      dataNascimento: "",
-      ativo: true,
-      crm: "",
-      especialidade: "",
-      endereco: {
-        logradouro: "",
-        numero: "",
-        bairro: "",
-        cep: "",
-        cidade: "",
-        estado: "",
-      },
-    });
-    setFormError(null);
-    setFormSuccess(null);
-    setShowModal(true);
-  };
-
   const closeModal = () => setShowModal(false);
 
   const handleFormChange = (e) => {
@@ -232,38 +206,6 @@ export default function AdminDashboard() {
             >
               Ver consultas
             </Button>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="quick-actions-container">
-          <div className="quick-actions-card">
-            <h3 className="sectionTitle">Ações rápidas</h3>
-            <div className="quick-actions">
-              <Button
-                background="#3b9b96"
-                hoverBackground="#2d7a75"
-                fontSize="0.875rem"
-                icon={<Plus size={15} />}
-                style={{ padding: "0.80rem 1.5rem" }}
-                onClick={openModal}
-                disabled
-              >
-                Novo Médico
-              </Button>
-
-              {/* <Button
-                background="#3b9b96"
-                hoverBackground="#2d7a75"
-                fontSize="0.875rem"
-                icon={<Plus size={15} />}
-                style={{ padding: "0.80rem 1.5rem" }}
-                onClick={() => navigate("/admin/appointments/create")}
-                disabled
-              >
-                Nova Consulta
-              </Button> */}
-            </div>
           </div>
         </div>
 

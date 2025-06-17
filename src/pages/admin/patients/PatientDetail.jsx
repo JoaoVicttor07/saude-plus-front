@@ -232,23 +232,6 @@ export default function PatientDetailsPage() {
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          <Button
-            background="#fff"
-            color="#374151"
-            hoverBackground="#e6f4f1"
-            fontWeight="bold"
-            icon={statusToggleIcon}
-            style={{ padding: "0.90rem 2rem" }}
-            onClick={handleTogglePatientStatus}
-          >
-            {patientStatus === "Ativo"
-              ? "Desativar Paciente"
-              : "Ativar Paciente"}
-          </Button>
-        </div>
-
         {showModal && (
           <div className="modal-overlay">
             <div className="modal-content">
