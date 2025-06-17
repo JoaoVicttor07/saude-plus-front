@@ -39,18 +39,15 @@ function DoctorAppointmentsList() {
         setIsLoading(true);
         setError(null);
         try {
-          // Busca todas as consultas do médico
           const allAppointments = await ConsultaService.listarPorMedico(user.id);
 
           if (allAppointments && Array.isArray(allAppointments)) {
-            // Filtra por status 'REALIZADA' e 'DESMARCADA'
             const filteredAppointments = allAppointments.filter(
               (appointment) =>
                 appointment.status === 'REALIZADA' ||
                 appointment.status === 'DESMARCADA'
             );
 
-            // Ordena por data (mais recente primeiro)
             const sortedAppointments = filteredAppointments.sort(
               (a, b) => new Date(b.inicio) - new Date(a.inicio)
             );

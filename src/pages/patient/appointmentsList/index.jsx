@@ -40,22 +40,18 @@ function AppointmentsList() {
         setIsLoading(true);
         setError(null);
         try {
-          // Fetch all appointments for the patient
           const allAppointments = await AppointmentService.getAllAppointmentsByPatient(user.id);
 
           if (allAppointments && Array.isArray(allAppointments)) {
-            // Filter for 'REALIZADA' and 'DESMARCADA' statuses on the client side
             const filteredAppointments = allAppointments.filter(
               (appointment) => appointment.status === 'REALIZADA' || appointment.status === 'DESMARCADA'
             );
 
-            // Sort the filtered appointments by date (most recent first)
             const sortedAppointments = filteredAppointments.sort(
               (a, b) => new Date(b.inicio) - new Date(a.inicio)
             );
             setAppointmentsHistory(sortedAppointments);
           } else {
-            // Handle cases where allAppointments might not be an array (e.g., API error returning non-array)
             setAppointmentsHistory([]);
           }
         } catch (err) {
@@ -71,7 +67,6 @@ function AppointmentsList() {
       fetchAppointmentsHistory();
     } else {
       setIsLoading(false);
-      // If no user, can redirect or show message. For now, just don't load.
     }
   }, [user]);
 
@@ -116,7 +111,7 @@ function AppointmentsList() {
                     <span
                       className={`status-label status-${statusClass}`}
                     >
-                       {/* Capitalize 'Desmarcada' for display if needed, or adjust based on backend value */}
+                       {/**/}
                       {c.status === 'DESMARCADA' ? 'Desmarcada' : c.status === 'REALIZADA' ? 'Realizada' : c.status}
                     </span>
                   </span>

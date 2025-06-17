@@ -234,7 +234,7 @@ export default function DoctorCalendar() {
           </div>
         </div>
       </div>
-      {/* Modal de detalhes */}
+      {/**/}
       {showDetails && selectedConsultation && (
         <div className="modal-----overlay" onClick={handleCloseDetails}>
           <div

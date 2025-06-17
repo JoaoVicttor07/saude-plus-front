@@ -82,15 +82,12 @@ function ProfileEdit() {
     try {
       await PacienteService.atualizar(user.id, updatePayload);
       setModalContent({ title: "Perfil Atualizado!", message: "Suas informações foram atualizadas com sucesso." });
-      // If email or other critical info affecting the token changes,
-      // the backend should ideally issue a new token.
-      // For now, updateUserContext re-decodes the existing token.
       updateUserContext();
     }catch (err) {
       console.error("Erro ao atualizar perfil:", err);
       const errorMessage = err.response?.data?.message || err.message || "Não foi possível salvar as alterações. Tente novamente.";
       setModalContent({ title: "Erro ao Salvar", message: errorMessage });
-      setError(errorMessage); // Also set error state for potential display outside modal
+      setError(errorMessage);
     } finally {
       setIsSubmitting(false);
       setModalOpen(true);
@@ -102,9 +99,8 @@ function ProfileEdit() {
   const handleModalClose = () => {
     setModalOpen(false);
     if (modalContent.title === "Perfil Atualizado!") {
-      navigate('/profile'); // Navigate to profile view on successful update
+      navigate('/profile');
     }
-    // For errors, the user stays on the edit page to correct them.
   };
 
   if (isLoading) {
@@ -122,7 +118,7 @@ function ProfileEdit() {
     );
   }
 
-   if (error && !initialData) { // Show error if initial load failed
+   if (error && !initialData) {
      return (
       <div className="profile-edit-bg">
         <Header />

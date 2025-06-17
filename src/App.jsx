@@ -74,10 +74,10 @@ function App() {
         />
       </Route>
 
-      {/* Adicione uma rota para "Não Autorizado" se desejar */}
+      {/**/}
       {/* <Route path="/unauthorized" element={<UnauthorizedPage />} /> */}
 
-      {/* Rota Catch-all para páginas não encontradas (opcional) */}
+      {/**/}
       {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Routes>
   );

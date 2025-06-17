@@ -41,7 +41,7 @@ function AppointmentDetail() {
       const fetchAppointmentDetail = async () => {
         setIsLoading(true);
         setError(null);
-        setCancelSuccess(false); // Resetar mensagem de sucesso ao carregar
+        setCancelSuccess(false);
         try {
           const data = await AppointmentService.getAppointmentById(id);
           setConsulta(data);
@@ -58,7 +58,7 @@ function AppointmentDetail() {
       setError("ID da consulta não fornecido.");
       setIsLoading(false);
     }
-  }, [id]); // Re-fetch se o ID mudar
+  }, [id]);
 
   const handleDesmarcarConsulta = async () => {
     if (!consulta || consulta.status !== "AGENDADA") return;
@@ -105,7 +105,6 @@ function AppointmentDetail() {
   }
 
   if (error && !consulta) {
-    // Mostrar erro apenas se a consulta não pôde ser carregada
     return (
       <div className="dashboard-bg">
         <Header />
@@ -128,7 +127,6 @@ function AppointmentDetail() {
   }
 
   if (!consulta) {
-    // Caso de ID inválido ou não encontrado após o loading
     return (
       <div className="dashboard-bg">
         <Header />
@@ -217,7 +215,7 @@ function AppointmentDetail() {
               </span>
             </div>
           )}
-          {/* Exibir erro específico do cancelamento, se houver */}
+          {/**/}
           {error && isCanceling && (
             <p
               className="error-message"

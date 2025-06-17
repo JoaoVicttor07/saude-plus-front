@@ -7,13 +7,10 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const location = useLocation();
 
   if (isLoading) {
-    // Você pode retornar um spinner ou um componente de carregamento aqui
     return <div>Carregando autenticação...</div>;
   }
 
   if (!isAuthenticated) {
-    // Redireciona para a página de login, guardando a localização atual
-    // para que o usuário possa ser redirecionado de volta após o login.
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
@@ -24,10 +21,8 @@ const ProtectedRoute = ({ allowedRoles }) => {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
-  // Modificado: Extrair o papel de user.role
   const userRole = user?.role?.toUpperCase();
 
-  // Se a rota requer papéis específicos e o papel do usuário não está entre os permitidos
   if (
     allowedRoles &&
     !allowedRoles.map((role) => role.toUpperCase()).includes(userRole)
@@ -40,8 +35,6 @@ const ProtectedRoute = ({ allowedRoles }) => {
     return <Navigate to="/signin" state={{ from: location }} replace />; // Ou para uma página de erro/dashboard
   }
 
-  // Se autenticado e (não há papéis específicos OU o papel do usuário é permitido)
-  // Renderiza o componente filho (Outlet lida com rotas aninhadas se houver)
   return <Outlet />;
 };
 

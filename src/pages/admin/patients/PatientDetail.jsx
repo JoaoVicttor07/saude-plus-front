@@ -106,7 +106,6 @@ export default function PatientDetailsPage() {
     "status-badge " +
     (patientStatus === "Ativo" ? "status-active" : "status-inactive");
 
-  // Filtra as consultas conforme a aba ativa
   const filteredAppointments = appointments.filter((appointment) => {
     if (activeTab === "Agendadas") return appointment.status === "AGENDADA";
     if (activeTab === "Realizadas") return appointment.status === "REALIZADA";

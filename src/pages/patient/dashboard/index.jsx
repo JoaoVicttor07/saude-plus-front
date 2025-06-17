@@ -26,7 +26,6 @@ function PatientDashboard() {
             user.id
           );
 
-          // Filter for AGENDADA status and then sort
           const scheduledAppointments = (data || [])
             .filter((app) => app.status === "AGENDADA")
             .sort((a, b) => new Date(a.inicio) - new Date(b.inicio));
@@ -114,8 +113,8 @@ function PatientDashboard() {
                   <span>
                     {date} {time} - {a.medico?.nome || "Médico não informado"}
                   </span>
-                  {/* O link de detalhes pode levar para uma página específica da consulta */}
-                  {/* Por enquanto, vamos manter simples ou remover se não houver página de detalhes */}
+                  {/**/}
+                  {/**/}
                   <Link
                     className="dashboard-action-link"
                     to={`/appointment-details/${a.id}`}

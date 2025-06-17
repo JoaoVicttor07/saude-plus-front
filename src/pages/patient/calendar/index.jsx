@@ -32,14 +32,13 @@ import "./style.css";
 
 // Helper para mapear ícones com base no nome da especialidade (case-insensitive)
 const getEspecialidadeIcon = (nomeEspecialidade) => {
-  if (!nomeEspecialidade) return <FaUserMd />; // Ícone padrão
+  if (!nomeEspecialidade) return <FaUserMd />;
   const lowerNome = nomeEspecialidade.toLowerCase();
   if (lowerNome.includes("cardiologia")) return <FaHeartbeat />;
   if (lowerNome.includes("dermatologia")) return <FaUserMd />;
   if (lowerNome.includes("pediatria")) return <FaUserMd />;
   if (lowerNome.includes("ortopedia")) return <FaUserMd />;
-  // Adicione mais mapeamentos conforme necessário
-  return <FaUserMd />; // Ícone padrão para especialidades não mapeadas
+  return <FaUserMd />;
 };
 
 // const SLOTS = {
@@ -54,15 +53,13 @@ const getEspecialidadeIcon = (nomeEspecialidade) => {
 // Função para gerar horários padrão para um dia
 const generateTimeSlots = (dateISO) => {
   const slots = [];
-  const startHour = 8; // Médico começa às 08:00
-  const numberOfSlots = 8; // Máximo de 8 consultas por dia
-  const consultationDurationHours = 1; // Cada consulta dura 1 hora
+  const startHour = 8;
+  const numberOfSlots = 8;
+  const consultationDurationHours = 1;
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Zera a hora para comparar apenas a data
+  today.setHours(0, 0, 0, 0);
 
-  // Ajuste para garantir que a data selecionada seja comparada corretamente
-  // Criar o objeto Date com a data no fuso horário local, adicionando T00:00:00
   const selectedDateParts = dateISO.split("-");
   const selectedDateObj = new Date(
     parseInt(selectedDateParts[0]),
@@ -72,32 +69,22 @@ const generateTimeSlots = (dateISO) => {
   selectedDateObj.setHours(0, 0, 0, 0);
 
   if (selectedDateObj < today) {
-    return []; // Retorna array vazio para datas passadas
+    return [];
   }
 
   for (let i = 0; i < numberOfSlots; i++) {
     const hour = startHour + i * consultationDurationHours;
-    // Considerar um horário de término, por exemplo, não passar das 17:00 (8h + 8 slots = 16h, último slot às 15h)
-    // Se o último slot começa às 15:00 e dura 1h, termina às 16:00.
-    // Se começar 8h e tiver 8 slots, o último slot começa às 15h.
     if (hour >= 17) {
-      // Exemplo: não gerar horários que comecem 17h ou depois se o dia de trabalho acaba às 17h
-      // Se o dia de trabalho é de 8h, e o último slot começa às 15h, ele termina às 16h.
-      // Se o dia de trabalho é de 8h, e o último slot começa às 16h, ele termina às 17h.
-      // Ajuste essa lógica conforme o horário de término real do trabalho.
-      // Se são 8 slots de 1h, e começa às 8h, os horários são: 8,9,10,11,12,13,14,15.
-      // Se houver almoço, a lógica seria mais complexa (ex: pular das 12h às 13h)
     }
 
     const time = `${String(hour).padStart(2, "0")}:00`;
 
     // Não mostrar horários que já passaram no dia atual
     if (selectedDateObj.getTime() === today.getTime()) {
-      // Verifica se é o dia de hoje
       const now = new Date();
       const currentHour = now.getHours();
       if (hour <= currentHour) {
-        continue; // Pula horários que já passaram hoje
+        continue;
       }
     }
     slots.push(time);
@@ -128,10 +115,9 @@ function PatientCalendar() {
   const [erroGeral, setErroGeral] = useState("");
   const [isConfirming, setIsConfirming] = useState(false);
 
-  // Gera datas (pode ser melhorado ou vir da API de horários disponíveis)
   const diasDoMes = Array.from({ length: 30 }, (_, i) => {
-    const d = new Date(); // Data atual
-    d.setDate(d.getDate() + i); // Adiciona i dias à data atual
+    const d = new Date();
+    d.setDate(d.getDate() + i);
     return d.toISOString().slice(0, 10);
   });
 
@@ -141,7 +127,7 @@ function PatientCalendar() {
         setLoadingEspecialidades(true);
         setErrorEspecialidades("");
         const data = await AppointmentService.getSpecialties();
-        setApiEspecialidades(data || []); // Garante que seja um array
+        setApiEspecialidades(data || []);
       } catch (err) {
         setErrorEspecialidades(
           "Não foi possível carregar as especialidades. Tente novamente mais tarde."
@@ -155,7 +141,6 @@ function PatientCalendar() {
     fetchEspecialidades();
   }, []);
 
-  // Passo 1: Selecionar especialidade
   const handleEscolherEspecialidade = async (esp) => {
     setSelectedEspecialidade(esp);
     setSelectedMedico(null);
@@ -163,13 +148,13 @@ function PatientCalendar() {
     setErrorMedicos("");
     setLoadingMedicos(true);
     setStep(2);
-    setDataSelecionada(""); // Resetar data ao mudar especialidade/médico
+    setDataSelecionada("");
     setHorarioSelecionado("");
     setAvailableSlots([]);
 
     try {
       const data = await MedicoService.buscarPorEspecialidade(esp.nome);
-      setApiMedicos(data || []); // Garante que seja um array
+      setApiMedicos(data || []);
       if (!data || data.length === 0) {
         setErrorMedicos(`Nenhum médico encontrado para ${esp.nome}.`);
       }
@@ -184,7 +169,6 @@ function PatientCalendar() {
     }
   };
 
-  // Passo 2: Selecionar médico
   const handleEscolherMedico = (m) => {
     setSelectedMedico(m);
     setDataSelecionada("");
@@ -253,7 +237,6 @@ function PatientCalendar() {
       setShowSuccess(true);
     } catch (error) {
       console.error("Erro ao confirmar agendamento:", error.response || error);
-      // Tentar pegar a mensagem de erro específica do backend, se houver
       const apiErrorMessage =
         error.response?.data?.message || error.response?.data?.error;
       setErroGeral(
@@ -290,7 +273,7 @@ function PatientCalendar() {
           Selecione a especialidade e o médico, depois escolha um horário.
         </p>
 
-        {/* Etapa 1 */}
+        {/**/}
         {step === 1 && (
           <section className="calendar-step">
             <h3>1. Selecione a especialidade desejada</h3>
@@ -313,7 +296,7 @@ function PatientCalendar() {
                 <div className="calendar-especialidades">
                   {apiEspecialidades.map((esp) => (
                     <button
-                      key={esp.id} // Assumindo que a API de especialidades retorna 'id'
+                      key={esp.id}
                       className={`calendar-chip${
                         selectedEspecialidade?.id === esp.id ? " selected" : ""
                       }`}
@@ -321,7 +304,7 @@ function PatientCalendar() {
                       disabled={
                         loadingMedicos && selectedEspecialidade?.id === esp.id
                       }
-                      aria-label={esp.nome} // Assumindo que a API de especialidades retorna 'nome'
+                      aria-label={esp.nome}
                     >
                       {getEspecialidadeIcon(esp.nome)} {esp.nome}
                       {selectedEspecialidade?.id === esp.id &&
@@ -356,7 +339,7 @@ function PatientCalendar() {
           </Button>
         )}
 
-        {/* Etapa 2 */}
+        {/**/}
         {step === 2 && selectedEspecialidade && (
           <section className="calendar-step">
             <h3>
@@ -378,20 +361,20 @@ function PatientCalendar() {
               <div className="calendar-medicos">
                 {apiMedicos.map((m) => (
                   <button
-                    key={m.id} // API de médicos retorna 'id'
+                    key={m.id}
                     className={`calendar-medico-card${
                       selectedMedico?.id === m.id ? " selected" : ""
                     }`}
                     onClick={() => handleEscolherMedico(m)}
-                    aria-label={m.nome} // API de médicos retorna 'nome'
+                    aria-label={m.nome}
                   >
                     <FaUserMd className="calendar-medico-avatar" />
                     <div>
                       <div className="calendar-medico-nome">{m.nome}</div>
                       <div className="calendar-medico-info">
-                        {/* A API de médicos já inclui o objeto 'especialidade' */}
+                        {/**/}
                         {m.especialidade?.nome || selectedEspecialidade.nome}
-                        {/* A API de médicos já inclui o objeto 'clinica' */}
+                        {/**/}
                         {m.clinica?.nomeFantasia &&
                           ` • ${m.clinica.nomeFantasia}`}
                       </div>
@@ -406,7 +389,7 @@ function PatientCalendar() {
           </section>
         )}
 
-        {/* Etapa 3 */}
+        {/**/}
         {step === 3 && selectedMedico && (
           <section className="calendar-step">
             <h3>
@@ -454,10 +437,10 @@ function PatientCalendar() {
           </section>
         )}
 
-        {/* Mensagem de erro geral */}
+        {/**/}
         {erroGeral && <div className="calendar-erro">{erroGeral}</div>}
 
-        {/* Botões de ação */}
+        {/**/}
         <div className="calendar-actions">
           {step > 1 && (
             <Button
@@ -469,7 +452,7 @@ function PatientCalendar() {
               width="25%"
               border="2px solid #2c7a7b"
               onClick={handleVoltar}
-              disabled={isConfirming} // Desabilitar se estiver confirmando
+              disabled={isConfirming}
             >
               <FaArrowLeft /> Voltar
             </Button>
@@ -480,7 +463,7 @@ function PatientCalendar() {
               height="45px"
               width="50%"
               onClick={handleConfirmar}
-              disabled={!horarioSelecionado || isConfirming} // Desabilitar se não houver horário ou estiver confirmando
+              disabled={!horarioSelecionado || isConfirming}
             >
               {isConfirming ? (
                 <FaSpinner className="fa-spin" />
@@ -503,7 +486,7 @@ function PatientCalendar() {
               setDataSelecionada("");
               setHorarioSelecionado("");
               setAvailableSlots([]);
-              navigate("/dashboard"); // Navegar para o dashboard após fechar o modal
+              navigate("/dashboard");
             }}
             buttonText="Voltar ao Dashboard"
           >

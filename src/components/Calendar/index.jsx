@@ -10,7 +10,6 @@ const Calendar = ({ onDaySelect, selectedDay, isShifted, consultationDays }) => 
   ]
   const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 
-  // Função para pegar todos os dias do mês atual
   const getDaysInMonth = (date) => {
     const year = date.getFullYear()
     const month = date.getMonth()
@@ -18,12 +17,10 @@ const Calendar = ({ onDaySelect, selectedDay, isShifted, consultationDays }) => 
     const lastDay = new Date(year, month + 1, 0)
     const days = []
 
-    // Preenche os dias vazios antes do primeiro dia do mês
     for (let i = 0; i < firstDay.getDay(); i++) {
       days.push(null)
     }
 
-    // Preenche os dias do mês
     for (let d = 1; d <= lastDay.getDate(); d++) {
       days.push(new Date(year, month, d))
     }
@@ -35,7 +32,6 @@ const Calendar = ({ onDaySelect, selectedDay, isShifted, consultationDays }) => 
 
   
 
-  // Função para verificar se o dia tem consulta
   const hasConsultation = (day) => {
     if (!day) return false
     return consultationDays?.includes(day.toDateString())

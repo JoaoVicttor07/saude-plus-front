@@ -40,7 +40,6 @@ export default function DoctorDetails() {
 
   const handleCancelConsulta = async () => {
     if (!selectedConsulta) return;
-    // Confirmação nativa
     const confirmed = window.confirm("Tem certeza que quer cancelar?");
     if (!confirmed) return;
 
