@@ -3,7 +3,7 @@ import api from "./api";
 const ClinicaService = {
     buscarPorId: async (id) => {
         try {
-            const response = await api.get(`/api/clinica/${id}`);
+            const response = await api.get(`/clinica/${id}`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao buscar clínica por ID (${id}):`, error);
@@ -13,7 +13,7 @@ const ClinicaService = {
 
     atualizar: async (id, dados) => {
         try {
-            const response = await api.put(`/api/clinica/${id}`, dados);
+            const response = await api.put(`/clinica/${id}`, dados);
             return response.data;
         } catch (error) {
             console.error(`Erro ao atualizar clínica (${id}):`, error);
