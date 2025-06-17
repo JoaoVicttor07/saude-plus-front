@@ -1,9 +1,9 @@
 import api from "./api";
 
 const EspecialidadeService = {
-    listarTodas: async () => {
+    listarTodos: async () => {
         try {
-            const response = await api.get('/api/especialidades');
+            const response = await api.get('/especialidades');
             return response.data;
         } catch (error) {
             console.error('Erro ao listar especialidades:', error);
@@ -13,7 +13,7 @@ const EspecialidadeService = {
 
     buscarPorId: async (id) => {
         try {
-            const response = await api.get(`/api/especialidades/${id}`);
+            const response = await api.get(`/especialidades/${id}`);
             return response.data;
         } catch (error) {
             console.error(`Erro ao buscar especialidade por ID (${id}):`, error);
@@ -23,7 +23,7 @@ const EspecialidadeService = {
 
     cadastrar: async (dados) => {
         try {
-            const response = await api.post('/api/especialidades', dados);
+            const response = await api.post('/especialidades', dados);
             return response.data;
         } catch (error) {
             console.error('Erro ao cadastrar especialidade:', error);

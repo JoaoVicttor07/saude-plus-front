@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
-  Calendar,
   Phone,
   MapPin,
   User,
   CreditCard,
   Stethoscope,
   Eye,
-  RotateCcw,
   X,
 } from "lucide-react";
 import Header from "../../../components/header";
@@ -17,7 +15,6 @@ import Button from "../../../components/Button";
 import Footer from "../../../components/footer";
 import MedicoService from "../../../services/MedicoService";
 import ConsultaService from "../../../services/ConsultaService";
-// import { formatarTelefone } from "../../../utils/formatters";
 import "./DoctorDetail.css";
 
 export default function DoctorDetails() {
@@ -28,6 +25,42 @@ export default function DoctorDetails() {
   const [appointments, setAppointments] = useState([]);
   const [activeTab, setActiveTab] = useState("pending");
   const [isLoading, setIsLoading] = useState(true);
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedConsulta, setSelectedConsulta] = useState(null);
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [modalError, setModalError] = useState("");
+
+  const handleShowDetails = (consultaId) => {
+    const consulta = appointments.find((c) => c.id === consultaId);
+    setSelectedConsulta(consulta);
+    setModalError("");
+    setShowModal(true);
+  };
+
+  const handleCancelConsulta = async () => {
+    if (!selectedConsulta) return;
+    // Confirmação nativa
+    const confirmed = window.confirm("Tem certeza que quer cancelar?");
+    if (!confirmed) return;
+
+    setCancelLoading(true);
+    setModalError("");
+    try {
+      await ConsultaService.desmarcar(selectedConsulta.id);
+      setAppointments((prev) =>
+        prev.map((c) =>
+          c.id === selectedConsulta.id ? { ...c, status: "cancelled" } : c
+        )
+      );
+      setSelectedConsulta((prev) => prev && { ...prev, status: "cancelled" });
+      setShowModal(false);
+    } catch (err) {
+      setModalError("Erro ao cancelar consulta.");
+    } finally {
+      setCancelLoading(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchDoctorAndAppointments() {
@@ -92,15 +125,13 @@ export default function DoctorDetails() {
     (apt) => apt.status === "cancelled"
   );
 
-  const getStatusBadge = (status) => {
-    const className =
-      status === "active"
-        ? "status-badge status-active"
-        : "status-badge status-inactive";
-    const text = status === "active" ? "Ativo" : "Inativo";
+  const getStatusBadge = (ativo) => {
+    const className = ativo
+      ? "status-badge status-active"
+      : "status-badge status-inactive";
+    const text = ativo ? "Ativo" : "Inativo";
     return <span className={className}>{text}</span>;
   };
-
   const AppointmentTable = ({ appointments }) => (
     <div className="table-container">
       <table className="appointments-table">
@@ -137,13 +168,13 @@ export default function DoctorDetails() {
                       fontSize="0.75rem"
                       icon={<Eye size={15} />}
                       style={{ padding: "0.5rem 1rem" }}
-                      disabled
+                      onClick={() => handleShowDetails(appointment.id)}
                     >
                       Ver detalhes
                     </Button>
                     {appointment.status === "pending" && (
                       <>
-                        <Button
+                        {/* <Button
                           background="#ffc107"
                           fontSize="0.75rem"
                           hoverBackground="#e8a800"
@@ -152,17 +183,16 @@ export default function DoctorDetails() {
                           disabled
                         >
                           Remarcar
-                        </Button>
-                        <Button
+                        </Button> */}
+                        {/* <Button
                           background="#dc3545"
                           hoverBackground="#c82333"
                           fontSize="0.75rem"
                           icon={<X size={15} />}
                           style={{ padding: "0.5rem 1rem" }}
-                          disabled
                         >
                           Cancelar
-                        </Button>
+                        </Button> */}
                       </>
                     )}
                   </div>
@@ -262,7 +292,7 @@ export default function DoctorDetails() {
                     {doctor.telefone}
                   </p>
                 </div>
-                <div className="info-item">
+                {/* <div className="info-item">
                   <label className="info-label">Data de Cadastro:</label>
                   <p className="info-value">
                     <Calendar className="info-icon" />
@@ -272,7 +302,7 @@ export default function DoctorDetails() {
                         )
                       : "-"}
                   </p>
-                </div>
+                </div> */}
               </div>
 
               <div className="info-column">
@@ -356,7 +386,7 @@ export default function DoctorDetails() {
         </div>
 
         {/* Schedule New Appointment Button */}
-        <div className="schedule-section">
+        {/* <div className="schedule-section">
           <Button
             background="#3b9b96"
             fontWeight={600}
@@ -368,10 +398,102 @@ export default function DoctorDetails() {
           >
             Agendar Consulta
           </Button>
-        </div>
+        </div> */}
       </div>
 
-      {/* Footer */}
+      {showModal && selectedConsulta && (
+        <div
+          className="modal-overlay"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.25)",
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            className="modal-content"
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              padding: 32,
+              minWidth: 320,
+              maxWidth: 420,
+              width: "100%",
+              boxShadow: "0 4px 24px #0002",
+            }}
+          >
+            <h2 style={{ marginBottom: 18, color: "#0d9488" }}>
+              Detalhes da Consulta
+            </h2>
+            <div style={{ marginBottom: 12 }}>
+              <div>
+                <b>Data:</b> {selectedConsulta.date}
+              </div>
+              <div>
+                <b>Horário:</b> {selectedConsulta.time}
+              </div>
+              <div>
+                <b>Paciente:</b> {selectedConsulta.patient}
+              </div>
+              <div>
+                <b>Localidade:</b> {selectedConsulta.location}
+              </div>
+              <div>
+                <b>Status:</b>{" "}
+                {selectedConsulta.status === "pending"
+                  ? "Agendada"
+                  : selectedConsulta.status === "completed"
+                  ? "Realizada"
+                  : "Cancelada"}
+              </div>
+            </div>
+            {modalError && (
+              <div style={{ color: "#c00", marginBottom: 8 }}>{modalError}</div>
+            )}
+            <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+              <Button
+                background="#eee"
+                color="#444"
+                fontWeight={600}
+                style={{
+                  flex: 1,
+                  border: "none",
+                  borderRadius: 6,
+                  padding: 10,
+                }}
+                onClick={() => setShowModal(false)}
+              >
+                Fechar
+              </Button>
+              {selectedConsulta.status === "pending" && (
+                <Button
+                  background="#dc3545"
+                  hoverBackground="#c82333"
+                  color="#fff"
+                  fontWeight={600}
+                  style={{
+                    flex: 1,
+                    border: "none",
+                    borderRadius: 6,
+                    padding: 10,
+                  }}
+                  onClick={handleCancelConsulta}
+                  disabled={cancelLoading}
+                >
+                  {cancelLoading ? "Cancelando..." : "Cancelar Consulta"}
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
       <Footer />
     </div>
   );

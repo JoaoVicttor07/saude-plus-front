@@ -8,7 +8,11 @@ import PacienteService from "../../../services/PacienteService";
 import ConsultaService from "../../../services/ConsultaService";
 import "./PatientDetail.css";
 import { ArrowLeft, Calendar, UserX, UserCheck } from "lucide-react";
-import { mascararCPF, formatarTelefone, formatarData } from "../../../utils/formatters";
+import {
+  mascararCPF,
+  formatarTelefone,
+  formatarData,
+} from "../../../utils/formatters";
 
 export default function PatientDetailsPage() {
   const navigate = useNavigate();
@@ -43,18 +47,36 @@ export default function PatientDetailsPage() {
     fetchData();
   }, [id]);
 
-  const statusToggleIcon = patientStatus === "Ativo" ? <UserX /> : <UserCheck />;
+  const statusToggleIcon =
+    patientStatus === "Ativo" ? <UserX /> : <UserCheck />;
 
   const handleTogglePatientStatus = () => {
     setPendingAction(patientStatus === "Ativo" ? "desativar" : "ativar");
     setShowModal(true);
   };
 
-  const handleConfirmAction = () => {
-    setPatientStatus(patientStatus === "Ativo" ? "Inativo" : "Ativo");
+  const handleConfirmAction = async () => {
     setShowModal(false);
     setPendingAction(null);
-    // Aqui você pode chamar PacienteService.desativar/ativar se quiser atualizar no back-end
+
+    const hasAgendada = appointments.some((a) => a.status === "AGENDADA");
+    if (patientStatus === "Ativo" && hasAgendada) {
+      setErro(
+        "Não é possível desativar o paciente enquanto houver consultas agendadas."
+      );
+      return;
+    }
+
+    try {
+      if (patientStatus === "Ativo") {
+        await PacienteService.desativar(id);
+        setPatientStatus("Inativo");
+      } else {
+        setPatientStatus("Ativo");
+      }
+    } catch (err) {
+      setErro("Erro ao atualizar status do paciente.");
+    }
   };
 
   const handleCancelAction = () => {
@@ -62,12 +84,22 @@ export default function PatientDetailsPage() {
     setPendingAction(null);
   };
 
-  const handleCancelAppointment = (id) => {
-    alert(`Cancelar consulta ${id}`);
-  };
+  const handleCancelConsulta = async (consultaId) => {
+    const confirmed = window.confirm(
+      "Tem certeza que deseja cancelar esta consulta?"
+    );
+    if (!confirmed) return;
 
-  const handleScheduleAppointment = () => {
-    alert("Agendar Nova Consulta");
+    try {
+      await ConsultaService.desmarcar(consultaId);
+      setAppointments((prev) =>
+        prev.map((c) =>
+          c.id === consultaId ? { ...c, status: "CANCELADA" } : c
+        )
+      );
+    } catch (err) {
+      alert("Erro ao cancelar consulta.");
+    }
   };
 
   const statusBadgeClass =
@@ -86,9 +118,11 @@ export default function PatientDetailsPage() {
     if (!status) return "status-badge-table";
     const upperStatus = status.toUpperCase();
 
-    if (upperStatus === "AGENDADA") return "status-badge-table status-scheduled";
+    if (upperStatus === "AGENDADA")
+      return "status-badge-table status-scheduled";
     if (upperStatus === "REALIZADA") return "status-badge-table status-done";
-    if (upperStatus === "DESMARCADA") return "status-badge-table status-canceled";
+    if (upperStatus === "DESMARCADA")
+      return "status-badge-table status-canceled";
     return "status-badge-table";
   };
 
@@ -104,22 +138,42 @@ export default function PatientDetailsPage() {
     );
   }
 
-  if (erro || !patientData) {
-    return (
-      <div className="patient-details-container">
-        <Header />
-        <main className="main-content">
-          <p style={{ textAlign: "center", margin: 40, color: "#b00" }}>{erro || "Paciente não encontrado."}</p>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  // if (erro || !patientData) {
+  //   return (
+  //     <div className="patient-details-container">
+  //       <Header />
+  //       <main className="main-content">
+  //         <p style={{ textAlign: "center", margin: 40, color: "#b00" }}>
+  //           {erro || "Paciente não encontrado."}
+  //         </p>
+  //       </main>
+  //       <Footer />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="patient-details-container">
       <Header />
       <main className="main------content">
+        {/* ALERTA DE ERRO */}
+        {erro && (
+          <div
+            style={{
+              background: "#ffeaea",
+              color: "#b00",
+              border: "1px solid #f5c2c7",
+              borderRadius: "6px",
+              padding: "12px 18px",
+              margin: "18px auto",
+              maxWidth: 600,
+              textAlign: "center",
+              fontWeight: 500,
+            }}
+          >
+            {erro}
+          </div>
+        )}
         <div className="page-header">
           <h2 className="page-title">Detalhes do Paciente</h2>
           <Button
@@ -130,7 +184,7 @@ export default function PatientDetailsPage() {
             width="210px"
             hoverBackground="#f8f9fa"
             borderRadius="0.375rem"
-            icon={<ArrowLeft size={15}/>}
+            icon={<ArrowLeft size={15} />}
             onClick={() => navigate(-1)}
           >
             Voltar à lista de pacientes
@@ -172,38 +226,28 @@ export default function PatientDetailsPage() {
             </div>
             <div className="info-item">
               <span className="info-label">Telefone:</span>
-              <span className="info-value">{formatarTelefone(patientData.telefone)}</span>
+              <span className="info-value">
+                {formatarTelefone(patientData.telefone)}
+              </span>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="action-buttons">
-          {/* <Button
-            background="#3b9b96"
-            hoverBackground="#2d7a75"
-            fontWeight={600}
-            borderRadius="0.375rem"
-            style={{padding: "0.90rem 2rem"}}
-            icon={<Calendar size={15} />}
-            onClick={handleScheduleAppointment}
-          >
-            Agendar Consulta
-          </Button> */}
-
-          {/* <Button
+          <Button
             background="#fff"
             color="#374151"
             hoverBackground="#e6f4f1"
             fontWeight="bold"
             icon={statusToggleIcon}
-            style={{padding: "0.90rem 2rem"}}
+            style={{ padding: "0.90rem 2rem" }}
             onClick={handleTogglePatientStatus}
           >
             {patientStatus === "Ativo"
               ? "Desativar Paciente"
               : "Ativar Paciente"}
-          </Button> */}
+          </Button>
         </div>
 
         {showModal && (
@@ -298,15 +342,21 @@ export default function PatientDetailsPage() {
                         colSpan={5}
                         style={{ textAlign: "center", color: "#888" }}
                       >
-                         Nenhuma consulta encontrada para "{activeTab}".
+                        Nenhuma consulta encontrada para "{activeTab}".
                       </td>
                     </tr>
                   ) : (
                     filteredAppointments.map((appointment) => (
                       <tr key={appointment.id}>
                         <td>{formatarData(appointment.inicio)}</td>
-                        <td>{new Date(appointment.inicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })}</td>
-                        <td>{appointment.medico?.nome || 'N/A'}</td>
+                        <td>
+                          {new Date(appointment.inicio).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            timeZone: "UTC",
+                          })}
+                        </td>
+                        <td>{appointment.medico?.nome || "N/A"}</td>
                         <td>
                           <span
                             className={getStatusBadgeClass(appointment.status)}
@@ -316,14 +366,21 @@ export default function PatientDetailsPage() {
                         </td>
                         <td>
                           {activeTab === "Agendadas" && (
-                            <button
-                              className="btn btn-cancel"
+                            <Button
+                              className="btn-cancel"
+                              color="#dc2626"
+                              background="#fff"
+                              border="1px solid #dc2626"
+                              style={{
+                                fontSize: "0.95rem",
+                                padding: "0.3rem 1.2rem",
+                              }}
                               onClick={() =>
-                                handleCancelAppointment(appointment.id)
+                                handleCancelConsulta(appointment.id)
                               }
                             >
                               Cancelar
-                            </button>
+                            </Button>
                           )}
                         </td>
                       </tr>
