@@ -1,194 +1,187 @@
 .doctor-profile-bg {
   min-height: 100vh;
   background: #10a39b;
-}
-
-.doctor-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 24px 32px 0 24px;
-}
-
-.doctor-logo {
-  color: #fff;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.doctor-exit-btn {
-  background: #fff;
-  color: #222;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 18px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  margin-top: 0;
-  transition: background 0.2s;
-}
-.doctor-exit-btn:hover {
-  background: #f3f3f3;
-}
-
-.doctor-profile-title {
-  color: #fff;
-  text-align: center;
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin: 16px 0 20px ,;
-}
-
-.doctor-profile-card {
-  max-width: 600px;
-  margin: 0 auto;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
-  background: #fff;
   display: flex;
   flex-direction: column;
 }
 
-.doctor-profile-card-top {
-  background: linear-gradient(135deg, #10a39b 0%, #1ed2b6 100%);
+.doctor-profile-modern-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  min-width: 340px;
+  max-width: 410px;
+  width: 100%;
+  margin: 2rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 9px 0 9px 0;
 }
 
-.doctor-avatar {
-  width: 64px;
-  height: 64px;
-  background: #fff;
+.doctor-profile-avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.doctor-profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #10a39b 0%, #1ed2b6 100%);
+  color: #fff;
   border-radius: 50%;
+  font-size: 2.2rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #10a39b;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.07);
+  margin-bottom: 0.7rem;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
 }
 
-.doctor-specialty-badge {
-  background: #fff;
-  color: #10a39b;
-  border-radius: 16px;
-  padding: 4px 18px;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 4px;
-  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
-}
-
-.doctor-profile-card-bottom {
-  background: #fff;
-  padding: 10px 10px 10px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.doctor-name-block {
+.doctor-profile-info {
   text-align: center;
-  margin-bottom: 12px;
 }
-.doctor-name {
-  font-size: 1.5rem;
+
+.doctor-profile-name {
+  font-size: 1.3rem;
   font-weight: 700;
   color: #222;
+  display: block;
 }
-.doctor-crm {
-  color: #a3a3a3;
-  font-size: 1.1rem;
+
+.doctor-profile-specialty {
+  color: #10a39b;
+  font-size: 1.08rem;
+  font-weight: 600;
   margin-top: 2px;
   display: block;
 }
 
-.doctor-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5px;
-  margin-bottom: 12px;
+.doctor-profile-crm {
+  color: #888;
+  font-size: 1rem;
+  margin-top: 2px;
+  display: block;
 }
-.doctor-info-item {
-  background: #f7fafc;
-  border-radius: 8px;
-  padding: 10px 8px;
+
+.doctor-profile-form {
+  width: 100%;
+}
+
+.doctor-profile-fields {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1.1rem;
+  margin-bottom: 1.2rem;
 }
-.doctor-info-label {
+
+.doctor-profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.doctor-profile-field label {
   color: #10a39b;
-  font-size: 1rem;
   font-weight: 600;
+  font-size: 1.02rem;
+  margin-bottom: 2px;
 }
-.doctor-info-value {
+
+.doctor-profile-field input {
+  border: 1.5px solid #b2dfdb;
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 1.08rem;
+  background: #f8fefe;
   color: #222;
-  font-size: 1.05rem;
+  transition: border 0.2s, background 0.2s;
+}
+
+.doctor-profile-field input:focus {
+  border: 1.5px solid #10a39b;
+  background: #e6f9f8;
+  outline: none;
+}
+
+.doctor-profile-field span {
+  color: #222;
+  font-size: 1.08rem;
   font-weight: 500;
+  padding: 7px 0 0 0;
 }
 
-.doctor-observation-block {
-  margin-top: 5px;
+.doctor-profile-btns {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.doctor-observation-label {
-  color: #222;
-  font-weight: 600;
-  font-size: 1rem;
-}
-.doctor-observation-textarea {
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 1rem;
-  resize: none;
-  min-height: 70px;
-  background: #f7fafc;
-}
-
-.doctor-profile-actions {
-  display: flex;
+  gap: 12px;
   justify-content: flex-end;
-  margin-top: 5px;
+  margin-top: 10px;
 }
-.doctor-save-btn {
-  background: #10a39b;
-  color: #fff;
+
+.doctor-profile-btn {
   border: none;
-  border-radius: 8px;
-  padding: 10px 28px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.doctor-save-btn:hover {
-  background: #0e8c85;
-}
-
-.doctor-edit-btn {
-  background: #fff;
-  color: #10a39b;
-  border: 2px solid #10a39b;
   border-radius: 8px;
   padding: 10px 22px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
-.doctor-edit-btn:hover {
+
+.doctor-profile-btn.edit {
+  background: #fff;
+  color: #10a39b;
+  border: 2px solid #10a39b;
+}
+.doctor-profile-btn.edit:hover {
   background: #10a39b;
   color: #fff;
+}
+
+.doctor-profile-btn.save {
+  background: #10a39b;
+  color: #fff;
+}
+.doctor-profile-btn.save:hover {
+  background: #0e8c85;
+}
+
+.doctor-profile-btn.back {
+  background: #f3f3f3;
+  color: #555;
+}
+.doctor-profile-btn.back:hover {
+  background: #e0e0e0;
+}
+
+.doctor-profile-error {
+  color: #c00;
+  text-align: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.doctor-profile-success {
+  color: #218838;
+  text-align: center;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.doctor-profile-loading {
+  text-align: center;
+  margin: 2rem;
+  color: #10a39b;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .doctor-profile-modern-card {
+    padding: 1.2rem 0.5rem;
+    min-width: unset;
+    max-width: 98vw;
+  }
 }
