@@ -8,19 +8,21 @@ import AppointmentService from "../../../services/AppointmentService";
 import "./style.css";
 
 const formatDateTime = (isoString) => {
-  if (!isoString) return { date: "N/A", time: "N/A" };
+  if (!isoString) return { date: "Data inválida", time: "Hora inválida" };
   try {
     const dateObj = new Date(isoString);
-    if (isNaN(dateObj.getTime())) return { date: "Inválida", time: "Inválida" };
-    const date = dateObj.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+    if (isNaN(dateObj.getTime())) {
+      return { date: "Data inválida", time: "Hora inválida" };
+    }
+    const date = dateObj.toLocaleDateString("pt-BR");
     const time = dateObj.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
-      timeZone: "UTC",
     });
     return { date, time };
   } catch (e) {
-    return { date: "Erro", time: "Erro" };
+    console.error("Erro ao formatar data:", e, "Valor original:", isoString);
+    return { date: "Erro na data", time: "Erro na hora" };
   }
 };
 
@@ -61,7 +63,6 @@ function AppointmentDetail() {
   const handleDesmarcarConsulta = async () => {
     if (!consulta || consulta.status !== "AGENDADA") return;
 
-
     const confirmDesmarcar = window.confirm(
       "Tem certeza que deseja desmarcar esta consulta?"
     );
@@ -70,12 +71,16 @@ function AppointmentDetail() {
       setIsCanceling(true);
       setError(null);
       try {
-        const updatedConsulta = await AppointmentService.unmarkAppointmentByPatient(consulta.id);
+        const updatedConsulta =
+          await AppointmentService.unmarkAppointmentByPatient(consulta.id);
         setConsulta(updatedConsulta);
         setCancelSuccess(true);
       } catch (err) {
         console.error("Erro ao desmarcar consulta:", err);
-        setError(err.response?.data?.message || "Falha ao desmarcar a consulta. Tente novamente.");
+        setError(
+          err.response?.data?.message ||
+            "Falha ao desmarcar a consulta. Tente novamente."
+        );
         setCancelSuccess(false);
       } finally {
         setIsCanceling(false);
@@ -147,7 +152,9 @@ function AppointmentDetail() {
     );
   }
 
-  const { date: formattedDate, time: formattedTime } = formatDateTime(consulta.inicio);
+  const { date: formattedDate, time: formattedTime } = formatDateTime(
+    consulta.inicio
+  );
   const podeCancelar = consulta.status === "AGENDADA";
 
   return (

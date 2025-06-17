@@ -24,16 +24,13 @@ function PatientDashboard() {
         try {
           const data = await AppointmentService.getFutureAppointmentsByPatient(
             user.id
-          
           );
 
           // Filter for AGENDADA status and then sort
           const scheduledAppointments = (data || [])
-            .filter(app => app.status === "AGENDADA")
+            .filter((app) => app.status === "AGENDADA")
             .sort((a, b) => new Date(a.inicio) - new Date(b.inicio));
           setFutureAppointments(scheduledAppointments);
-
-          
         } catch (err) {
           console.error("Erro ao buscar agendamentos no dashboard:", err);
           setError(
@@ -58,11 +55,10 @@ function PatientDashboard() {
       if (isNaN(dateObj.getTime())) {
         return { date: "Data inválida", time: "Hora inválida" };
       }
-      const date = dateObj.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+      const date = dateObj.toLocaleDateString("pt-BR");
       const time = dateObj.toLocaleTimeString("pt-BR", {
         hour: "2-digit",
         minute: "2-digit",
-        timeZone: "UTC",
       });
       return { date, time };
     } catch (e) {

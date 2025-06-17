@@ -9,19 +9,21 @@ import { useAuth } from '../../../context/AuthContext';
 import './style.css';
 
 const formatDateTime = (isoString) => {
-  if (!isoString) return { date: "N/A", time: "N/A" };
+  if (!isoString) return { date: "Data inválida", time: "Hora inválida" };
   try {
     const dateObj = new Date(isoString);
-    if (isNaN(dateObj.getTime())) return { date: "Inválida", time: "Inválida" };
-    const date = dateObj.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+    if (isNaN(dateObj.getTime())) {
+      return { date: "Data inválida", time: "Hora inválida" };
+    }
+    const date = dateObj.toLocaleDateString("pt-BR");
     const time = dateObj.toLocaleTimeString("pt-BR", {
       hour: "2-digit",
       minute: "2-digit",
-      timeZone: "UTC",
     });
     return { date, time };
   } catch (e) {
-    return { date: "Erro", time: "Erro" };
+    console.error("Erro ao formatar data:", e, "Valor original:", isoString);
+    return { date: "Erro na data", time: "Erro na hora" };
   }
 };
 
