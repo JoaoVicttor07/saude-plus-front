@@ -7,7 +7,7 @@ import Footer from "../../../components/footer";
 import MedicoService from "../../../services/MedicoService";
 import "./style.css";
 import { ArrowLeft, Eye } from "lucide-react";
-import { formatarTelefone } from "../../../utils/formatters"; // Importa a função
+import { formatarTelefone } from "../../../utils/formatters";
 
 function AdminDoctors() {
   const navigate = useNavigate();

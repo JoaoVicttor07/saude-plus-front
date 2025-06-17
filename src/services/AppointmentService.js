@@ -63,7 +63,6 @@ const AppointmentService = {
 
     getAllAppointmentsByPatient: async (patientId) => {
         try {
-            // Assuming this endpoint returns all appointments for the patient
             const response = await api.get(`/consultas/paciente/${patientId}`);
             return response.data;
         } catch (error) {
@@ -71,11 +70,6 @@ const AppointmentService = {
             throw error;
         }
     },
-
-    // Manter outras funções que você possa ter ou adicionar depois, como para buscar horários, criar consulta, etc.
-    // Exemplo:
-    // getAvailableSlots: async (doctorId, date) => { ... },
-    // createAppointment: async (appointmentData) => { ... },
 };
 
 export default AppointmentService;
