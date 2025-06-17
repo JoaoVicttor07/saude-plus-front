@@ -6,6 +6,7 @@ import {
   FaStethoscope,
   FaCheck,
   FaTimes,
+  FaHistory,
 } from "react-icons/fa";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -213,9 +214,10 @@ export default function DoctorCalendar() {
               background="#3b9b96"
               hoverBackground="#2d7a75"
               fontWeight={600}
+              onClick={() => navigate("/doctor/appointments")}
               style={{ padding: "0.90rem 1rem" }}
             >
-              <FaUser className="btn-icon" />
+              <FaHistory className="btn-icon" style={{ marginRight: 8 }} />
               Ver Histórico
             </Button>
 
